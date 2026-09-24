@@ -165,20 +165,14 @@ export default function Goals() {
 
   function goalGroup(goal: Goal) {
     const subs = subgoals.filter((s) => s.goalId === goal.id).sort(byTarget);
-    const start = parseDate(goal.startDate);
-    const target = parseDate(goal.targetDate);
-    const today = startOfToday();
     const days = daysUntil(goal.targetDate);
-    const total = target.getTime() - start.getTime();
-    const timePct = total <= 0 ? 100
-      : Math.min(100, Math.max(0, ((today.getTime() - start.getTime()) / total) * 100));
     const subDone = subs.filter((s) => s.completed).length;
-    const pct = subs.length > 0 ? (subDone / subs.length) * 100 : timePct;
+    const pct = (subDone / subs.length) * 100;
     const status = statusFor(days, goal.completed);
     const overdue = !goal.completed && days < 0;
 
     return (
-      <li key={goal.id} className="border-b border-[#b8b5ae]/50">
+      <li key={goal.id} className="group border-b border-[#b8b5ae]/50">
         <div className={`flex items-center gap-3.5 px-6 pt-3.5 ${goal.completed ? "pb-3.5" : "pb-2"}`}>
           <button
             type="button"
@@ -206,12 +200,12 @@ export default function Goals() {
             <span className="shrink-0 text-[12px] tabular-nums text-[#8a8780]">
               {fmtDate(goal.startDate)} → {fmtDate(goal.targetDate)}
             </span>
-            <span className={`w-[96px] shrink-0 text-right text-[12px] tabular-nums ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : "text-[#6b6963]"}`}>
+            <span className={`w-[96px] shrink-0 text-right text-[12px] tabular-nums ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}>
               {status}
             </span>
           </button>
         </div>
-        {!goal.completed && (
+        {!goal.completed && subs.length > 0 && (
           <div className="px-6 pb-3.5">
             <div className="h-[3px] rounded-full bg-[#b8b5ae]/50">
               <div className="h-full rounded-full bg-[#16759b]" style={{ width: `${pct}%` }} />
@@ -226,7 +220,7 @@ export default function Goals() {
             <button
               type="button"
               onClick={() => openNewSub(goal.id)}
-              className="py-0.5 text-[12px] text-[#8a8780] transition-colors hover:text-[#16759b]"
+              className="py-0.5 text-[12px] text-[#8a8780] opacity-0 transition hover:text-[#16759b] focus-visible:opacity-100 group-hover:opacity-100"
             >
               + Add subgoal
             </button>
@@ -266,7 +260,7 @@ export default function Goals() {
           <span className={`min-w-0 flex-1 truncate text-[14px] ${sub.completed ? "text-[#6b6963] line-through" : "text-[#1D2525]"}`}>
             {sub.title}
           </span>
-          <span className={`shrink-0 text-[12px] tabular-nums ${overdue ? "text-[#D26390]" : sub.completed ? "text-[#8a8780]" : "text-[#6b6963]"}`}>
+          <span className={`shrink-0 text-[12px] tabular-nums ${overdue ? "text-[#D26390]" : sub.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}>
             {status}
           </span>
         </button>
@@ -278,32 +272,29 @@ export default function Goals() {
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780]">
-            Counts down to a target date
-          </p>
-          <h1 className="mt-0.5 text-[22px] font-medium leading-tight text-[#1D2525]">
+          <h1 className="mt-0.5 text-[24px] font-medium leading-tight text-[#1D2525]">
             Goals
           </h1>
-          <p className="mt-0.5 text-[13px] text-[#6b6963]">
-            What you&apos;re working toward. Check them off when you&apos;re
-            done.
-          </p>
         </div>
         <div className="flex items-center gap-4 pb-0.5 text-[13px] text-[#6b6963]">
-          <span>
-            <span className="font-semibold tabular-nums text-[#1D2525]">
-              {active.length}
-            </span>{" "}
-            active
-          </span>
-          <span className="h-3 w-px bg-[#b8b5ae]" />
-          <span>
-            <span className="font-semibold tabular-nums text-[#1D2525]">
-              {done.length}
-            </span>{" "}
-            done
-          </span>
-          <span className="h-3 w-px bg-[#b8b5ae]" />
+          {goals.length > 0 && (
+            <>
+              <span>
+                <span className="font-semibold tabular-nums text-[#1D2525]">
+                  {active.length}
+                </span>{" "}
+                active
+              </span>
+              <span className="h-3 w-px bg-[#b8b5ae]" />
+              <span>
+                <span className="font-semibold tabular-nums text-[#1D2525]">
+                  {done.length}
+                </span>{" "}
+                done
+              </span>
+              <span className="h-3 w-px bg-[#b8b5ae]" />
+            </>
+          )}
           <button
             type="button"
             onClick={openNew}
@@ -317,12 +308,7 @@ export default function Goals() {
       <div className="min-h-0 flex-1 overflow-auto pb-10">
         {goals.length === 0 && (
           <p className="px-6 py-10 text-center text-[13px] text-[#8a8780]">
-            Nothing here yet — add a goal when you&apos;ve got one.
-          </p>
-        )}
-        {active.length === 0 && done.length > 0 && (
-          <p className="px-6 pt-6 text-[13px] text-[#8a8780]">
-            Everything&apos;s checked off.
+            Nothing here yet. Add a goal to get started.
           </p>
         )}
         {active.length > 0 && (
@@ -359,7 +345,7 @@ export default function Goals() {
                 ? `Under ${subParent.title}`
                 : targetDate
                   ? `Due ${fmtDate(targetDate)}`
-                  : "Pick a target date"}
+                  : ""}
             </p>
             <input
               type="text"

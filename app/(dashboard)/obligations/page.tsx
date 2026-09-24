@@ -146,10 +146,7 @@ export default function Obligations() {
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780]">
-            Repeats every week
-          </p>
-          <h1 className="mt-0.5 text-[22px] font-medium leading-tight text-[#1D2525]">
+          <h1 className="mt-0.5 text-[24px] font-medium leading-tight text-[#1D2525]">
             Obligations
           </h1>
           <p className="mt-0.5 text-[13px] text-[#6b6963]">
@@ -247,7 +244,7 @@ export default function Obligations() {
         </div>
         {obligations.length === 0 && (
           <p className="sticky bottom-3 mx-auto w-fit rounded-full border border-[#b8b5ae] bg-[#F5F3EE] px-4 py-1.5 text-[12.5px] text-[#6b6963] shadow-sm">
-            Nothing pinned yet. Pick a time above, e.g. Mon 9 AM for class.
+            Nothing added yet. Pick a time above, e.g. Mon 9 AM for class.
           </p>
         )}
       </div>
