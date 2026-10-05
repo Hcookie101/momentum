@@ -1,18 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Tables } from "@/supabase/types";
+import { createClient } from "@/supabase/client";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hours = Array.from({ length: 24 }, (_, i) => i);
 const startTimes = Array.from({ length: 48 }, (_, i) => i / 2);
 
-type Obligation = {
-  id: string;
-  title: string;
-  days: number[]; // weekdays this repeats on
-  startHour: number;
-  duration: number;
-  color: string;
-};
+type Obligation = Tables<"obligations">;
 
 const SWATCHES = ["#7CA9BD", "#D26390", "#F5E573"];
 const WEEKDAY_INITIALS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -47,6 +42,7 @@ function dayListLabel(selected: number[]) {
 }
 
 export default function Obligations() {
+  const [supabase] = useState(() => createClient());
   const [obligations, setObligations] = useState<Obligation[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<{
     day: number;
@@ -58,6 +54,15 @@ export default function Obligations() {
   const [color, setColor] = useState(SWATCHES[0]);
   const [patternDays, setPatternDays] = useState<number[]>([]);
   const [formHour, setFormHour] = useState(0);
+
+  useEffect(() => {
+    async function fetchObligations() {
+      const { data, error } = await supabase.from("obligations").select("*");
+      if (error) console.error(error);
+      else setObligations(data);
+    }
+    fetchObligations();
+  }, [supabase]);
 
   const hourHeight = 72;
   const totalHours = obligations.reduce(
@@ -89,53 +94,67 @@ export default function Obligations() {
     setSelectedSlot(null);
     setEditingId(o.id);
     setTitle(o.title);
-    setDuration(Math.min(o.duration, 24 - o.startHour));
+    setDuration(Math.min(o.duration, 24 - o.start_hour));
     setColor(o.color);
     setPatternDays([...o.days]);
-    setFormHour(o.startHour);
+    setFormHour(o.start_hour);
   }
 
-  function saveNew() {
+  async function saveNew() {
     if (!selectedSlot || !title.trim() || patternDays.length === 0) return;
     const maxDur = 24 - formHour;
     const safeDuration = Math.min(Math.max(0.5, duration), maxDur);
-    setObligations((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
+    const { data, error } = await supabase
+      .from("obligations")
+      .insert({
         title: title.trim(),
         days: [...patternDays].sort((a, b) => a - b),
-        startHour: formHour,
+        start_hour: formHour,
         duration: safeDuration,
         color,
-      },
-    ]);
+      })
+      .select();
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setObligations((prev) => [...prev, ...data]);
     resetForm();
   }
 
-  function saveEdit() {
+  async function saveEdit() {
     if (!editing || !title.trim() || patternDays.length === 0) return;
     const maxDur = 24 - formHour;
     const safeDuration = Math.min(Math.max(0.5, duration), maxDur);
-    setObligations((prev) =>
-      prev.map((o) =>
-        o.id === editing.id
-          ? {
-              ...o,
-              title: title.trim(),
-              days: [...patternDays].sort((a, b) => a - b),
-              startHour: formHour,
-              duration: safeDuration,
-              color,
-            }
-          : o
-      )
-    );
+    const { data, error } = await supabase
+      .from("obligations")
+      .update({
+        title: title.trim(),
+        days: [...patternDays].sort((a, b) => a - b),
+        start_hour: formHour,
+        duration: safeDuration,
+        color,
+      })
+      .eq("id", editing.id)
+      .select();
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setObligations((prev) => prev.map((o) => (o.id === editing.id ? data[0] : o)));
     resetForm();
   }
 
-  function removeEditing() {
+  async function removeEditing() {
     if (!editing) return;
+    const { error } = await supabase
+      .from("obligations")
+      .delete()
+      .eq("id", editing.id);
+    if (error) {
+      console.error(error);
+      return;
+    }
     setObligations((prev) => prev.filter((o) => o.id !== editing.id));
     resetForm();
   }
@@ -210,7 +229,7 @@ export default function Obligations() {
               {obligations
                 .filter((o) => o.days.includes(dayIndex))
                 .map((o) => {
-                  const top = o.startHour * hourHeight;
+                  const top = o.start_hour * hourHeight;
                   const height = o.duration * hourHeight;
                   const darkText = o.color === "#F5E573";
                   return (
@@ -234,7 +253,7 @@ export default function Obligations() {
                           darkText ? "text-[#1D2525]/70" : "text-white/75"
                         }`}
                       >
-                        {rangeLabel(o.startHour, o.duration)}
+                        {rangeLabel(o.start_hour, o.duration)}
                       </span>
                     </button>
                   );

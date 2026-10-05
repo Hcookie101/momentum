@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Momentum</title>
+    <style>
+      :root {
+        --ink: #1d2525;
+        --bar: #1d2525;
+        --paper: #c9c6c0;
+        --card: #e4e0d8;
+        --line: #b8b5ae;
+        --muted: #6b6963;
+        --accent: #6dbacb;
+        --pill: #7ca9bd;
+      }
+
+      body {
+        width: 320px;
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 400 13px/1.45 ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ---- top bar: mirrors the site header ---- */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 40px;
+        padding: 0 12px;
+        background: var(--bar);
+        color: #c9c6c0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .brand img {
+        height: 26px;
+        width: 26px;
+        border-radius: 8px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .brand span {
+        font-size: 16px;
+      }
+
+      .live {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        color: #c9c6c0;
+      }
+
+      .live .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 9999px;
+        background: var(--accent);
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .live .dot {
+          animation: none;
+        }
+      }
+
+      /* ---- content ---- */
+      main {
+        padding: 12px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 2px 8px;
+      }
+
+      .eyebrow {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .chip {
+        padding: 2px 10px;
+        border-radius: 8px;
+        background: var(--pill);
+        color: var(--ink);
+        font-size: 11.5px;
+        font-weight: 500;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .list {
+        list-style: none;
+        margin: 0;
+        padding: 4px 0;
+      }
+
+      .row {
+        padding: 8px 12px;
+      }
+
+      .row-top {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .favicon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 18px;
+        width: 18px;
+        border-radius: 5px;
+        background: var(--paper);
+        overflow: hidden;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--ink);
+        flex: none;
+      }
+
+      .favicon img {
+        height: 13px;
+        width: 13px;
+        display: block;
+      }
+
+      .domain {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+      }
+
+      .time {
+        font-size: 14px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--ink);
+      }
+
+      .track {
+        height: 6px;
+        margin-top: 6px;
+        border-radius: 9999px;
+        background: var(--paper);
+        overflow: hidden;
+      }
+
+      .track span {
+        display: block;
+        height: 100%;
+        min-width: 4px;
+        border-radius: 9999px;
+        background: var(--pill);
+      }
+
+      .more {
+        padding: 8px 12px 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .state {
+        padding: 16px 12px;
+        text-align: center;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+
+      .state button {
+        display: block;
+        margin: 10px auto 0;
+        padding: 6px 16px;
+        border: 0;
+        border-radius: 8px;
+        background: #16759b;
+        color: #fff;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+
+      .state button:hover {
+        background: #1b83ad;
+      }
+
+      .total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-top: 1px solid var(--line);
+        font-size: 13.5px;
+        font-weight: 700;
+      }
+
+      .total span:last-child {
+        font-size: 15px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hint {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 10px 2px 0;
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+
+      .hint .dot {
+        display: none;
+        width: 7px;
+        height: 7px;
+        border-radius: 9999px;
+        background: var(--accent);
+        flex: none;
+      }
+
+      .hint.tracking {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      .hint.tracking .dot {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="momentumLogo.png" alt="" />
+        <span>Momentum</span>
+      </div>
+      <div class="live">
+        <span class="dot"></span>
+        <span>Live</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="section-head">
+        <p class="eyebrow">Browsing time</p>
+        <span class="chip">Today</span>
+      </div>
+
+      <section class="card">
+        <ul id="list" class="list">
+          <li class="state">Collecting browsing time…</li>
+        </ul>
+        <div class="total">
+          <span>Total</span>
+          <span id="total">—</span>
+        </div>
+      </section>
+
+      <p id="hint" class="hint">
+        <span class="dot"></span>
+        <span id="hintText">Times update automatically while you browse.</span>
+      </p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
+

@@ -9,11 +9,25 @@ function toLocalDateString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export default function DatePicker() {
-  const [selectedDate, setSelectedDate] = useState(() =>
+export default function DatePicker({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (date: string) => void;
+} = {}) {
+  const [internalDate, setInternalDate] = useState(() =>
     toLocalDateString(new Date())
   );
+  // Controlled when value+onChange are provided (Stats page filters by day),
+  // otherwise falls back to internal state.
+  const selectedDate = value ?? internalDate;
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const setSelectedDate = (date: string) => {
+    setInternalDate(date);
+    onChange?.(date);
+  };
 
   const isToday = selectedDate === toLocalDateString(new Date());
 

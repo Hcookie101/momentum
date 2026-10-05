@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import FocusTimer from "@/app/ui/focus-timer";
 
 export default function Header() {
   const pathname = usePathname();
@@ -43,6 +44,9 @@ export default function Header() {
           );
         })}
       </nav>
+      <div className="flex h-full items-center pr-4">
+        <FocusTimer />
+      </div>
     </header>
   );
 }

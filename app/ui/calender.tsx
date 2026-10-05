@@ -1,18 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Tables } from "@/supabase/types";
+import { createClient } from "@/supabase/client";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hours = Array.from({ length: 24 }, (_, i) => i);
 const startTimes = Array.from({ length: 48 }, (_, i) => i / 2);
 
-type CalendarEvent = {
-  id: string;
-  title: string;
-  day: number;
-  startHour: number;
-  duration: number;
-  color: string;
-};
+type CalendarEvent = Tables<"calendar_events">;
 
 function fmt(hour: number) {
   if (hour >= 24) return "12 AM";
@@ -38,6 +33,7 @@ const EVENT_SWATCHES = ["#7CA9BD", "#F5E573", "#D26390"];
 const WEEKDAY_INITIALS = ["S", "M", "T", "W", "T", "F", "S"];
 
 export default function Calendar() {
+  const [supabase] = useState(() => createClient());
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<{
     day: number;
@@ -49,6 +45,15 @@ export default function Calendar() {
   const [color, setColor] = useState("#7CA9BD");
   const [formDay, setFormDay] = useState(0);
   const [formHour, setFormHour] = useState(0);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      const { data, error } = await supabase.from("calendar_events").select("*");
+      if (error) console.error(error);
+      else setEvents(data);
+    }
+    fetchEvents();
+  }, [supabase]);
 
   const hourHeight = 80;
   const editing = events.find((e) => e.id === editingId) ?? null;
@@ -77,51 +82,67 @@ export default function Calendar() {
     setSelectedSlot(null);
     setEditingId(event.id);
     setTitle(event.title);
-    setDuration(Math.min(event.duration, 24 - event.startHour));
+    setDuration(Math.min(event.duration, 24 - event.start_hour));
     setColor(event.color);
     setFormDay(event.day);
-    setFormHour(event.startHour);
+    setFormHour(event.start_hour);
   }
 
-  function saveNew() {
+  async function saveNew() {
     if (!selectedSlot || !title.trim()) return;
     const safeDuration = Math.min(Math.max(0.5, duration), 24 - formHour);
-    setEvents((currentEvents) => [
-      ...currentEvents,
-      {
-        id: crypto.randomUUID(),
+    const { data, error } = await supabase
+      .from("calendar_events")
+      .insert({
         title: title.trim(),
         day: formDay,
-        startHour: formHour,
+        start_hour: formHour,
         duration: safeDuration,
         color,
-      },
-    ]);
+      })
+      .select();
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setEvents((currentEvents) => [...currentEvents, ...data]);
     resetForm();
   }
 
-  function saveEdit() {
+  async function saveEdit() {
     if (!editing || !title.trim()) return;
     const safeDuration = Math.min(Math.max(0.5, duration), 24 - formHour);
+    const { data, error } = await supabase
+      .from("calendar_events")
+      .update({
+        title: title.trim(),
+        day: formDay,
+        start_hour: formHour,
+        duration: safeDuration,
+        color,
+      })
+      .eq("id", editing.id)
+      .select();
+    if (error) {
+      console.error(error);
+      return;
+    }
     setEvents((currentEvents) =>
-      currentEvents.map((e) =>
-        e.id === editing.id
-          ? {
-              ...e,
-              title: title.trim(),
-              day: formDay,
-              startHour: formHour,
-              duration: safeDuration,
-              color,
-            }
-          : e
-      )
+      currentEvents.map((e) => (e.id === editing.id ? data[0] : e))
     );
     resetForm();
   }
 
-  function removeEditing() {
+  async function removeEditing() {
     if (!editing) return;
+    const { error } = await supabase
+      .from("calendar_events")
+      .delete()
+      .eq("id", editing.id);
+    if (error) {
+      console.error(error);
+      return;
+    }
     setEvents((currentEvents) =>
       currentEvents.filter((e) => e.id !== editing.id)
     );
@@ -172,7 +193,7 @@ export default function Calendar() {
             {events
               .filter((event) => event.day === dayIndex)
               .map((event) => {
-                const top = (event.startHour - hours[0]) * hourHeight;
+                const top = (event.start_hour - hours[0]) * hourHeight;
                 const height = event.duration * hourHeight;
                 const darkText = event.color === "#F5E573";
 
@@ -197,7 +218,7 @@ export default function Calendar() {
                         darkText ? "text-black/70" : "text-white/75"
                       }`}
                     >
-                      {rangeLabel(event.startHour, event.duration)}
+                      {rangeLabel(event.start_hour, event.duration)}
                     </span>
                   </button>
                 );
