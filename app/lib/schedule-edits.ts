@@ -217,10 +217,10 @@ export async function scheduleBlocks(
 // the proposed batch itself, which the apply lane re-checks so a stale
 // approval can't write something new. Pending batches await one click, so
 // they live in this process's memory (one map, tokens as keys, a TTL each)
-// instead of a table. Production sign-in and RLS would scope these per user;
-// until then the write path re-validates the exact stored batch against live
-// rows, so a forged or cross-user token only ever produces mismatches, never
-// foreign writes.
+// instead of a table. RLS scopes the writes per user (the apply route stamps
+// the owner), and the write path re-validates the exact stored batch against
+// live rows, so a forged or cross-user token only ever produces mismatches,
+// never foreign writes.
 
 export type ScheduleProposal = {
   token: string;

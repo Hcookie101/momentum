@@ -119,13 +119,11 @@ async function preloadedToday(day: ChatDay, supabase: SupabaseClient): Promise<s
   }
 }
 
-// Cookie-backed Supabase client for the tool queries. Momentum has no sign-in
-// step yet (the Stats page and the browser extension both read these tables
-// with the publishable key, and the schema has no `user_id` column to scope
-// by), so tool reads deliberately don't require a session — they run with
-// whatever cookies the request carries and Postgres/RLS decides what is
-// visible. Once sign-in and RLS exist, this same client narrows reads to the
-// signed-in user with no change here.
+// Cookie-backed Supabase client for the tool queries. Every table is
+// owner-scoped by RLS (see supabase/migrations/…), so these reads only see
+// the signed-in caller's own rows — Postgres decides what's visible from the
+// request's cookies, and a denied read surfaces as `{ error }` the model
+// relays. No user_id filtering is needed here; RLS does it.
 async function createSession(): Promise<SupabaseClient> {
   return createClient(await cookies());
 }

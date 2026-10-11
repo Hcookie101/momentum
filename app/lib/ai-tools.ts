@@ -3,11 +3,9 @@
 // cookie-backed client, so this module never lands in the browser bundle and
 // reads always run with the caller's own Supabase access.
 //
-// Momentum doesn't have a sign-in step yet — these tables are read with the
-// publishable key by the dashboard and written by the browser extension — so
-// the tools don't demand a session either: they read the same rows the Stats
-// page shows. If RLS later restricts access, denied reads come back as
-// `{ error }` and the model relays them.
+// Every table is owner-scoped by RLS (see supabase/migrations/…), so these
+// reads only ever see the signed-in caller's own rows — a denied read comes
+// back as `{ error }` and the model relays it.
 //
 // Results are plain JSON objects — they're stringified into the provider's
 // tool-result message by app/lib/ai-providers.ts.

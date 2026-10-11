@@ -104,6 +104,13 @@ export default function Obligations() {
     if (!selectedSlot || !title.trim() || patternDays.length === 0) return;
     const maxDur = 24 - formHour;
     const safeDuration = Math.min(Math.max(0.5, duration), maxDur);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Not signed in — cannot save.");
+      return;
+    }
     const { data, error } = await supabase
       .from("obligations")
       .insert({
@@ -112,6 +119,7 @@ export default function Obligations() {
         start_hour: formHour,
         duration: safeDuration,
         color,
+        user_id: user.id,
       })
       .select();
     if (error) {

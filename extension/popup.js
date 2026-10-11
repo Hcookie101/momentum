@@ -8,6 +8,7 @@ const listEl = document.getElementById("list");
 const totalEl = document.getElementById("total");
 const hintEl = document.getElementById("hint");
 const hintTextEl = document.getElementById("hintText");
+const unlinkBtn = document.getElementById("unlink");
 
 // ---- FORMATTING (matches the "00h06m" style used on the Stats page) ----
 function formatDuration(totalSeconds) {
@@ -18,24 +19,23 @@ function formatDuration(totalSeconds) {
   return `${String(hours).padStart(2, "0")}h${String(mins).padStart(2, "0")}m`;
 }
 
-function startOfToday() {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  return now.toISOString();
+// The personal token pasted into the extension (chrome://extensions → details,
+// or set programmatically). Stored locally, never synced.
+async function getToken() {
+  const stored = await chrome.storage.local.get("momentumToken");
+  return (stored.momentumToken || "").trim();
 }
 
 // ---- DATA ----
-async function fetchTodaySessions() {
-  const params = new URLSearchParams({
-    select: "domain,duration_seconds,visited_at",
-    visited_at: `gte.${startOfToday()}`,
-    order: "visited_at.asc",
-  });
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/browsing_sessions?${params}`, {
+async function fetchTodaySessions(token) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/read_today_browsing`, {
+    method: "POST",
     headers: {
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({ p_token: token }),
   });
   if (!res.ok) throw new Error(`Could not load sessions (${res.status})`);
   return res.json();
@@ -139,11 +139,86 @@ function render(sites) {
   totalEl.textContent = formatDuration(totalSeconds);
 }
 
+// Persist the pasted token locally (never synced) and reload.
+async function setToken(token) {
+  await chrome.storage.local.set({ momentumToken: token });
+}
+
+// First-run panel: explain, accept the pasted token, save on Save/Enter.
+function renderLinkPanel(errorMessage) {
+  listEl.replaceChildren();
+  totalEl.textContent = "—";
+
+  const li = document.createElement("li");
+  li.className = "link";
+
+  const title = document.createElement("p");
+  title.className = "link-title";
+  title.textContent = "Link this browser";
+
+  const sub = document.createElement("p");
+  sub.className = "link-sub";
+  sub.innerHTML =
+    "Create a token in <b>Momentum → Settings</b>, then paste it here to start saving your browsing time.";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Paste your token";
+  input.setAttribute("aria-label", "Extension token");
+  input.autocomplete = "off";
+  input.spellcheck = false;
+
+  const actions = document.createElement("div");
+  actions.className = "link-actions";
+
+  const save = document.createElement("button");
+  save.type = "button";
+  save.textContent = "Save & link";
+
+  const status = document.createElement("span");
+  status.className = "link-status";
+  if (errorMessage) status.textContent = errorMessage;
+
+  function submit() {
+    const value = input.value.trim();
+    if (!value) {
+      input.focus();
+      return;
+    }
+    save.disabled = true;
+    save.textContent = "Linking…";
+    setToken(value)
+      .then(load)
+      .catch(() => {
+        save.disabled = false;
+        save.textContent = "Save & link";
+        status.textContent = "Couldn't save — try again.";
+      });
+  }
+
+  save.addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") submit();
+  });
+
+  actions.append(save, status);
+  li.append(title, sub, input, actions);
+  listEl.appendChild(li);
+  input.focus();
+}
+
 async function load() {
+  const token = await getToken();
+  if (!token) {
+    unlinkBtn.hidden = true;
+    renderLinkPanel();
+    return;
+  }
+  unlinkBtn.hidden = false;
   listEl.replaceChildren(stateRow("Collecting browsing time…"));
   totalEl.textContent = "—";
   try {
-    const rows = await fetchTodaySessions();
+    const rows = await fetchTodaySessions(token);
     render(groupByDomain(rows));
   } catch (err) {
     console.error("Momentum popup:", err);
@@ -152,9 +227,23 @@ async function load() {
   }
 }
 
+// Forget the stored token and return to the link panel.
+async function unlink() {
+  await chrome.storage.local.remove("momentumToken");
+  load();
+}
+
+unlinkBtn.addEventListener("click", unlink);
+
 // ---- LIVE STATUS ----
 async function renderLiveStatus() {
   try {
+    const token = await getToken();
+    if (!token) {
+      hintEl.classList.remove("tracking");
+      hintTextEl.textContent = "Paste your token above to start saving time.";
+      return;
+    }
     const { current } = await chrome.storage.session.get("current");
     if (current && current.domain) {
       hintEl.classList.add("tracking");

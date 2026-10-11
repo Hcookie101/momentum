@@ -205,6 +205,13 @@ export default function Calendar() {
   async function saveNew() {
     if (!selectedSlot || !title.trim()) return;
     const safeDuration = Math.min(Math.max(0.5, duration), 24 - formHour);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Not signed in — cannot save.");
+      return;
+    }
     const { data, error } = await supabase
       .from("calendar_events")
       .insert({
@@ -213,6 +220,7 @@ export default function Calendar() {
         start_hour: formHour,
         duration: safeDuration,
         color,
+        user_id: user.id,
       })
       .select();
     if (error) {
@@ -322,12 +330,20 @@ export default function Calendar() {
   // event modal offers so the batch doesn't land in a single color.
   async function addDrafts() {
     if (!drafts || drafts.length === 0) return;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Not signed in — cannot save.");
+      return;
+    }
     const rows = drafts.map((item, index) => ({
       title: item.title,
       day: item.day,
       start_hour: item.start_hour,
       duration: item.duration,
       color: EVENT_SWATCHES[(events.length + index) % EVENT_SWATCHES.length],
+      user_id: user.id,
     }));
     const { data, error } = await supabase
       .from("calendar_events")

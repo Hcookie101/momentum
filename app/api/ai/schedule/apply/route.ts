@@ -46,6 +46,14 @@ export async function POST(request: Request) {
   }
 
   const supabase = createClient(await cookies());
+  // Every write is owner-scoped under RLS, so an approved batch needs the
+  // signed-in caller's id to stamp new calendar events with.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return jsonError("You're signed out — log back in and try again.", 401);
+  }
   const blocks = await scheduleBlocks(supabase);
   if (!blocks.ok) return jsonError(blocks.message, 500);
 
@@ -103,6 +111,7 @@ export async function POST(request: Request) {
         start_hour: startHour,
         duration,
         color: EVENT_SWATCHES[added % EVENT_SWATCHES.length],
+        user_id: user.id,
       });
       if (error) {
         skipped.push({ title: edit.title, reason: error.message });

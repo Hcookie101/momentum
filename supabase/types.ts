@@ -19,18 +19,21 @@ export type Database = {
           domain: string
           duration_seconds: number
           id: string
+          user_id: string
           visited_at: string
         }
         Insert: {
           domain: string
           duration_seconds: number
           id?: string
+          user_id: string
           visited_at?: string
         }
         Update: {
           domain?: string
           duration_seconds?: number
           id?: string
+          user_id?: string
           visited_at?: string
         }
         Relationships: []
@@ -44,6 +47,7 @@ export type Database = {
           id: string
           start_hour: number
           title: string
+          user_id: string
         }
         Insert: {
           color: string
@@ -53,6 +57,7 @@ export type Database = {
           id?: string
           start_hour: number
           title: string
+          user_id: string
         }
         Update: {
           color?: string
@@ -62,6 +67,7 @@ export type Database = {
           id?: string
           start_hour?: number
           title?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -72,6 +78,7 @@ export type Database = {
           focus_score: number | null
           id: string
           start_time: string
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -79,6 +86,7 @@ export type Database = {
           focus_score?: number | null
           id?: string
           start_time?: string
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -86,6 +94,7 @@ export type Database = {
           focus_score?: number | null
           id?: string
           start_time?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -98,6 +107,7 @@ export type Database = {
           start_date: string
           target_date: string
           title: string
+          user_id: string
         }
         Insert: {
           completed?: boolean
@@ -107,6 +117,7 @@ export type Database = {
           start_date?: string
           target_date: string
           title: string
+          user_id: string
         }
         Update: {
           completed?: boolean
@@ -116,6 +127,7 @@ export type Database = {
           start_date?: string
           target_date?: string
           title?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -128,6 +140,7 @@ export type Database = {
           id: string
           start_hour: number
           title: string
+          user_id: string
         }
         Insert: {
           color: string
@@ -137,6 +150,7 @@ export type Database = {
           id?: string
           start_hour: number
           title: string
+          user_id: string
         }
         Update: {
           color?: string
@@ -146,6 +160,7 @@ export type Database = {
           id?: string
           start_hour?: number
           title?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -159,6 +174,7 @@ export type Database = {
           start_date: string
           target_date: string
           title: string
+          user_id: string
         }
         Insert: {
           completed?: boolean
@@ -169,6 +185,7 @@ export type Database = {
           start_date?: string
           target_date: string
           title: string
+          user_id: string
         }
         Update: {
           completed?: boolean
@@ -179,6 +196,7 @@ export type Database = {
           start_date?: string
           target_date?: string
           title?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -190,12 +208,61 @@ export type Database = {
           },
         ]
       }
+      extension_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          last_used_at: string | null
+          revoked_at: string | null
+          token_hash: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          token_hash: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          token_hash?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_extension_token: {
+        Args: { p_label: string }
+        Returns: string
+      }
+      log_browsing_session: {
+        Args: {
+          p_token: string
+          p_domain: string
+          p_duration_seconds: number
+        }
+        Returns: undefined
+      }
+      read_today_browsing: {
+        Args: { p_token: string }
+        Returns: {
+          domain: string
+          duration_seconds: number
+          visited_at: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

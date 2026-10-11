@@ -3,6 +3,7 @@ const SUPABASE_URL = "https://mkxzfanqdfjbrlotxsmk.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_O9ZA9bldnMVJ58fmjs2hRA_W73-mOb9";
 const ALARM = "tick";
 const MAX_SESSION_SECONDS = 180; // cap any single logged chunk at 3 minutes
+const TOKEN_KEY = "momentumToken"; // set in Settings → paste the token here
 
 // ---- HELPERS ----
 function hostOf(url) {
@@ -13,18 +14,34 @@ function hostOf(url) {
   }
 }
 
+// The personal token minted in Momentum → Settings. Kept in local storage
+// (not synced) since it's a secret. Empty until the user pastes one.
+async function getToken() {
+  const stored = await chrome.storage.local.get(TOKEN_KEY);
+  return (stored[TOKEN_KEY] || "").trim();
+}
+
 async function logSession(domain, durationSeconds) {
   if (!domain || durationSeconds < 3) return;
+  const token = await getToken();
+  if (!token) return; // not linked yet — nothing to write to
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/browsing_sessions`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/log_browsing_session`, {
       method: "POST",
       headers: {
         apikey: SUPABASE_ANON_KEY,
         Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ domain, duration_seconds: durationSeconds }),
+      body: JSON.stringify({
+        p_token: token,
+        p_domain: domain,
+        p_duration_seconds: durationSeconds,
+      }),
     });
+    if (!res.ok) {
+      console.error("Failed to log session:", res.status, await res.text());
+    }
   } catch (err) {
     console.error("Failed to log session:", err);
   }

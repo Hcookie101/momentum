@@ -195,6 +195,13 @@ const [supabase] = useState(() => createClient());
 
   async function save() {
     if (!modal || !canSave) return;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Not signed in — cannot save.");
+      return;
+    }
     if (modal.kind === "new-goal") {
       const { data, error } = await supabase
         .from("goals")
@@ -202,6 +209,7 @@ const [supabase] = useState(() => createClient());
           title: title.trim(),
           target_date: targetDate,
           start_date: startDate,
+          user_id: user.id,
         })
         .select();
       if (error) {
@@ -234,6 +242,7 @@ const [supabase] = useState(() => createClient());
           target_date: targetDate,
           start_date: startDate,
           goal_id: modal.goalId,
+          user_id: user.id,
         })
         .select();
       if (error) {
@@ -378,6 +387,13 @@ const [supabase] = useState(() => createClient());
   // modal would one at a time.
   async function addDrafts() {
     if (!drafts || drafts.items.length === 0) return;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.error("Not signed in — cannot save.");
+      return;
+    }
     const { data, error } = await supabase
       .from("subgoals")
       .insert(
@@ -386,6 +402,7 @@ const [supabase] = useState(() => createClient());
           start_date: item.start_date,
           target_date: item.target_date,
           goal_id: drafts.goalId,
+          user_id: user.id,
         })),
       )
       .select();

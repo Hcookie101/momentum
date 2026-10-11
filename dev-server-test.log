@@ -645,3 +645,820 @@
 [browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
 ✓ Compiled in 4.4s
  GET /schedule 200 in 103ms (next.js: 33ms, application-code: 71ms)
+ GET /schedule 200 in 6.3s (next.js: 5.1s, application-code: 1191ms)
+ GET /api/ai/quota 200 in 34ms (next.js: 16ms, application-code: 18ms)
+ GET /api/ai/quota 200 in 26ms (next.js: 9ms, application-code: 17ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 273ms (next.js: 17ms, application-code: 256ms)
+ GET /api/ai/quota 200 in 29ms (next.js: 9ms, application-code: 20ms)
+ GET /api/ai/quota 200 in 30ms (next.js: 10ms, application-code: 21ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET / 200 in 197ms (next.js: 52ms, application-code: 144ms)
+ GET /schedule 200 in 156ms (next.js: 23ms, application-code: 133ms)
+[browser] ./app/page.tsx:8:1
+Error: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  6 |       
+  7 |   );
+> 8 | }
+    | ^
+  9 |
+
+Parsing ecmascript source code failed 
+ GET / 200 in 620ms (next.js: 346ms, application-code: 275ms)
+ GET / 200 in 145ms (next.js: 46ms, application-code: 99ms)
+ GET / 200 in 288ms (next.js: 95ms, application-code: 193ms)
+ GET / 200 in 384ms (next.js: 37ms, application-code: 347ms)
+ GET / 200 in 161ms (next.js: 53ms, application-code: 108ms)
+✓ Compiled in 630ms
+ GET / 200 in 388ms (next.js: 221ms, application-code: 167ms)
+ GET / 200 in 692ms (next.js: 71ms, application-code: 621ms)
+ GET / 200 in 489ms (next.js: 102ms, application-code: 386ms)
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button 
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button 
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-"
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-"
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-["
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-["
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-[#7CA9BD"
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-[#7CA9BD"
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:5
+Error: Expression expected
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-[#7CA9BD]"
+>  7 |     </div>
+     |     ^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:7:6
+Error: Unterminated regexp literal
+   5 |     <div className="flex h-[100vh] flex-col bg-[#E4E0D8]">
+   6 |       <button className="bg-[#7CA9BD]"
+>  7 |     </div>
+     |      ^^^^^
+   8 |   );
+   9 | }
+  10 |
+
+Parsing ecmascript source code failed 
+ GET / 200 in 315ms (next.js: 129ms, application-code: 187ms)
+ GET / 200 in 430ms (next.js: 159ms, application-code: 272ms)
+ GET / 200 in 411ms (next.js: 149ms, application-code: 262ms)
+ GET / 200 in 126ms (next.js: 39ms, application-code: 87ms)
+✓ Compiled in 310ms
+ GET / 200 in 94ms (next.js: 35ms, application-code: 59ms)
+ GET / 200 in 761ms (next.js: 463ms, application-code: 298ms)
+ GET / 200 in 81ms (next.js: 30ms, application-code: 52ms)
+ GET / 200 in 136ms (next.js: 53ms, application-code: 83ms)
+ GET / 200 in 150ms (next.js: 22ms, application-code: 128ms)
+ GET / 200 in 179ms (next.js: 52ms, application-code: 128ms)
+ GET / 200 in 282ms (next.js: 81ms, application-code: 201ms)
+ GET / 200 in 284ms (next.js: 50ms, application-code: 234ms)
+ GET / 200 in 1211ms (next.js: 796ms, application-code: 415ms)
+ GET / 200 in 277ms (next.js: 32ms, application-code: 244ms)
+ GET / 200 in 161ms (next.js: 48ms, application-code: 113ms)
+ GET / 200 in 229ms (next.js: 56ms, application-code: 173ms)
+ GET / 200 in 340ms (next.js: 52ms, application-code: 289ms)
+ GET / 200 in 85ms (next.js: 28ms, application-code: 57ms)
+ GET / 200 in 334ms (next.js: 48ms, application-code: 285ms)
+ GET / 200 in 161ms (next.js: 28ms, application-code: 133ms)
+ GET / 200 in 650ms (next.js: 313ms, application-code: 336ms)
+ GET / 200 in 150ms (next.js: 55ms, application-code: 95ms)
+ GET / 200 in 170ms (next.js: 43ms, application-code: 127ms)
+ GET / 200 in 287ms (next.js: 58ms, application-code: 230ms)
+ GET / 200 in 303ms (next.js: 70ms, application-code: 233ms)
+ GET / 200 in 137ms (next.js: 38ms, application-code: 99ms)
+ GET / 200 in 1788ms (next.js: 1441ms, application-code: 347ms)
+○ Compiling proxy ...
+ GET / 200 in 3.5s (next.js: 1989ms, proxy.ts: 1134ms, application-code: 329ms)
+ GET / 200 in 407ms (next.js: 282ms, proxy.ts: 23ms, application-code: 102ms)
+ GET / 200 in 146ms (next.js: 21ms, proxy.ts: 21ms, application-code: 104ms)
+ GET / 200 in 170ms (next.js: 29ms, proxy.ts: 20ms, application-code: 121ms)
+ GET / 200 in 196ms (next.js: 27ms, proxy.ts: 28ms, application-code: 141ms)
+ GET / 200 in 278ms (next.js: 91ms, proxy.ts: 26ms, application-code: 161ms)
+ GET / 200 in 231ms (next.js: 26ms, proxy.ts: 22ms, application-code: 183ms)
+ GET / 200 in 259ms (next.js: 45ms, proxy.ts: 24ms, application-code: 190ms)
+ GET / 200 in 287ms (next.js: 59ms, proxy.ts: 36ms, application-code: 192ms)
+ GET / 200 in 237ms (next.js: 39ms, proxy.ts: 35ms, application-code: 164ms)
+ GET / 200 in 240ms (next.js: 46ms, proxy.ts: 29ms, application-code: 165ms)
+ GET / 200 in 139ms (next.js: 35ms, proxy.ts: 16ms, application-code: 88ms)
+ GET / 200 in 144ms (next.js: 24ms, proxy.ts: 15ms, application-code: 104ms)
+ GET / 200 in 108ms (next.js: 19ms, proxy.ts: 16ms, application-code: 72ms)
+ GET / 200 in 114ms (next.js: 18ms, proxy.ts: 22ms, application-code: 74ms)
+ GET / 200 in 130ms (next.js: 18ms, proxy.ts: 15ms, application-code: 98ms)
+ GET / 200 in 149ms (next.js: 32ms, proxy.ts: 28ms, application-code: 89ms)
+ GET / 200 in 111ms (next.js: 18ms, proxy.ts: 17ms, application-code: 76ms)
+ GET / 200 in 124ms (next.js: 19ms, proxy.ts: 18ms, application-code: 87ms)
+ GET / 200 in 111ms (next.js: 25ms, proxy.ts: 16ms, application-code: 71ms)
+ GET / 200 in 132ms (next.js: 22ms, proxy.ts: 17ms, application-code: 93ms)
+ GET / 200 in 187ms (next.js: 62ms, proxy.ts: 21ms, application-code: 104ms)
+ GET / 200 in 126ms (next.js: 18ms, proxy.ts: 21ms, application-code: 87ms)
+ GET / 200 in 209ms (next.js: 24ms, proxy.ts: 19ms, application-code: 166ms)
+ GET / 200 in 232ms (next.js: 70ms, proxy.ts: 32ms, application-code: 130ms)
+ GET / 200 in 172ms (next.js: 33ms, proxy.ts: 16ms, application-code: 123ms)
+ GET / 200 in 201ms (next.js: 41ms, proxy.ts: 34ms, application-code: 126ms)
+ GET / 200 in 789ms (next.js: 28ms, proxy.ts: 25ms, application-code: 736ms)
+✓ Compiled in 1989ms
+ GET / 200 in 1692ms (next.js: 1455ms, proxy.ts: 20ms, application-code: 218ms)
+✓ Compiled in 12.8s
+✓ Compiled in 283ms
+✓ Compiled in 3.8s
+ GET / 200 in 428ms (next.js: 33ms, proxy.ts: 288ms, application-code: 108ms)
+ GET / 200 in 283ms (next.js: 22ms, proxy.ts: 28ms, application-code: 234ms)
+⨯ ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  [90m74 |[0m         </section>
+  [90m75 |[0m
+[31m[1m>[0m [90m76 |[0m
+  [90m   |[0m [31m[1m^[0m
+
+Parsing ecmascript source code failed
+
+
+○ Compiling /_error ...
+✓ Compiled in 9s
+ GET / 500 in 17.1s (next.js: 12.7s, proxy.ts: 33ms, application-code: 4.3s)
+[browser] Uncaught Error: ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  74 |         </section>
+  75 |
+> 76 |
+     | ^
+
+Parsing ecmascript source code failed
+
+
+    at <unknown> (Error: ./app/page.tsx:76:1)
+    at <unknown> (Error: (./app/page.tsx:76:1)
+[browser] ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  74 |         </section>
+  75 |
+> 76 |
+     | ^
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  74 |         </section>
+  75 |
+> 76 |
+     | ^
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  74 |         </section>
+  75 |
+> 76 |
+     | ^
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:76:1
+Error: Expected '</', got '<eof>'
+  74 |         </section>
+  75 |
+> 76 |
+     | ^
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:120:14
+Error: Expected '</', got 'jsx text'
+  118 |           </p>
+  119 |         </section>
+> 120 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 121 |
+      | ^
+> 122 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  123 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  124 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  125 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:120:14
+Error: Expected '</', got 'jsx text'
+  118 |           </p>
+  119 |         </section>
+> 120 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 121 |
+      | ^
+> 122 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  123 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  124 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  125 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:145:14
+Error: Expected '</', got 'jsx text'
+  143 |           </p>
+  144 |         </section>
+> 145 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 146 |
+      | ^
+> 147 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  148 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  149 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  150 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+⨯ ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  [90m205 |[0m           </p>
+  [90m206 |[0m         </section>
+[31m[1m>[0m [90m207 |[0m       </main>
+  [90m    |[0m              [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m208 |[0m
+  [90m    |[0m [31m[1m^[0m
+[31m[1m>[0m [90m209 |[0m       <footer className=[32m"border-t border-[#b8b5ae]"[0m>
+  [90m    |[0m [31m[1m^^^^^^[0m
+  [90m210 |[0m         <div className=[32m"mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...[0m
+  [90m211 |[0m           <span className=[32m"flex items-center gap-2 text-[#1D2525]"[0m>
+  [90m212 |[0m             <span className=[32m"relative h-6 w-6 overflow-hidden rounded-md"[0m>
+
+Parsing ecmascript source code failed
+
+
+✓ Compiled in 5.8s
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+ GET / 500 in 4.4s (next.js: 3.9s, proxy.ts: 338ms, application-code: 98ms)
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed
+
+
+    at <unknown> (Error: ./app/page.tsx:207:14)
+    at <unknown> (Error: (./app/page.tsx:207:14)
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+○ Compiling /login ...
+ GET /login 500 in 13.8s (next.js: 13.6s, proxy.ts: 61ms, application-code: 110ms)
+[browser] Uncaught Error: ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed
+
+
+    at <unknown> (Error: ./app/page.tsx:207:14)
+    at <unknown> (Error: (./app/page.tsx:207:14)
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:207:14
+Error: Expected '</', got 'jsx text'
+  205 |           </p>
+  206 |         </section>
+> 207 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 208 |
+      | ^
+> 209 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  210 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  211 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  212 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+ GET /login 200 in 3.9s (next.js: 900ms, proxy.ts: 21ms, application-code: 3.0s)
+ GET /login 200 in 643ms (next.js: 162ms, proxy.ts: 32ms, application-code: 449ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Finished filesystem cache database compaction in 14.6s
+ GET / 200 in 153ms (next.js: 60ms, proxy.ts: 12ms, application-code: 81ms)
+ GET /login 200 in 77ms (next.js: 17ms, proxy.ts: 10ms, application-code: 50ms)
+ GET /login 200 in 84ms (next.js: 18ms, proxy.ts: 10ms, application-code: 57ms)
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+[browser] ./app/page.tsx:208:14
+Error: Expected '</', got 'jsx text'
+  206 |           </p>
+  207 |         </section>
+> 208 |       </main>
+      |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 209 |
+      | ^
+> 210 |       <footer className="border-t border-[#b8b5ae]">
+      | ^^^^^^
+  211 |         <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-...
+  212 |           <span className="flex items-center gap-2 text-[#1D2525]">
+  213 |             <span className="relative h-6 w-6 overflow-hidden rounded-md">
+
+Parsing ecmascript source code failed 
+ GET /login 200 in 1205ms (next.js: 354ms, proxy.ts: 229ms, application-code: 623ms)
+ GET / 200 in 197ms (next.js: 25ms, proxy.ts: 17ms, application-code: 155ms)
+ GET / 200 in 335ms (next.js: 18ms, proxy.ts: 15ms, application-code: 302ms)
+ GET /login 200 in 239ms (next.js: 14ms, proxy.ts: 14ms, application-code: 211ms)
+ GET /login?next=%2Fschedule 200 in 96ms (next.js: 12ms, proxy.ts: 11ms, application-code: 73ms)
+ GET / 200 in 90ms (next.js: 9ms, proxy.ts: 7ms, application-code: 74ms)
+ GET /login 200 in 83ms (next.js: 12ms, proxy.ts: 7ms, application-code: 64ms)
+ GET /login 200 in 80ms (next.js: 15ms, proxy.ts: 22ms, application-code: 42ms)
+ GET / 200 in 160ms (next.js: 22ms, proxy.ts: 16ms, application-code: 122ms)
+ GET / 200 in 187ms (next.js: 23ms, proxy.ts: 17ms, application-code: 147ms)
+ GET / 200 in 241ms (next.js: 33ms, proxy.ts: 20ms, application-code: 189ms)
+ GET / 200 in 1352ms (next.js: 74ms, proxy.ts: 24ms, application-code: 1255ms)
+ GET / 200 in 329ms (next.js: 42ms, proxy.ts: 21ms, application-code: 266ms)
+ GET / 200 in 191ms (next.js: 33ms, proxy.ts: 14ms, application-code: 144ms)
+ GET / 200 in 276ms (next.js: 32ms, proxy.ts: 18ms, application-code: 226ms)
+ GET / 200 in 442ms (next.js: 22ms, proxy.ts: 20ms, application-code: 400ms)
+ GET / 200 in 511ms (next.js: 23ms, proxy.ts: 17ms, application-code: 471ms)
+ GET / 200 in 283ms (next.js: 30ms, proxy.ts: 20ms, application-code: 234ms)
+ GET / 200 in 358ms (next.js: 45ms, proxy.ts: 20ms, application-code: 293ms)
+✓ Compiled in 1092ms
+✓ Compiled in 8.5s
+ GET / 200 in 3.2s (next.js: 939ms, proxy.ts: 650ms, application-code: 1646ms)
+ GET / 200 in 2.5s (next.js: 779ms, proxy.ts: 164ms, application-code: 1510ms)
+ GET / 200 in 1774ms (next.js: 317ms, proxy.ts: 48ms, application-code: 1409ms)
+ GET / 200 in 692ms (next.js: 35ms, proxy.ts: 25ms, application-code: 632ms)
+ GET / 200 in 759ms (next.js: 64ms, proxy.ts: 33ms, application-code: 662ms)
+ GET / 200 in 955ms (next.js: 60ms, proxy.ts: 24ms, application-code: 871ms)
+ GET / 200 in 1184ms (next.js: 183ms, proxy.ts: 50ms, application-code: 951ms)
+ GET / 200 in 851ms (next.js: 30ms, proxy.ts: 24ms, application-code: 797ms)
+ GET / 200 in 3.5s (next.js: 1631ms, proxy.ts: 293ms, application-code: 1558ms)
+ GET / 200 in 1119ms (next.js: 193ms, proxy.ts: 31ms, application-code: 896ms)
+ GET / 200 in 499ms (next.js: 70ms, proxy.ts: 31ms, application-code: 398ms)
+ GET / 200 in 943ms (next.js: 43ms, proxy.ts: 26ms, application-code: 874ms)
+ GET / 200 in 564ms (next.js: 113ms, proxy.ts: 85ms, application-code: 365ms)
+ GET / 200 in 780ms (next.js: 51ms, proxy.ts: 79ms, application-code: 650ms)
+ GET / 200 in 552ms (next.js: 88ms, proxy.ts: 22ms, application-code: 442ms)
+ GET / 200 in 993ms (next.js: 137ms, proxy.ts: 31ms, application-code: 825ms)
+⚠ Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 1119ms (next.js: 89ms, proxy.ts: 29ms, application-code: 1001ms)
+ GET / 200 in 4.5s (next.js: 57ms, proxy.ts: 33ms, application-code: 4.4s)
+ GET / 200 in 656ms (proxy.ts: 55ms)
+ GET / 200 in 4.5s (next.js: 3.1s, proxy.ts: 368ms, application-code: 1091ms)
+ GET / 200 in 5.4s (next.js: 1307ms, proxy.ts: 37ms, application-code: 4.0s)
+✓ Compiled in 1673ms
+✓ Finished filesystem cache database compaction in 11.9s
+✓ Compiled in 4.9s
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[browser] Image with src "/momentumLogo.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET /login 200 in 142ms (next.js: 68ms, proxy.ts: 17ms, application-code: 57ms)
+ GET /auth/callback?code=23fc53e6-3ff8-4417-8891-dc34847af0a4&next=%2Fschedule 307 in 3.0s (next.js: 2.6s, proxy.ts: 15ms, application-code: 393ms)
+ GET /schedule 200 in 1513ms (next.js: 641ms, proxy.ts: 96ms, application-code: 777ms)
+ GET /goals 200 in 631ms (next.js: 133ms, proxy.ts: 171ms, application-code: 327ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 485ms (next.js: 343ms, proxy.ts: 115ms, application-code: 26ms)
+ GET /goals 200 in 772ms (next.js: 16ms, proxy.ts: 74ms, application-code: 682ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 109ms (next.js: 8ms, proxy.ts: 85ms, application-code: 15ms)
+ GET /stats 200 in 500ms (next.js: 275ms, proxy.ts: 94ms, application-code: 131ms)
+ GET /api/ai/quota 200 in 376ms (next.js: 55ms, proxy.ts: 163ms, application-code: 157ms)
+ GET /api/ai/quota 200 in 180ms (next.js: 31ms, proxy.ts: 116ms, application-code: 33ms)
+ GET /stats 200 in 157ms (next.js: 18ms, proxy.ts: 90ms, application-code: 49ms)
+ GET /schedule 200 in 233ms (next.js: 39ms, proxy.ts: 111ms, application-code: 84ms)
+ GET /api/ai/quota 200 in 154ms (next.js: 13ms, proxy.ts: 117ms, application-code: 25ms)
+○ Compiling /settings ...
+ GET /api/ai/quota 200 in 223ms (next.js: 50ms, proxy.ts: 111ms, application-code: 61ms)
+ GET /api/ai/quota 200 in 132ms (next.js: 13ms, proxy.ts: 102ms, application-code: 18ms)
+ GET /api/ai/quota 200 in 136ms (next.js: 16ms, proxy.ts: 101ms, application-code: 19ms)
+ GET /settings 200 in 1224ms (next.js: 802ms, proxy.ts: 102ms, application-code: 319ms)
+ GET /settings 200 in 5.1s (next.js: 4.8s, proxy.ts: 180ms, application-code: 215ms)
+ GET /settings 200 in 348ms (next.js: 55ms, proxy.ts: 152ms, application-code: 140ms)
+[browser] {
+  code: [32m'PGRST205'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m"Could not find the table 'public.extension_tokens' in the schema cache"[39m
+} 
+    at ExtensionLinks.useCallback[load] (app/(dashboard)/settings/extension-links.tsx:40:15)
+  38 |     if (error) {
+  39 |       setError("Couldn't load your linked browsers.");
+> 40 |       console.error(error);
+     |               ^
+  41 |     } else {
+  42 |       setTokens((data ?? []) as TokenRow[]);
+  43 |     } (app/(dashboard)
+[browser] {
+  code: [32m'PGRST205'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m"Could not find the table 'public.extension_tokens' in the schema cache"[39m
+} 
+    at ExtensionLinks.useCallback[load] (app/(dashboard)/settings/extension-links.tsx:40:15)
+  38 |     if (error) {
+  39 |       setError("Couldn't load your linked browsers.");
+> 40 |       console.error(error);
+     |               ^
+  41 |     } else {
+  42 |       setTokens((data ?? []) as TokenRow[]);
+  43 |     } (app/(dashboard)
+ GET /stats 200 in 546ms (next.js: 292ms, proxy.ts: 165ms, application-code: 88ms)
+ GET /api/ai/quota 200 in 171ms (next.js: 47ms, proxy.ts: 98ms, application-code: 27ms)
+ GET /api/ai/quota 200 in 162ms (next.js: 42ms, proxy.ts: 83ms, application-code: 37ms)
+ GET /schedule 200 in 2.7s (next.js: 2.5s, proxy.ts: 99ms, application-code: 121ms)
+ GET /api/ai/quota 200 in 121ms (next.js: 15ms, proxy.ts: 81ms, application-code: 26ms)
+ GET /api/ai/quota 200 in 131ms (next.js: 23ms, proxy.ts: 82ms, application-code: 27ms)
+ GET /api/ai/quota 200 in 187ms (next.js: 50ms, proxy.ts: 104ms, application-code: 33ms)
+ GET /api/ai/quota 200 in 147ms (next.js: 29ms, proxy.ts: 88ms, application-code: 31ms)
+ GET /obligations 200 in 479ms (next.js: 334ms, proxy.ts: 77ms, application-code: 68ms)
+ GET /goals 200 in 287ms (next.js: 155ms, proxy.ts: 70ms, application-code: 62ms)
+ GET /api/ai/quota 200 in 170ms (next.js: 21ms, proxy.ts: 129ms, application-code: 20ms)
+ GET /api/ai/quota 200 in 152ms (next.js: 18ms, proxy.ts: 115ms, application-code: 19ms)
+ GET /obligations 200 in 286ms (next.js: 46ms, proxy.ts: 101ms, application-code: 139ms)
+ GET /login 200 in 139ms (next.js: 46ms, proxy.ts: 17ms, application-code: 76ms)
+ GET /login 200 in 99ms (next.js: 18ms, proxy.ts: 12ms, application-code: 69ms)
+ GET /schedule 200 in 424ms (next.js: 30ms, proxy.ts: 142ms, application-code: 251ms)
+ GET /schedule 200 in 555ms (next.js: 15ms, proxy.ts: 328ms, application-code: 213ms)
+ GET /api/ai/quota 200 in 157ms (next.js: 17ms, proxy.ts: 125ms, application-code: 16ms)
+ GET /api/ai/quota 200 in 129ms (next.js: 13ms, proxy.ts: 98ms, application-code: 18ms)
+ GET /api/ai/quota 200 in 164ms (next.js: 26ms, proxy.ts: 102ms, application-code: 35ms)
+ GET /api/ai/quota 200 in 181ms (next.js: 22ms, proxy.ts: 131ms, application-code: 28ms)
+ GET /schedule 200 in 860ms (next.js: 28ms, proxy.ts: 481ms, application-code: 352ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 260ms (next.js: 23ms, proxy.ts: 184ms, application-code: 53ms)
+ GET /api/ai/quota 200 in 172ms (next.js: 24ms, proxy.ts: 99ms, application-code: 49ms)
+ GET /schedule 200 in 727ms (next.js: 30ms, proxy.ts: 424ms, application-code: 273ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 163ms (next.js: 11ms, proxy.ts: 137ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 126ms (next.js: 11ms, proxy.ts: 100ms, application-code: 15ms)
+ GET /settings 200 in 238ms (next.js: 31ms, proxy.ts: 107ms, application-code: 100ms)
+[browser] {
+  code: [32m'42883'[39m,
+  details: [1mnull[22m,
+  hint: [32m'No function matches the given name and argument types. You might need to add explicit type casts.'[39m,
+  message: [32m'function gen_random_bytes(integer) does not exist'[39m
+} 
+    at create (app/(dashboard)/settings/extension-links.tsx:62:15)
+  60 |     if (error || !data) {
+  61 |       setError("Couldn't create a token — try again.");
+> 62 |       console.error(error);
+     |               ^
+  63 |       return;
+  64 |     }
+  65 |     // The raw token exists only in this one response — show it once. (app/(dashboard)
+[browser] {
+  code: [32m'42883'[39m,
+  details: [1mnull[22m,
+  hint: [32m'No function matches the given name and argument types. You might need to add explicit type casts.'[39m,
+  message: [32m'function gen_random_bytes(integer) does not exist'[39m
+} 
+    at create (app/(dashboard)/settings/extension-links.tsx:62:15)
+  60 |     if (error || !data) {
+  61 |       setError("Couldn't create a token — try again.");
+> 62 |       console.error(error);
+     |               ^
+  63 |       return;
+  64 |     }
+  65 |     // The raw token exists only in this one response — show it once. (app/(dashboard)
+[browser] {
+  code: [32m'42883'[39m,
+  details: [1mnull[22m,
+  hint: [32m'No function matches the given name and argument types. You might need to add explicit type casts.'[39m,
+  message: [32m'function gen_random_bytes(integer) does not exist'[39m
+} 
+    at create (app/(dashboard)/settings/extension-links.tsx:62:15)
+  60 |     if (error || !data) {
+  61 |       setError("Couldn't create a token — try again.");
+> 62 |       console.error(error);
+     |               ^
+  63 |       return;
+  64 |     }
+  65 |     // The raw token exists only in this one response — show it once. (app/(dashboard)
+ GET /settings 200 in 2.0s (next.js: 87ms, proxy.ts: 536ms, application-code: 1382ms)
+ GET /settings 200 in 713ms (next.js: 53ms, proxy.ts: 433ms, application-code: 227ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /stats 200 in 333ms (next.js: 96ms, proxy.ts: 187ms, application-code: 50ms)
+ GET /api/ai/quota 200 in 158ms (next.js: 14ms, proxy.ts: 124ms, application-code: 20ms)
+ GET /api/ai/quota 200 in 164ms (next.js: 16ms, proxy.ts: 124ms, application-code: 24ms)
+ GET /settings 200 in 175ms (next.js: 13ms, proxy.ts: 124ms, application-code: 39ms)
+ GET /stats 200 in 216ms (next.js: 10ms, proxy.ts: 162ms, application-code: 44ms)
+ GET /api/ai/quota 200 in 168ms (next.js: 11ms, proxy.ts: 137ms, application-code: 19ms)
+ GET /api/ai/quota 200 in 125ms (next.js: 13ms, proxy.ts: 97ms, application-code: 15ms)
+ GET /settings 200 in 297ms (next.js: 48ms, proxy.ts: 122ms, application-code: 127ms)
+ GET /stats 200 in 163ms (next.js: 19ms, proxy.ts: 87ms, application-code: 57ms)
+ GET /api/ai/quota 200 in 115ms (next.js: 13ms, proxy.ts: 81ms, application-code: 20ms)
+ GET /api/ai/quota 200 in 116ms (next.js: 16ms, proxy.ts: 79ms, application-code: 22ms)

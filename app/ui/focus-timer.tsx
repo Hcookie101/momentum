@@ -78,10 +78,19 @@ export default function FocusTimer() {
     if (!stoppedSession || score === null || saving) return;
     setSaving(true);
     setError(null);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setSaving(false);
+      setError("You're signed out — log back in and try again.");
+      return;
+    }
     const { error: insertError } = await supabase.from("focus_sessions").insert({
       start_time: stoppedSession.startISO,
       end_time: stoppedSession.endISO,
       focus_score: score,
+      user_id: user.id,
     });
     setSaving(false);
     if (insertError) {

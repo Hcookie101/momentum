@@ -1,37 +1,65 @@
 import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-export const createClient = (request: NextRequest) => {
-  // Create an unmodified response
+// Refreshes the auth cookies on every request and keeps public/app routes
+// separated: logged-out visitors can't open the dashboard, logged-in users
+// skip the landing/login screens and land on their schedule.
+export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
-    request: {
-      headers: request.headers,
+    request,
+  });
+
+  const supabase = createServerClient(supabaseUrl!, supabaseKey!, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) =>
+          request.cookies.set(name, value),
+        );
+        supabaseResponse = NextResponse.next({
+          request,
+        });
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options),
+        );
+      },
     },
   });
 
-  const supabase = createServerClient(
-    supabaseUrl!,
-    supabaseKey!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    },
-  );
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return supabaseResponse
-};
+  const pathname = request.nextUrl.pathname;
+  const isAppRoute =
+    pathname === "/goals" ||
+    pathname === "/obligations" ||
+    pathname === "/schedule" ||
+    pathname === "/stats" ||
+    pathname === "/settings" ||
+    pathname.startsWith("/goals/") ||
+    pathname.startsWith("/obligations/") ||
+    pathname.startsWith("/schedule/") ||
+    pathname.startsWith("/stats/") ||
+    pathname.startsWith("/settings/");
+
+  if (!user && isAppRoute) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
+  }
+
+  if (user && pathname === "/login") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/schedule";
+    return NextResponse.redirect(url);
+  }
+
+  return supabaseResponse;
+}
