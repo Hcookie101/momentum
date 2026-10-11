@@ -1,0 +1,645 @@
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.183:3000
+- Environments: .env.local
+✓ Ready in 1526ms
+✓ Running next.config.ts took 97ms
+
+○ Compiling /api/ai/subgoals ...
+[subgoals-debug] headers={}
+[subgoals-debug] base="" regex=false provider=null providerCtor=Headers
+[subgoals-debug] headers={}
+[subgoals-debug] base="" regex=false provider=null providerCtor=Headers
+[subgoals-debug] headers={}
+[subgoals-debug] base="" regex=false provider=null providerCtor=Headers
+[subgoals-debug] headers={}
+[subgoals-debug] base="" regex=false provider=null providerCtor=Headers
+[subgoals-debug] headers={}
+[subgoals-debug] base="" regex=false provider=null providerCtor=Headers
+ POST /api/ai/subgoals 400 in 91ms (next.js: 29ms, application-code: 62ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain-mv1ilqsg","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 107ms (next.js: 53ms, application-code: 55ms)
+ GET /goals 200 in 33.6s (next.js: 31.5s, application-code: 2.1s)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"fenced","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 90ms (next.js: 60ms, application-code: 30ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"prose","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 69ms (next.js: 32ms, application-code: 37ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 41ms (next.js: 11ms, application-code: 30ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 35ms (next.js: 9ms, application-code: 26ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 40ms (next.js: 16ms, application-code: 23ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 38ms (next.js: 11ms, application-code: 27ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"one-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 38ms (next.js: 14ms, application-code: 25ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"always-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 34ms (next.js: 9ms, application-code: 25ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain-mv1ip7wh","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 83ms (next.js: 21ms, application-code: 62ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"fenced","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 41ms (next.js: 7ms, application-code: 34ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"prose","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 35ms (next.js: 7ms, application-code: 28ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 42ms (next.js: 12ms, application-code: 30ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 28ms (next.js: 9ms, application-code: 19ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 32ms (next.js: 9ms, application-code: 23ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 24ms (next.js: 7ms, application-code: 17ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"one-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 2.2s (next.js: 8ms, application-code: 2.2s)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"always-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 429 in 4.9s (next.js: 9ms, application-code: 4.9s)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain-mv1ir5du","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 28ms (next.js: 5ms, application-code: 23ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"fenced","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 33ms (next.js: 7ms, application-code: 27ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"prose","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 32ms (next.js: 7ms, application-code: 25ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 29ms (next.js: 9ms, application-code: 21ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 21ms (next.js: 7ms, application-code: 15ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 21ms (next.js: 6ms, application-code: 15ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"plain","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 400 in 19ms (next.js: 5ms, application-code: 14ms)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"one-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 200 in 2.8s (next.js: 9ms, application-code: 2.8s)
+[subgoals-debug] headers={"x-ai-base-url":"http://127.0.0.1:8795/v1","x-ai-key":"sk-test","x-ai-model":"always-429","x-ai-provider":"openai"}
+[subgoals-debug] base="http://127.0.0.1:8795/v1" regex=true provider="openai" providerCtor=Headers
+ POST /api/ai/subgoals 429 in 4.4s (next.js: 22ms, application-code: 4.3s)
+ POST /api/ai/subgoals 200 in 179ms (next.js: 36ms, application-code: 143ms)
+ GET /goals 200 in 815ms (next.js: 404ms, application-code: 411ms)
+ POST /api/ai/subgoals 200 in 75ms (next.js: 23ms, application-code: 52ms)
+ POST /api/ai/subgoals 200 in 62ms (next.js: 27ms, application-code: 35ms)
+ POST /api/ai/subgoals 200 in 66ms (next.js: 27ms, application-code: 39ms)
+ POST /api/ai/subgoals 400 in 31ms (next.js: 12ms, application-code: 19ms)
+ POST /api/ai/subgoals 400 in 37ms (next.js: 10ms, application-code: 26ms)
+ POST /api/ai/subgoals 400 in 49ms (next.js: 26ms, application-code: 22ms)
+ POST /api/ai 400 in 385ms (next.js: 328ms, application-code: 57ms)
+ POST /api/ai/subgoals 200 in 1485ms (next.js: 11ms, application-code: 1475ms)
+ POST /api/ai/subgoals 429 in 4.1s (next.js: 10ms, application-code: 4.1s)
+ POST /api/ai 502 in 25ms (next.js: 8ms, application-code: 17ms)
+ GET /goals 200 in 173ms (next.js: 28ms, application-code: 146ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ POST /api/ai/subgoals 200 in 48s (next.js: 9ms, application-code: 48s)
+ GET /schedule 200 in 295ms (next.js: 212ms, application-code: 83ms)
+ GET /stats 200 in 311ms (next.js: 260ms, application-code: 51ms)
+ POST /api/ai 200 in 3.6s (next.js: 11ms, application-code: 3.6s)
+ GET /goals 200 in 72ms (next.js: 13ms, application-code: 58ms)
+ GET /goals 200 in 277ms (next.js: 35ms, application-code: 242ms)
+ GET /goals 200 in 111ms (next.js: 22ms, application-code: 89ms)
+ GET /goals 200 in 79ms (next.js: 15ms, application-code: 63ms)
+ GET /goals 200 in 260ms (next.js: 22ms, application-code: 238ms)
+✓ Compiled in 3.9s
+ GET /goals 200 in 1515ms (next.js: 1319ms, application-code: 196ms)
+ GET /goals 200 in 164ms (next.js: 16ms, application-code: 148ms)
+ GET /goals 200 in 162ms (next.js: 15ms, application-code: 146ms)
+ GET /goals 200 in 172ms (next.js: 15ms, application-code: 157ms)
+ GET /goals 200 in 231ms (next.js: 21ms, application-code: 210ms)
+ GET /goals 200 in 255ms (next.js: 18ms, application-code: 237ms)
+ GET /goals 200 in 196ms (next.js: 53ms, application-code: 143ms)
+ GET /goals 200 in 168ms (next.js: 16ms, application-code: 151ms)
+ GET /goals 200 in 169ms (next.js: 16ms, application-code: 153ms)
+ GET /goals 200 in 166ms (next.js: 17ms, application-code: 148ms)
+ GET /goals 200 in 156ms (next.js: 17ms, application-code: 139ms)
+ GET /goals 200 in 135ms (next.js: 14ms, application-code: 121ms)
+ GET /goals 200 in 120ms (next.js: 13ms, application-code: 107ms)
+ GET /goals 200 in 119ms (next.js: 11ms, application-code: 108ms)
+ GET /goals 200 in 125ms (next.js: 15ms, application-code: 110ms)
+ GET /goals 200 in 133ms (next.js: 13ms, application-code: 121ms)
+ GET /goals 200 in 127ms (next.js: 12ms, application-code: 115ms)
+ GET /goals 200 in 114ms (next.js: 13ms, application-code: 101ms)
+ GET /goals 200 in 139ms (next.js: 12ms, application-code: 127ms)
+ GET /goals 200 in 135ms (next.js: 10ms, application-code: 125ms)
+ GET /goals 200 in 69ms (next.js: 15ms, application-code: 54ms)
+✓ Compiled in 2.7s
+ GET /goals 200 in 82ms (next.js: 31ms, application-code: 51ms)
+ GET /goals 200 in 156ms (next.js: 28ms, application-code: 128ms)
+ GET /goals 200 in 218ms (next.js: 19ms, application-code: 199ms)
+ GET /goals 200 in 321ms (next.js: 29ms, application-code: 292ms)
+✓ Compiled in 1761ms
+ GET /goals 200 in 93ms (next.js: 19ms, application-code: 73ms)
+✓ Compiled in 2.8s
+ GET /goals 200 in 250ms (next.js: 82ms, application-code: 168ms)
+ GET / 200 in 3.1s (next.js: 585ms, application-code: 2.6s)
+ GET / 200 in 169ms (next.js: 16ms, application-code: 153ms)
+○ Compiling /api/ai/schedule ...
+ POST /api/ai/schedule 200 in 9.2s (next.js: 8.0s, application-code: 1269ms)
+ POST /api/ai/schedule 400 in 55ms (next.js: 23ms, application-code: 32ms)
+ POST /api/ai/subgoals 200 in 694ms (next.js: 558ms, application-code: 136ms)
+ POST /api/ai/subgoals 200 in 67ms (next.js: 24ms, application-code: 43ms)
+ POST /api/ai/subgoals 200 in 71ms (next.js: 31ms, application-code: 40ms)
+ POST /api/ai/subgoals 200 in 77ms (next.js: 27ms, application-code: 50ms)
+ POST /api/ai/subgoals 400 in 48ms (next.js: 18ms, application-code: 30ms)
+ POST /api/ai/subgoals 400 in 113ms (next.js: 17ms, application-code: 96ms)
+ POST /api/ai/subgoals 400 in 44ms (next.js: 12ms, application-code: 32ms)
+ POST /api/ai/subgoals 200 in 2.4s (next.js: 14ms, application-code: 2.4s)
+ POST /api/ai/subgoals 429 in 6.0s (next.js: 244ms, application-code: 5.8s)
+ POST /api/ai/schedule 200 in 409ms (next.js: 15ms, application-code: 395ms)
+ POST /api/ai/schedule 400 in 33ms (next.js: 12ms, application-code: 20ms)
+ POST /api/ai/subgoals 200 in 26ms (next.js: 4ms, application-code: 22ms)
+ POST /api/ai/subgoals 200 in 23ms (next.js: 5ms, application-code: 18ms)
+ POST /api/ai/subgoals 200 in 29ms (next.js: 9ms, application-code: 21ms)
+ POST /api/ai/subgoals 200 in 28ms (next.js: 8ms, application-code: 20ms)
+ POST /api/ai/subgoals 400 in 20ms (next.js: 8ms, application-code: 12ms)
+ POST /api/ai/subgoals 400 in 21ms (next.js: 6ms, application-code: 14ms)
+ POST /api/ai/subgoals 400 in 18ms (next.js: 7ms, application-code: 11ms)
+ POST /api/ai/subgoals 200 in 2.4s (next.js: 5ms, application-code: 2.4s)
+ POST /api/ai/subgoals 429 in 6.0s (next.js: 14ms, application-code: 6.0s)
+ POST /api/ai/schedule 200 in 487ms (next.js: 5ms, application-code: 482ms)
+ POST /api/ai/schedule 400 in 47ms (next.js: 19ms, application-code: 29ms)
+ POST /api/ai/schedule 200 in 512ms (next.js: 8ms, application-code: 504ms)
+ POST /api/ai/schedule 400 in 31ms (next.js: 10ms, application-code: 21ms)
+ GET /schedule 200 in 1687ms (next.js: 451ms, application-code: 1236ms)
+ GET /goals 200 in 288ms (next.js: 175ms, application-code: 113ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /obligations 200 in 548ms (next.js: 478ms, application-code: 69ms)
+ GET /schedule 200 in 72ms (next.js: 15ms, application-code: 57ms)
+ POST /api/ai/schedule 200 in 22.4s (next.js: 9ms, application-code: 22.4s)
+ GET /schedule 200 in 184ms (next.js: 33ms, application-code: 151ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 185ms (next.js: 16ms, application-code: 168ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 2.5s
+ GET /schedule 200 in 299ms (next.js: 46ms, application-code: 253ms)
+ GET /schedule 200 in 122ms (next.js: 13ms, application-code: 110ms)
+ GET /schedule 200 in 103ms (next.js: 19ms, application-code: 84ms)
+✓ Compiled in 7.2s
+ GET /schedule 200 in 218ms (next.js: 49ms, application-code: 169ms)
+✓ Compiled in 456ms
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /schedule 200 in 393ms (next.js: 63ms, application-code: 330ms)
+ GET /schedule 200 in 252ms (next.js: 32ms, application-code: 221ms)
+ POST /api/ai/schedule 200 in 465ms (next.js: 28ms, application-code: 437ms)
+ POST /api/ai/schedule 400 in 18ms (next.js: 6ms, application-code: 12ms)
+ POST /api/ai/subgoals 200 in 47ms (next.js: 19ms, application-code: 28ms)
+ POST /api/ai/subgoals 200 in 22ms (next.js: 5ms, application-code: 17ms)
+ POST /api/ai/subgoals 200 in 41ms (next.js: 6ms, application-code: 35ms)
+ POST /api/ai/subgoals 200 in 25ms (next.js: 7ms, application-code: 18ms)
+ POST /api/ai/subgoals 400 in 21ms (next.js: 8ms, application-code: 13ms)
+ POST /api/ai/subgoals 400 in 23ms (next.js: 8ms, application-code: 15ms)
+ POST /api/ai/subgoals 400 in 25ms (next.js: 8ms, application-code: 16ms)
+ POST /api/ai/subgoals 200 in 2.3s (next.js: 8ms, application-code: 2.3s)
+ POST /api/ai/subgoals 429 in 4.9s (next.js: 9ms, application-code: 4.8s)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 830ms (next.js: 321ms, application-code: 509ms)
+ GET /schedule 200 in 121ms (next.js: 23ms, application-code: 99ms)
+ GET /schedule 200 in 201ms (next.js: 17ms, application-code: 185ms)
+ GET /schedule 200 in 155ms (next.js: 22ms, application-code: 132ms)
+ GET /schedule 200 in 156ms (next.js: 25ms, application-code: 131ms)
+ GET /schedule 200 in 158ms (next.js: 21ms, application-code: 137ms)
+ GET /schedule 200 in 210ms (next.js: 31ms, application-code: 179ms)
+✓ Compiled in 7.9s
+ GET /schedule 200 in 248ms (next.js: 76ms, application-code: 172ms)
+ GET /schedule 200 in 334ms (next.js: 46ms, application-code: 288ms)
+ GET /schedule 200 in 101ms (next.js: 16ms, application-code: 85ms)
+ GET /schedule 200 in 94ms (next.js: 16ms, application-code: 77ms)
+ GET /schedule 200 in 4.6s (next.js: 4.3s, application-code: 247ms)
+✓ Compiled in 2.2s
+✓ Compiled in 1457ms
+ GET /schedule 200 in 2.2s (next.js: 2.1s, application-code: 193ms)
+ GET /schedule 200 in 180ms (next.js: 29ms, application-code: 151ms)
+✓ Compiled in 4.3s
+ GET /schedule 200 in 1720ms (next.js: 1579ms, application-code: 141ms)
+ GET / 200 in 1007ms (next.js: 820ms, application-code: 188ms)
+ POST /api/ai/subgoals 200 in 192ms (next.js: 123ms, application-code: 69ms)
+ POST /api/ai/subgoals 200 in 106ms (next.js: 59ms, application-code: 47ms)
+ POST /api/ai/subgoals 200 in 71ms (next.js: 18ms, application-code: 52ms)
+ POST /api/ai/subgoals 200 in 55ms (next.js: 21ms, application-code: 34ms)
+ POST /api/ai/subgoals 400 in 35ms (next.js: 11ms, application-code: 24ms)
+ POST /api/ai/subgoals 400 in 42ms (next.js: 14ms, application-code: 28ms)
+ POST /api/ai/subgoals 400 in 41ms (next.js: 16ms, application-code: 25ms)
+ POST /api/ai/subgoals 200 in 2.6s (next.js: 10ms, application-code: 2.5s)
+ POST /api/ai/subgoals 429 in 3.0s (next.js: 14ms, application-code: 3.0s)
+ POST /api/ai/subgoals 200 in 53ms (next.js: 12ms, application-code: 40ms)
+ POST /api/ai/subgoals 200 in 51ms (next.js: 14ms, application-code: 37ms)
+ POST /api/ai/subgoals 200 in 41ms (next.js: 8ms, application-code: 33ms)
+ POST /api/ai/subgoals 429 in 29ms (next.js: 8ms, application-code: 21ms)
+ POST /api/ai/subgoals 200 in 72ms (next.js: 55ms, application-code: 18ms)
+ POST /api/ai/schedule 200 in 409ms (next.js: 26ms, application-code: 383ms)
+ POST /api/ai/schedule 400 in 30ms (next.js: 7ms, application-code: 23ms)
+ POST /api/ai/schedule 200 in 187ms (next.js: 13ms, application-code: 173ms)
+ POST /api/ai/schedule 200 in 183ms (next.js: 11ms, application-code: 172ms)
+ POST /api/ai/schedule 429 in 155ms (next.js: 8ms, application-code: 147ms)
+ POST /api/ai/schedule 200 in 170ms (next.js: 7ms, application-code: 162ms)
+ GET /goals 200 in 541ms (next.js: 349ms, application-code: 193ms)
+ GET /schedule 200 in 244ms (next.js: 21ms, application-code: 223ms)
+ GET /schedule 200 in 128ms (next.js: 12ms, application-code: 116ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /goals 200 in 50ms (next.js: 12ms, application-code: 38ms)
+ POST /api/ai/subgoals 200 in 6.5s (next.js: 7ms, application-code: 6.5s)
+ GET /schedule 200 in 63ms (next.js: 13ms, application-code: 51ms)
+ GET /goals 200 in 119ms (next.js: 25ms, application-code: 95ms)
+✓ Compiled in 3.6s
+ GET /goals 200 in 2.0s (next.js: 1508ms, application-code: 519ms)
+ GET /goals 200 in 422ms (next.js: 64ms, application-code: 358ms)
+ GET /goals 200 in 415ms (next.js: 41ms, application-code: 374ms)
+ GET /goals 200 in 185ms (next.js: 95ms, application-code: 90ms)
+ GET /goals 200 in 239ms (next.js: 16ms, application-code: 223ms)
+ GET /goals 200 in 352ms (next.js: 16ms, application-code: 335ms)
+ GET /goals 200 in 407ms (next.js: 24ms, application-code: 383ms)
+ GET /goals 200 in 247ms (next.js: 45ms, application-code: 202ms)
+ GET /goals 200 in 401ms (next.js: 49ms, application-code: 352ms)
+ GET /goals 200 in 272ms (next.js: 50ms, application-code: 222ms)
+ GET /goals 200 in 121ms (next.js: 25ms, application-code: 97ms)
+ GET /goals 200 in 153ms (next.js: 18ms, application-code: 135ms)
+ GET /goals 200 in 137ms (next.js: 65ms, application-code: 72ms)
+ GET /goals 200 in 217ms (next.js: 20ms, application-code: 196ms)
+ GET /goals 200 in 200ms (next.js: 23ms, application-code: 177ms)
+ GET /goals 200 in 169ms (next.js: 16ms, application-code: 153ms)
+ GET /goals 200 in 184ms (next.js: 17ms, application-code: 167ms)
+ GET /goals 200 in 188ms (next.js: 15ms, application-code: 173ms)
+ GET /goals 200 in 299ms (next.js: 17ms, application-code: 281ms)
+ GET /goals 200 in 310ms (next.js: 43ms, application-code: 266ms)
+ GET /goals 200 in 230ms (next.js: 30ms, application-code: 200ms)
+ GET /goals 200 in 223ms (next.js: 20ms, application-code: 203ms)
+ GET /goals 200 in 125ms (next.js: 27ms, application-code: 98ms)
+✓ Compiled in 7.8s
+ GET /goals 200 in 209ms (next.js: 82ms, application-code: 127ms)
+ GET /goals 200 in 1820ms (next.js: 1632ms, application-code: 188ms)
+ GET /goals 200 in 162ms (next.js: 33ms, application-code: 129ms)
+✓ Compiled in 716ms
+ GET /goals 200 in 167ms (next.js: 28ms, application-code: 139ms)
+✓ Compiled in 7.9s
+✓ Compiled in 3.7s
+ GET /goals 200 in 138ms (next.js: 22ms, application-code: 116ms)
+ GET /goals 200 in 135ms (next.js: 23ms, application-code: 111ms)
+ GET / 200 in 997ms (next.js: 662ms, application-code: 335ms)
+ GET /api/ai/quota 200 in 2.5s (next.js: 2.5s, application-code: 52ms)
+ POST /api/ai/subgoals 502 in 253ms (next.js: 175ms, application-code: 78ms)
+ GET /api/ai/quota 200 in 81ms (next.js: 14ms, application-code: 67ms)
+ GET /api/ai/quota 200 in 186ms (next.js: 83ms, application-code: 102ms)
+ GET /api/ai/quota 400 in 104ms (next.js: 21ms, application-code: 83ms)
+ POST /api/ai/subgoals 200 in 845ms (next.js: 369ms, application-code: 476ms)
+ GET /goals 200 in 1125ms (next.js: 673ms, application-code: 452ms)
+ POST /api/ai/subgoals 200 in 71ms (next.js: 18ms, application-code: 53ms)
+ POST /api/ai/subgoals 200 in 68ms (next.js: 12ms, application-code: 56ms)
+ POST /api/ai/subgoals 200 in 46ms (next.js: 17ms, application-code: 29ms)
+ POST /api/ai/subgoals 400 in 39ms (next.js: 11ms, application-code: 27ms)
+ POST /api/ai/subgoals 400 in 68ms (next.js: 29ms, application-code: 39ms)
+ POST /api/ai/subgoals 400 in 33ms (next.js: 10ms, application-code: 24ms)
+ GET /schedule 200 in 494ms (next.js: 298ms, application-code: 196ms)
+ POST /api/ai/subgoals 200 in 2.6s (next.js: 9ms, application-code: 2.6s)
+ POST /api/ai/subgoals 429 in 5.1s (next.js: 15ms, application-code: 5.1s)
+ POST /api/ai/subgoals 200 in 22ms (next.js: 7ms, application-code: 14ms)
+ POST /api/ai/subgoals 200 in 21ms (next.js: 6ms, application-code: 16ms)
+ POST /api/ai/subgoals 200 in 27ms (next.js: 7ms, application-code: 20ms)
+ POST /api/ai/subgoals 429 in 25ms (next.js: 11ms, application-code: 14ms)
+ POST /api/ai/subgoals 200 in 19ms (next.js: 4ms, application-code: 15ms)
+ POST /api/ai/schedule 200 in 501ms (next.js: 103ms, application-code: 398ms)
+ POST /api/ai/schedule 400 in 30ms (next.js: 13ms, application-code: 18ms)
+ POST /api/ai/schedule 200 in 192ms (next.js: 13ms, application-code: 179ms)
+ POST /api/ai/schedule 200 in 163ms (next.js: 9ms, application-code: 154ms)
+ POST /api/ai/schedule 429 in 174ms (next.js: 10ms, application-code: 164ms)
+ POST /api/ai/schedule 200 in 178ms (next.js: 9ms, application-code: 169ms)
+ GET /goals 200 in 170ms (next.js: 30ms, application-code: 140ms)
+ GET /api/ai/quota 200 in 32ms (next.js: 12ms, application-code: 20ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 87ms (next.js: 17ms, application-code: 70ms)
+ GET /api/ai/quota 200 in 37ms (next.js: 19ms, application-code: 18ms)
+ GET /api/ai/quota 200 in 18ms (next.js: 5ms, application-code: 13ms)
+ GET /api/ai/quota 200 in 25ms (next.js: 6ms, application-code: 19ms)
+ GET /api/ai/quota 200 in 46ms (next.js: 16ms, application-code: 30ms)
+ GET /obligations 200 in 93ms (next.js: 52ms, application-code: 41ms)
+ GET /stats 200 in 203ms (next.js: 145ms, application-code: 57ms)
+ GET /api/ai/quota 200 in 75ms (next.js: 47ms, application-code: 28ms)
+ GET /api/ai/quota 200 in 50ms (next.js: 28ms, application-code: 22ms)
+ GET /schedule 200 in 63ms (next.js: 16ms, application-code: 48ms)
+ GET /api/ai/quota 200 in 31ms (next.js: 13ms, application-code: 17ms)
+ GET /api/ai/quota 200 in 22ms (next.js: 6ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 79ms (next.js: 64ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 35ms (next.js: 6ms, application-code: 29ms)
+ GET /goals 200 in 60ms (next.js: 15ms, application-code: 45ms)
+ GET /api/ai/quota 200 in 30ms (next.js: 13ms, application-code: 17ms)
+ GET /api/ai/quota 200 in 24ms (next.js: 8ms, application-code: 16ms)
+ GET /schedule 200 in 182ms (next.js: 29ms, application-code: 154ms)
+ GET /schedule 200 in 92ms (next.js: 24ms, application-code: 69ms)
+ GET /api/ai/quota 200 in 49ms (next.js: 17ms, application-code: 32ms)
+ GET /api/ai/quota 200 in 45ms (next.js: 20ms, application-code: 26ms)
+ GET /api/ai/quota 200 in 62ms (next.js: 19ms, application-code: 43ms)
+ GET /api/ai/quota 200 in 49ms (next.js: 14ms, application-code: 35ms)
+✓ Compiled in 3.5s
+ GET /api/ai/quota 200 in 79ms (next.js: 51ms, application-code: 28ms)
+ GET /api/ai/quota 200 in 47ms (next.js: 22ms, application-code: 25ms)
+ GET /schedule 200 in 1359ms (next.js: 1268ms, application-code: 90ms)
+ GET /schedule 200 in 115ms (next.js: 18ms, application-code: 98ms)
+✓ Compiled in 6s
+ GET /schedule 200 in 2.6s (next.js: 2.3s, application-code: 358ms)
+ GET /schedule 200 in 309ms (next.js: 29ms, application-code: 280ms)
+ GET /schedule 200 in 248ms (next.js: 27ms, application-code: 221ms)
+ GET /schedule 200 in 209ms (next.js: 22ms, application-code: 187ms)
+ GET /schedule 200 in 188ms (next.js: 17ms, application-code: 171ms)
+ GET /schedule 200 in 176ms (next.js: 16ms, application-code: 160ms)
+ GET /schedule 200 in 174ms (next.js: 14ms, application-code: 160ms)
+ GET /schedule 200 in 178ms (next.js: 15ms, application-code: 163ms)
+ GET /schedule 200 in 194ms (next.js: 16ms, application-code: 179ms)
+ GET /schedule 200 in 200ms (next.js: 17ms, application-code: 183ms)
+ GET /schedule 200 in 182ms (next.js: 16ms, application-code: 166ms)
+ GET /schedule 200 in 166ms (next.js: 17ms, application-code: 149ms)
+ GET /schedule 200 in 127ms (next.js: 15ms, application-code: 112ms)
+ GET /schedule 200 in 135ms (next.js: 13ms, application-code: 122ms)
+ GET /schedule 200 in 134ms (next.js: 12ms, application-code: 122ms)
+ GET /schedule 200 in 147ms (next.js: 15ms, application-code: 132ms)
+ GET /schedule 200 in 140ms (next.js: 14ms, application-code: 126ms)
+ GET /schedule 200 in 133ms (next.js: 14ms, application-code: 119ms)
+ GET /schedule 200 in 130ms (next.js: 14ms, application-code: 116ms)
+ GET /schedule 200 in 118ms (next.js: 14ms, application-code: 104ms)
+ GET /schedule 200 in 126ms (next.js: 10ms, application-code: 116ms)
+ GET /schedule 200 in 150ms (next.js: 14ms, application-code: 137ms)
+ GET /schedule 200 in 131ms (next.js: 16ms, application-code: 116ms)
+ GET /schedule 200 in 203ms (next.js: 9ms, application-code: 194ms)
+ GET /schedule 200 in 151ms (next.js: 13ms, application-code: 138ms)
+ GET /schedule 200 in 599ms (next.js: 464ms, application-code: 135ms)
+ GET /schedule 200 in 1382ms (next.js: 1248ms, application-code: 134ms)
+ GET /schedule 200 in 116ms (next.js: 15ms, application-code: 100ms)
+ GET /schedule 200 in 161ms (next.js: 74ms, application-code: 87ms)
+ GET /schedule 200 in 135ms (next.js: 18ms, application-code: 117ms)
+✓ Compiled in 511ms
+ GET /api/ai/quota 200 in 1923ms (next.js: 1724ms, application-code: 199ms)
+ GET /api/ai/quota 200 in 26ms (next.js: 7ms, application-code: 20ms)
+ GET /schedule 200 in 109ms (next.js: 35ms, application-code: 74ms)
+✓ Compiled in 580ms
+ GET /schedule 200 in 127ms (next.js: 31ms, application-code: 96ms)
+ GET /api/ai/quota 200 in 34ms (next.js: 18ms, application-code: 16ms)
+ GET /api/ai/quota 200 in 22ms (next.js: 7ms, application-code: 15ms)
+ GET /schedule 200 in 212ms (next.js: 24ms, application-code: 188ms)
+ GET /schedule 200 in 93ms (next.js: 32ms, application-code: 62ms)
+ GET /schedule 200 in 202ms (next.js: 51ms, application-code: 150ms)
+ GET /schedule 200 in 116ms (next.js: 31ms, application-code: 85ms)
+ GET /schedule 200 in 743ms (next.js: 623ms, application-code: 120ms)
+✓ Compiled in 2.7s
+ GET /schedule 200 in 90ms (next.js: 27ms, application-code: 63ms)
+ GET /schedule 200 in 903ms (next.js: 158ms, application-code: 746ms)
+ GET /schedule 200 in 181ms (next.js: 43ms, application-code: 138ms)
+ GET /schedule 200 in 173ms (next.js: 18ms, application-code: 154ms)
+ GET /schedule 200 in 405ms (next.js: 37ms, application-code: 368ms)
+ GET / 200 in 824ms (next.js: 230ms, application-code: 593ms)
+[ai-debug] round=0 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"choices\":[{\"delta\":{\"tool_calls\":[{\"index\":0,\"id\":\"call_1\",\"function\":{\"name\":\"propose_schedule_changes\",\"arguments\":\"{\\\"summary\\\":\\\"E2E: add one, move one, remove one\\\",\\\"edits\\\":[{\\\"type\\\":\\\"add\\\",\\\"title\\\":\\\"E2E QA block\\\",\\\"day\\\":6,\\\"start_hour\\\":3,\\\"duration\\\":1},{\\\"type\\\":\\\"move\\\",\\\"id\\\":\\\"71a1a0b1-61d5-4924-bc85-9264d7434301\\\",\\\"title\\\":\\\"E2E QA keep\\\",\\\"day\\\":6,\\\"start_hour\\\":4,\\\"d"
+[ai-debug] round=1 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=42 turnText=42 calls=0 error=none
+ POST /api/ai 200 in 1788ms (next.js: 1159ms, application-code: 630ms)
+ POST /api/ai/schedule/apply 200 in 3.2s (next.js: 2.7s, application-code: 546ms)
+ POST /api/ai/schedule/apply 410 in 36ms (next.js: 9ms, application-code: 27ms)
+ POST /api/ai/schedule/apply 410 in 37ms (next.js: 9ms, application-code: 28ms)
+ POST /api/ai/subgoals 200 in 606ms (next.js: 536ms, application-code: 70ms)
+ POST /api/ai/subgoals 200 in 37ms (next.js: 7ms, application-code: 30ms)
+ POST /api/ai/subgoals 200 in 59ms (next.js: 25ms, application-code: 34ms)
+ POST /api/ai/subgoals 200 in 46ms (next.js: 14ms, application-code: 31ms)
+ POST /api/ai/subgoals 400 in 36ms (next.js: 8ms, application-code: 27ms)
+ POST /api/ai/subgoals 400 in 31ms (next.js: 10ms, application-code: 21ms)
+ POST /api/ai/subgoals 400 in 38ms (next.js: 9ms, application-code: 29ms)
+ POST /api/ai/subgoals 200 in 2.7s (next.js: 10ms, application-code: 2.6s)
+ POST /api/ai/subgoals 429 in 6.0s (next.js: 9ms, application-code: 6.0s)
+ POST /api/ai/subgoals 200 in 34ms (next.js: 7ms, application-code: 27ms)
+ POST /api/ai/subgoals 200 in 37ms (next.js: 7ms, application-code: 31ms)
+ POST /api/ai/subgoals 200 in 31ms (next.js: 6ms, application-code: 25ms)
+ POST /api/ai/subgoals 429 in 48ms (next.js: 10ms, application-code: 38ms)
+ POST /api/ai/subgoals 200 in 79ms (next.js: 9ms, application-code: 70ms)
+ POST /api/ai/schedule 200 in 1525ms (next.js: 998ms, application-code: 527ms)
+ POST /api/ai/schedule 400 in 27ms (next.js: 10ms, application-code: 17ms)
+ POST /api/ai/schedule 200 in 186ms (next.js: 8ms, application-code: 177ms)
+ POST /api/ai/schedule 200 in 231ms (next.js: 7ms, application-code: 224ms)
+ POST /api/ai/schedule 429 in 136ms (next.js: 10ms, application-code: 127ms)
+ POST /api/ai/schedule 200 in 171ms (next.js: 7ms, application-code: 163ms)
+ GET /api/ai/quota 200 in 30ms (next.js: 15ms, application-code: 14ms)
+ POST /api/ai/subgoals 502 in 50ms (next.js: 12ms, application-code: 38ms)
+ GET /api/ai/quota 200 in 32ms (next.js: 16ms, application-code: 16ms)
+ GET /api/ai/quota 200 in 27ms (next.js: 8ms, application-code: 19ms)
+ GET /api/ai/quota 400 in 24ms (next.js: 7ms, application-code: 17ms)
+ GET /schedule 200 in 1388ms (next.js: 362ms, application-code: 1026ms)
+ GET /goals 200 in 780ms (next.js: 429ms, application-code: 351ms)
+[ai-debug] round=0 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"choices\":[{\"delta\":{\"tool_calls\":[{\"index\":0,\"id\":\"call_1\",\"function\":{\"name\":\"propose_schedule_changes\",\"arguments\":\"{\\\"summary\\\":\\\"E2E: add one, move one, remove one\\\",\\\"edits\\\":[{\\\"type\\\":\\\"add\\\",\\\"title\\\":\\\"E2E QA block\\\",\\\"day\\\":6,\\\"start_hour\\\":3,\\\"duration\\\":1},{\\\"type\\\":\\\"move\\\",\\\"id\\\":\\\"6a876ab7-4279-427a-bb1b-d37f475c2660\\\",\\\"title\\\":\\\"E2E QA keep\\\",\\\"day\\\":6,\\\"start_hour\\\":4,\\\"d"
+[ai-debug] round=1 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=42 turnText=42 calls=0 error=none
+ POST /api/ai 200 in 678ms (next.js: 28ms, application-code: 650ms)
+ POST /api/ai/schedule/apply 200 in 579ms (next.js: 84ms, application-code: 495ms)
+ POST /api/ai/schedule/apply 410 in 33ms (next.js: 11ms, application-code: 21ms)
+ POST /api/ai/schedule/apply 410 in 118ms (next.js: 50ms, application-code: 68ms)
+ GET /schedule 200 in 247ms (next.js: 42ms, application-code: 204ms)
+ GET /api/ai/quota 200 in 86ms (next.js: 41ms, application-code: 46ms)
+ GET /api/ai/quota 200 in 28ms (next.js: 10ms, application-code: 18ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /goals 200 in 69ms (next.js: 18ms, application-code: 51ms)
+ GET /api/ai/quota 200 in 24ms (next.js: 11ms, application-code: 13ms)
+ GET /api/ai/quota 200 in 15ms (next.js: 4ms, application-code: 11ms)
+ GET /obligations 200 in 192ms (next.js: 148ms, application-code: 44ms)
+ GET /schedule 200 in 65ms (next.js: 16ms, application-code: 49ms)
+ GET /api/ai/quota 200 in 19ms (next.js: 10ms, application-code: 9ms)
+ GET /api/ai/quota 200 in 20ms (next.js: 8ms, application-code: 12ms)
+ GET /api/ai/quota 200 in 21ms (next.js: 6ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 27ms (next.js: 9ms, application-code: 18ms)
+ POST /api/ai/schedule 200 in 19.6s (next.js: 14ms, application-code: 19.5s)
+[ai-debug] round=0 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"propose_schedule_changes\",\"args\": {\"summary\": \"Add Family board game on Thursday from 5:00 PM to 6:00 PM\",\"edits\": [{\"type\": \"add\",\"title\": \"Family board game\",\"start_hour\": 17,\"day\": 4,\"duration\": 1}]},\"id\": \"call_504064\"},\"thoughtSignature\": \"EuSHAQrghwEBaRR9E5mc2q753c70grfr7vIoF/58rdR6M44JCQf+r+FBVTQylKwMrY65jNSMw5zcwFUes7G"
+[ai-debug] round=1 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"get_schedule\",\"args\": {\"date\": \"2026-10-15\"},\"id\": \"call_540082\"},\"thoughtSignature\": \"EpgDCpUDAWkUfRO1GjSrlop3e/A7haA0l32Hjad/Q7uTiDKz53DEWrBry+e1rLx+wE8Rn+etnpg7qBd0JK12AkYVjm1w61PYkXPLGW56JzhkaPyaKwkC0AxxzM8Evn56+0tKdDZcXoXjCNDuBH6eA9lVNzcl0EF1vj25C8AERgDezI/Mb2+XE5j+FOILmRz6gL/NBrG13wq4zyEYUmQt39dK2n3z3dfHjx3zAkOGjP+/J+R9K"
+[ai-debug] round=2 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=9 forwarded=537 turnText=537 calls=0 error=none
+ POST /api/ai 200 in 39.0s (next.js: 7ms, application-code: 38.9s)
+[ai-debug] round=0 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"get_schedule\",\"args\": {\"date\": \"2026-10-15\"},\"id\": \"call_525332\"},\"thoughtSignature\": \"EqgHCqUHAWkUfRNccfdWHF+2jTOyKf1gz4Yy4dlNOa7vsmZDbuXwjCLIO6ECaOR4f+F7KqLc4eNMFsqCf2WYmuoezVOUgOHQ5N/RKBcShPEOVE1JZ1cSTNS6U62Tr5er4/pz7CeQJb9rsUtd8FNleFm9ywlYs+3cUffsteI3S4uY4KHE7sCToFkwS7vnJjT8C8cDgqoj5Dz1Q6BrZEB+KwusvUd64+Ojb0hINNQJ0bCZiKWcg"
+[ai-debug] round=1 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"propose_schedule_changes\",\"args\": {\"summary\": \"Move Strength workout to 9:30 PM – 10:30 PM and add Family board game from 5:00 PM – 6:30 PM on Thursday.\",\"edits\": [{\"type\": \"move\",\"start_hour\": 21.5,\"id\": \"ba7994e2-eb93-4a0e-a01f-fe17ffabe44c\",\"duration\": 1,\"title\": \"Strength workout\",\"day\": 4},{\"day\": 4,\"title\": \"Family board"
+[ai-debug] round=2 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=5 forwarded=271 turnText=271 calls=0 error=none
+ POST /api/ai 200 in 28.6s (next.js: 7ms, application-code: 28.6s)
+ POST /api/ai/schedule/apply 200 in 454ms (next.js: 7ms, application-code: 447ms)
+[ai-debug] round=0 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"get_schedule\",\"args\": {\"date\": \"2026-10-15\"},\"id\": \"call_582513\"},\"thoughtSignature\": \"Ep8NCpwNAWkUfRN8kaLBpJxwBa6c0y2ajHj4NnY+GqecZWo/3H/IqqpVDydH3vCS81tIfK0vOobhXYMTXNZI2DSyCpVr6H2x+uPffpVRKGx884bEUo8ZMTCCh6Nd2ip6rsgdtfkceEk6P7yz5mzqLMXbDYWjMCPyd9Ycv8GthYNZKwHxWC005Ao2SqHT8v7HpUGdrJU14ScoUSzAUYWGwC/gxQEpSlmDfbwTH4RKhpOMmsZDe"
+[ai-debug] round=1 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"propose_schedule_changes\",\"args\": {\"edits\": [{\"duration\": 1.5,\"type\": \"add\",\"title\": \"Family board game\",\"start_hour\": 17,\"day\": 4}],\"summary\": \"Add Family board game on Thursday from 5:00 PM to 6:30 PM.\"},\"id\": \"call_493228\"},\"thoughtSignature\": \"EuQLCuELAWkUfRO7g0SmG1oZCpohh7luTRBqJv4L3XwBNNimWPMYVEdH+33xe+XDw53YLlNriotYOJMG"
+[ai-debug] round=2 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=4 forwarded=152 turnText=152 calls=0 error=none
+ POST /api/ai 200 in 10.0s (next.js: 6ms, application-code: 10.0s)
+ POST /api/ai/schedule/apply 200 in 318ms (next.js: 24ms, application-code: 294ms)
+ GET /schedule 200 in 138ms (next.js: 12ms, application-code: 126ms)
+ GET /api/ai/quota 200 in 39ms (next.js: 8ms, application-code: 31ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 35ms (next.js: 15ms, application-code: 20ms)
+ GET /schedule 200 in 121ms (next.js: 13ms, application-code: 107ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 37ms (next.js: 22ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 27ms (next.js: 9ms, application-code: 18ms)
+ GET /goals 200 in 75ms (next.js: 13ms, application-code: 62ms)
+ GET /api/ai/quota 200 in 22ms (next.js: 8ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 22ms (next.js: 8ms, application-code: 15ms)
+ GET /schedule 200 in 54ms (next.js: 15ms, application-code: 39ms)
+ GET /api/ai/quota 200 in 24ms (next.js: 9ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 19ms (next.js: 6ms, application-code: 13ms)
+ GET /api/ai/quota 200 in 22ms (next.js: 8ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 21ms (next.js: 6ms, application-code: 15ms)
+ GET /stats 200 in 486ms (next.js: 415ms, application-code: 71ms)
+ GET /api/ai/quota 200 in 34ms (next.js: 15ms, application-code: 19ms)
+ GET /api/ai/quota 200 in 23ms (next.js: 10ms, application-code: 14ms)
+ GET /obligations 200 in 90ms (next.js: 24ms, application-code: 66ms)
+ GET /goals 200 in 43ms (next.js: 11ms, application-code: 33ms)
+ GET /api/ai/quota 200 in 19ms (next.js: 9ms, application-code: 10ms)
+ GET /api/ai/quota 200 in 16ms (next.js: 7ms, application-code: 9ms)
+ GET /schedule 200 in 41ms (next.js: 13ms, application-code: 28ms)
+ GET /api/ai/quota 200 in 21ms (next.js: 8ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 17ms (next.js: 7ms, application-code: 10ms)
+ GET /api/ai/quota 200 in 20ms (next.js: 6ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 28ms (next.js: 12ms, application-code: 16ms)
+ GET /stats 200 in 39ms (next.js: 10ms, application-code: 29ms)
+ GET /api/ai/quota 200 in 20ms (next.js: 7ms, application-code: 13ms)
+ GET /api/ai/quota 200 in 23ms (next.js: 9ms, application-code: 14ms)
+ GET /schedule 200 in 45ms (next.js: 11ms, application-code: 34ms)
+ GET /api/ai/quota 200 in 19ms (next.js: 9ms, application-code: 10ms)
+ GET /api/ai/quota 200 in 20ms (next.js: 6ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 20ms (next.js: 5ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 29ms (next.js: 7ms, application-code: 22ms)
+✓ Compiled in 5.4s
+ GET /api/ai/quota 200 in 281ms (next.js: 188ms, application-code: 92ms)
+ GET /schedule 200 in 691ms (next.js: 133ms, application-code: 557ms)
+ GET /api/ai/quota 200 in 33ms (next.js: 13ms, application-code: 20ms)
+✓ Compiled in 39.6s
+ GET /schedule 200 in 254ms (next.js: 72ms, application-code: 182ms)
+✓ Compiled in 3.5s
+ GET /schedule 200 in 649ms (next.js: 59ms, application-code: 590ms)
+ GET /schedule 200 in 1355ms (next.js: 144ms, application-code: 1211ms)
+ GET /api/ai/quota 200 in 2.5s (next.js: 1654ms, application-code: 838ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 5.2s (next.js: 3.2s, application-code: 2.0s)
+✓ Compiled in 1639ms
+ GET /schedule 200 in 2.4s (next.js: 1667ms, application-code: 764ms)
+ GET / 200 in 172ms (next.js: 48ms, application-code: 124ms)
+ GET /schedule 200 in 268ms (next.js: 21ms, application-code: 247ms)
+ GET /goals 200 in 151ms (next.js: 74ms, application-code: 77ms)
+ GET /api/ai/quota 200 in 66ms (next.js: 31ms, application-code: 35ms)
+ GET /api/ai/quota 200 in 41ms (next.js: 17ms, application-code: 23ms)
+ GET /obligations 200 in 91ms (next.js: 23ms, application-code: 67ms)
+ GET /schedule 200 in 70ms (next.js: 14ms, application-code: 56ms)
+ GET /api/ai/quota 200 in 29ms (next.js: 10ms, application-code: 19ms)
+ GET /api/ai/quota 200 in 37ms (next.js: 16ms, application-code: 21ms)
+ GET /api/ai/quota 200 in 25ms (next.js: 8ms, application-code: 17ms)
+ GET /api/ai/quota 200 in 236ms (next.js: 80ms, application-code: 156ms)
+ GET /stats 200 in 385ms (next.js: 112ms, application-code: 273ms)
+ GET /stats 200 in 208ms (next.js: 63ms, application-code: 145ms)
+ GET /api/ai/quota 200 in 47ms (next.js: 19ms, application-code: 29ms)
+ GET /api/ai/quota 200 in 91ms (next.js: 24ms, application-code: 67ms)
+ GET /schedule 200 in 103ms (next.js: 21ms, application-code: 82ms)
+ GET /api/ai/quota 200 in 52ms (next.js: 24ms, application-code: 28ms)
+ GET /api/ai/quota 200 in 36ms (next.js: 9ms, application-code: 27ms)
+ GET /api/ai/quota 200 in 34ms (next.js: 12ms, application-code: 22ms)
+ GET /api/ai/quota 200 in 33ms (next.js: 12ms, application-code: 21ms)
+✓ Compiled in 722ms
+ GET /schedule 200 in 117ms (next.js: 39ms, application-code: 78ms)
+ GET /schedule 200 in 161ms (next.js: 15ms, application-code: 146ms)
+ GET /schedule 200 in 129ms (next.js: 31ms, application-code: 98ms)
+ GET /api/ai/quota 200 in 21ms (next.js: 6ms, application-code: 15ms)
+ GET /api/ai/quota 200 in 21ms (next.js: 7ms, application-code: 14ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 100ms (next.js: 12ms, application-code: 88ms)
+ GET /api/ai/quota 200 in 23ms (next.js: 7ms, application-code: 16ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 24ms (next.js: 8ms, application-code: 16ms)
+ GET /schedule 200 in 114ms (next.js: 17ms, application-code: 97ms)
+ GET /api/ai/quota 200 in 24ms (next.js: 10ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 29ms (next.js: 12ms, application-code: 17ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /schedule 200 in 184ms (next.js: 10ms, application-code: 174ms)
+ GET /api/ai/quota 200 in 30ms (next.js: 12ms, application-code: 19ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 30ms (next.js: 7ms, application-code: 23ms)
+ GET /api/ai/quota 200 in 36ms (next.js: 13ms, application-code: 24ms)
+ GET /api/ai/quota 200 in 24ms (next.js: 10ms, application-code: 14ms)
+✓ Compiled in 4s
+ GET /schedule 200 in 184ms (next.js: 59ms, application-code: 125ms)
+✓ Compiled in 6.1s
+ GET /schedule 200 in 246ms (next.js: 79ms, application-code: 167ms)
+ GET /api/ai/quota 200 in 42ms (next.js: 15ms, application-code: 26ms)
+ GET /api/ai/quota 200 in 41ms (next.js: 14ms, application-code: 27ms)
+✓ Compiled in 5.7s
+ GET /schedule 200 in 189ms (next.js: 50ms, application-code: 140ms)
+✓ Compiled in 196ms
+ GET /schedule 200 in 113ms (next.js: 33ms, application-code: 79ms)
+✓ Compiled in 828ms
+ GET /schedule 200 in 411ms (next.js: 44ms, application-code: 366ms)
+✓ Compiled in 155ms
+ GET /schedule 200 in 101ms (next.js: 27ms, application-code: 74ms)
+✓ Compiled in 727ms
+ GET /schedule 200 in 209ms (next.js: 65ms, application-code: 144ms)
+✓ Compiled in 216ms
+ GET /schedule 200 in 110ms (next.js: 25ms, application-code: 85ms)
+✓ Compiled in 1116ms
+ GET /schedule 200 in 177ms (next.js: 37ms, application-code: 140ms)
+✓ Compiled in 557ms
+ GET /schedule 200 in 88ms (next.js: 25ms, application-code: 63ms)
+✓ Compiled in 624ms
+ GET /schedule 200 in 210ms (next.js: 125ms, application-code: 85ms)
+✓ Compiled in 3.3s
+ GET /schedule 200 in 362ms (next.js: 90ms, application-code: 272ms)
+✓ Compiled in 7.2s
+ GET /schedule 200 in 239ms (next.js: 50ms, application-code: 188ms)
+✓ Compiled in 13.7s
+ GET /schedule 200 in 1005ms (next.js: 725ms, application-code: 281ms)
+ GET / 200 in 474ms (next.js: 377ms, application-code: 96ms)
+[ai-debug] round=0 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"choices\":[{\"delta\":{\"tool_calls\":[{\"index\":0,\"id\":\"call_1\",\"function\":{\"name\":\"propose_schedule_changes\",\"arguments\":\"{\\\"summary\\\":\\\"E2E: add one, move one, remove one\\\",\\\"edits\\\":[{\\\"type\\\":\\\"add\\\",\\\"title\\\":\\\"E2E QA block\\\",\\\"day\\\":6,\\\"start_hour\\\":3,\\\"duration\\\":1},{\\\"type\\\":\\\"move\\\",\\\"id\\\":\\\"24a93a5f-996b-4df5-a105-3e7a89511b2d\\\",\\\"title\\\":\\\"E2E QA keep\\\",\\\"day\\\":6,\\\"start_hour\\\":4,\\\"d"
+[ai-debug] round=1 provider=openai model=chat-edits-mock upstreamStatus=200 dataLines=2 forwarded=42 turnText=42 calls=0 error=none
+ POST /api/ai 200 in 627ms (next.js: 44ms, application-code: 583ms)
+ POST /api/ai/schedule/apply 200 in 404ms (next.js: 16ms, application-code: 388ms)
+ POST /api/ai/schedule/apply 410 in 22ms (next.js: 7ms, application-code: 15ms)
+ POST /api/ai/schedule/apply 410 in 21ms (next.js: 5ms, application-code: 16ms)
+ GET /schedule 200 in 410ms (next.js: 16ms, application-code: 393ms)
+ POST /api/ai/schedule 200 in 3.3min (next.js: 35ms, application-code: 3.3min)
+[browser] Cannot update a component (`Calendar`) while rendering a different component (`Calendar`). To locate the bad setState() call inside `Calendar`, follow the stack trace as described in https://react.dev/link/setstate-in-render 
+    at setCalendarPreview (app/lib/ai.ts:471:52)
+    at previewDrafts (app/ui/calender.tsx:303:23)
+    at eval (app/ui/calender.tsx:315:7)
+    at Calendar (app/ui/calender.tsx:90:39)
+  469 | export function setCalendarPreview(preview: CalendarPreview | null): void {
+  470 |   calendarPreview = preview;
+> 471 |   for (const listener of calendarPreviewListeners) listener();
+      |                                                    ^
+  472 | }
+  473 |
+  474 | export function readCalendarPreview(): CalendarPreview | null { (app/lib/ai.ts:471:52)
+ GET /schedule 200 in 236ms (next.js: 22ms, application-code: 214ms)
+ GET /api/ai/quota 200 in 51ms (next.js: 25ms, application-code: 27ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+ GET /api/ai/quota 200 in 52ms (next.js: 16ms, application-code: 36ms)
+[ai-debug] round=0 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"get_schedule\",\"args\": {\"date\": \"2026-10-16\"},\"id\": \"call_515396\"},\"thoughtSignature\": \"EogPCoUPAWkUfRO1+KSVoAR40Ftufrd5a3aQqPjSDe8TSk2qmXWBdypcPEfR6KsaaU0fvqxlQARfDfvl1nXq/dK4zBlCJ0bs0jJaWT0+K9ruR5fjxf3J3NRRclknp21vzBBzUOKaJSzdxiqgn/Y0cVUZ6Nw1py1zgYpcD8EKxB1uIooOuaPNS1UMfLSn6n985Ptv50Qirv8iziVeMv3WN2bihqBhdDrGpflIcJd4n7T/hUDJz"
+ POST /api/ai 200 in 2.7min (next.js: 6ms, application-code: 2.7min)
+ POST /api/ai 200 in 3.1min (next.js: 7ms, application-code: 3.1min)
+[ai-debug] round=0 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"get_schedule\",\"args\": {\"date\": \"2026-10-16\"},\"id\": \"call_492688\"},\"thoughtSignature\": \"EvsJCvgJAWkUfRMA8YYCBLE/ZX3OUF8TpTUsuYoUJm6FYMq+FRiCMusJzadulBlurLvD5vW6yisY2x5d7cULqB6iB9FaB1qI10y8iJHk51LKBsMCb/yfy9bhkSGUdCl5xxmngCMRYfNZESfuN/eqxks0iU/3fPW7oi+b5FNo3jEp8fzlA932rwQXN/a/gy4WMKY+RWWRK63dRYyMBEROdckHmTqLyCyARl4U2xP2nqDo52GWU"
+[ai-debug] round=1 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=2 forwarded=0 turnText=0 calls=1 error=none
+[ai-debug] upstream head="data: {\"candidates\": [{\"content\": {\"parts\": [{\"functionCall\": {\"name\": \"propose_schedule_changes\",\"args\": {\"summary\": \"Add Family Night on Friday at 6:00 PM (1 hour)\",\"edits\": [{\"duration\": 1,\"day\": 5,\"start_hour\": 18,\"type\": \"add\",\"title\": \"Family Night\"}]},\"id\": \"call_536038\"},\"thoughtSignature\": \"Et0FCtoFAWkUfRMRnT46zzGhOYXW0K4jXwjhKGe3K53BsxKbeQa6MCHDhsqpnarT552XRQmf04pXB8/VAEp143izgz8SoEelXjj"
+[ai-debug] round=2 provider=gemini model=gemini-3.8-flash upstreamStatus=200 dataLines=3 forwarded=166 turnText=166 calls=0 error=none
+ POST /api/ai 200 in 92s (next.js: 15ms, application-code: 92s)
+ POST /api/ai/schedule/apply 200 in 551ms (next.js: 6ms, application-code: 545ms)
+ GET /schedule 200 in 126ms (next.js: 14ms, application-code: 112ms)
+ GET /api/ai/quota 200 in 45ms (next.js: 31ms, application-code: 14ms)
+ GET /api/ai/quota 200 in 23ms (next.js: 7ms, application-code: 16ms)
+[browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes

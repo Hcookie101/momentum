@@ -15,6 +15,9 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { ChatDay } from "@/app/lib/ai";
 import { categoryFor, formatCompact, formatDuration } from "@/app/lib/stats";
+import {
+  executeScheduleProposal,
+} from "@/app/lib/schedule-edits";
 
 export type AiToolCall = {
   id: string;
@@ -92,11 +95,42 @@ export const AI_TOOLS: AiToolDefinition[] = [
     description:
       "Read the user's schedule for a day: recurring obligations (classes, shifts, " +
       "gym…) and weekly calendar events falling on that weekday, with start and end " +
-      "times.",
+      "times. Calendar events carry an `id` — pass it to propose_schedule_changes " +
+      "when the user wants an event moved or removed. Use for schedule questions.",
     parameters: {
       type: "object",
       properties: { date: DATE_PARAM },
       required: [],
+    },
+  },
+  {
+    name: "propose_schedule_changes",
+    description:
+      "Stage calendar changes for the user's explicit approval — add events, " +
+      "move events to a new day/time, or remove them. Call AFTER reading the " +
+      "schedule (get_schedule) so move/remove reference real event ids. The " +
+      "user sees each change listed on an approval card and must click " +
+      "Approve; nothing is written by this call, and the browser applies the " +
+      "approved subset itself. Never invent ids — use the calendar events' " +
+      "ids exactly as returned, or omit the id for additions.",
+    parameters: {
+      type: "object",
+      properties: {
+        summary: {
+          type: "string",
+          description: "One sentence describing the plan, shown on the approval card.",
+        },
+        edits: {
+          type: "array",
+          description:
+            "The batch: {type:'add', title, day 0-6 (0=Sunday), start_hour, duration}, " +
+            "{type:'move', id, title, day, start_hour, duration} or " +
+            "{type:'remove', id, title}. Times snap to half hours; obligations " +
+            "can't be moved or removed — only calendar events.",
+          items: { type: "object" },
+        },
+      },
+      required: ["edits"],
     },
   },
 ];
@@ -345,11 +379,13 @@ async function schedule(
 
   const [oblRes, calRes] = await Promise.all([
     supabase.from("obligations").select("title, days, start_hour, duration"),
-    supabase.from("calendar_events").select("title, day, start_hour, duration"),
+    supabase.from("calendar_events").select("id, title, day, start_hour, duration"),
   ]);
   if (oblRes.error || calRes.error) {
     return { error: `Could not read the schedule: ${(oblRes.error ?? calRes.error)!.message}` };
   }
+
+  const dayEvents = (calRes.data ?? []).filter((row) => row.day === weekday);
 
   const timed = (rows: { title: string; start_hour: number; duration: number }[]) =>
     [...rows]
@@ -363,10 +399,19 @@ async function schedule(
   return {
     date,
     weekday: weekdayName(date),
-    // Recurring weekly obligations that fall on this weekday…
+    // Recurring weekly obligations that fall on this weekday… (rules, not
+    // rows — they can never be moved or removed).
     obligations: timed((oblRes.data ?? []).filter((row) => row.days.includes(weekday))),
-    // …and the weekly calendar events for it.
-    calendar_events: timed((calRes.data ?? []).filter((row) => row.day === weekday)),
+    // …and the weekly calendar events for it, each carrying the `id` the
+    // propose_schedule_changes tool needs to move or remove it.
+    calendar_events: [...dayEvents]
+      .sort((a, b) => a.start_hour - b.start_hour)
+      .map((row) => ({
+        id: row.id,
+        title: row.title,
+        start: clock(row.start_hour),
+        end: clock(row.start_hour + row.duration),
+      })),
   };
 }
 
@@ -390,6 +435,11 @@ export async function executeAiTool(
         return await goals(call.args, day, supabase);
       case "get_schedule":
         return await schedule(call.args, day, supabase);
+      case "propose_schedule_changes":
+        // Stages edits for the user's approval — nothing is written here.
+        // The route spots the `proposal` in the result and streams it to the
+        // browser as an approval card (see app/api/ai/route.ts).
+        return await executeScheduleProposal(supabase, call.args);
       default:
         return { error: `Unknown tool "${call.name}".` };
     }

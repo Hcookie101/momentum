@@ -170,6 +170,110 @@ export function upstreamRequest(
   };
 }
 
+// The settings dialog's "Test connection" asks the provider for its model
+// list instead of generating a reply: it proves the key and base URL work
+// without spending a generation request — free tiers count those against a
+// tiny daily quota, so testing shouldn't cost anything.
+export function modelsListRequest(config: ProviderConfig): { url: string; init: RequestInit } {
+  if (config.provider === "gemini") {
+    return {
+      url: `${config.baseUrl}/models`,
+      init: { method: "GET", headers: { "x-goog-api-key": config.apiKey } },
+    };
+  }
+  if (config.provider === "anthropic") {
+    return {
+      url: `${config.baseUrl}/models`,
+      init: {
+        method: "GET",
+        headers: { "x-api-key": config.apiKey, "anthropic-version": "2023-06-01" },
+      },
+    };
+  }
+  return {
+    url: `${config.baseUrl}/models`,
+    init: { method: "GET", headers: { Authorization: `Bearer ${config.apiKey}` } },
+  };
+}
+
+// Is the configured model among the listed ones? The shapes differ per
+// provider (`data[].id` for OpenAI-style, `models[].name` for Gemini), Gemini
+// prefixes names with "models/", and Anthropic lists dated ids for aliases —
+// so match loosely, and answer "yes" when the list is empty or unparseable: a
+// gateway that lists nothing shouldn't fail the test.
+export function modelListedIn(payload: unknown, model: string): boolean {
+  const body = payload as { data?: unknown[]; models?: unknown[] } | null | undefined;
+  const ids: string[] = [];
+  if (body && Array.isArray(body.data)) {
+    for (const item of body.data) ids.push(String((item as { id?: unknown })?.id ?? ""));
+  }
+  if (body && Array.isArray(body.models)) {
+    for (const item of body.models) ids.push(String((item as { name?: unknown })?.name ?? ""));
+  }
+  const cleaned = ids.map((id) => id.replace(/^models\//, "").trim()).filter(Boolean);
+  if (cleaned.length === 0) return true;
+  const wanted = model.replace(/^models\//, "").trim();
+  return cleaned.some((id) => id === wanted || id.startsWith(wanted) || id.startsWith(`${wanted}:`));
+}
+
+// Shared header contract with the browser: the chat route, "Test connection"
+// and the one-shot helpers all read the same `x-ai-*` headers through this,
+// so the routes can't drift apart on what the client is allowed to send.
+export function readProviderConfig(request: Request): ProviderConfig | string {
+  const header = (request.headers.get("x-ai-provider") ?? "").toLowerCase();
+  const provider: ProviderConfig["provider"] =
+    header === "anthropic" || header === "gemini" ? header : "openai";
+  const apiKey = (request.headers.get("x-ai-key") ?? "").trim();
+  const baseUrl = (request.headers.get("x-ai-base-url") ?? "").trim();
+  const model = (request.headers.get("x-ai-model") ?? "").trim();
+
+  if (!apiKey) return "Add your API key in the AI settings panel first.";
+  if (!model) return "Pick a model in the AI settings panel first.";
+  if (!/^https?:\/\/.+/i.test(baseUrl)) return "The base URL must start with http:// or https://.";
+
+  return { provider, apiKey, baseUrl: baseUrl.replace(/\/+$/, ""), model };
+}
+
+// Pull the human-readable part out of a provider error body.
+export function providerError(status: number, body: string): string {
+  try {
+    const parsed = JSON.parse(body) as { error?: { message?: string } | string };
+    const message =
+      typeof parsed.error === "string" ? parsed.error : parsed.error?.message;
+    if (message) return message;
+  } catch {
+    // not JSON — fall through to the raw text below
+  }
+  const trimmed = body.trim().slice(0, 300);
+  return trimmed || `The provider replied with ${status}.`;
+}
+
+// The plain-text reply inside a non-streaming generation response
+// (`upstreamRequest` with stream=false): OpenAI's message content, Anthropic's
+// text blocks, or Gemini's text parts.
+export function extractTextResponse(provider: ProviderId, payload: unknown): string | null {
+  const body = payload as {
+    choices?: { message?: { content?: unknown } }[];
+    content?: { type?: string; text?: string }[];
+    candidates?: { content?: { parts?: { text?: unknown }[] } }[];
+  } | null;
+  if (!body) return null;
+  if (provider === "openai") {
+    const content = body.choices?.[0]?.message?.content;
+    return typeof content === "string" && content.trim() ? content : null;
+  }
+  if (provider === "anthropic") {
+    const text = (body.content ?? [])
+      .filter((block) => block?.type === "text" && typeof block.text === "string")
+      .map((block) => block.text ?? "")
+      .join("");
+    return text.trim() ? text : null;
+  }
+  const parts = body.candidates?.[0]?.content?.parts ?? [];
+  const text = parts.map((part) => (typeof part.text === "string" ? part.text : "")).join("");
+  return text.trim() ? text : null;
+}
+
 // Converts the plain user/assistant history plus any completed tool rounds
 // into the message shape each provider requires.
 export function buildMessages(

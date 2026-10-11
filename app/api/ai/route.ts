@@ -13,14 +13,25 @@
 import { cookies } from "next/headers";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/supabase/server";
-import type { ChatDay } from "@/app/lib/ai";
+import type { ChatDay, ScheduleProposal } from "@/app/lib/ai";
 import { AI_TOOLS, executeAiTool, type AiToolCall } from "@/app/lib/ai-tools";
 import {
   createStreamParser,
-  type ProviderConfig,
+  modelListedIn,
+  modelsListRequest,
+  providerError,
+  readProviderConfig,
   type ToolRound,
   upstreamRequest,
 } from "@/app/lib/ai-providers";
+import {
+  parseQuotaLimits,
+  refund,
+  reserve,
+  retryDelayMs,
+  sleep,
+  usage,
+} from "@/app/lib/quota";
 import { dayRange, toLocalDateString } from "@/app/lib/stats";
 
 export const SYSTEM_PROMPT =
@@ -28,8 +39,19 @@ export const SYSTEM_PROMPT =
   "productivity dashboard with goals, obligations, a weekly schedule and " +
   "focus statistics. You have tools that read the user's live dashboard " +
   "data — call them whenever a question is about the user's own time, " +
-  "focus, browsing, goals or schedule instead of guessing. Dates and times " +
-  "in tool results are the user's local time. Answer briefly and practically.";
+  "focus, browsing, goals or schedule instead of guessing. Every prompt " +
+  "already carries today's focus, browsing and schedule numbers: answer " +
+  "questions about today straight from them and call tools only for other " +
+  "dates or details they don't cover. When you do need tools, ask for " +
+  "everything you need in a single reply — all results come back together " +
+  "— never for one tool after another, because each extra round costs the " +
+  "provider another full request. Dates and times in tool results are the " +
+  "user's local time. You can also change the weekly calendar: when the " +
+  "user asks to add, move or remove schedule events, read the schedule and " +
+  "then call propose_schedule_changes with the full batch. That only stages " +
+  "the changes — the user reviews them on an approval card and nothing is " +
+  "written until they click Approve, so never claim a change already " +
+  "happened. Answer briefly and practically.";
 
 // One reply may chain at most this many tool rounds before we give up.
 const MAX_TOOL_ROUNDS = 4;
@@ -38,35 +60,6 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 
 function jsonError(message: string, status: number) {
   return Response.json({ error: message }, { status });
-}
-
-function readConfig(request: Request): ProviderConfig | string {
-  const header = (request.headers.get("x-ai-provider") ?? "").toLowerCase();
-  const provider: ProviderConfig["provider"] =
-    header === "anthropic" || header === "gemini" ? header : "openai";
-  const apiKey = (request.headers.get("x-ai-key") ?? "").trim();
-  const baseUrl = (request.headers.get("x-ai-base-url") ?? "").trim();
-  const model = (request.headers.get("x-ai-model") ?? "").trim();
-
-  if (!apiKey) return "Add your API key in the AI settings panel first.";
-  if (!model) return "Pick a model in the AI settings panel first.";
-  if (!/^https?:\/\/.+/i.test(baseUrl)) return "The base URL must start with http:// or https://.";
-
-  return { provider, apiKey, baseUrl: baseUrl.replace(/\/+$/, ""), model };
-}
-
-// Pull the human-readable part out of a provider error body.
-function providerError(status: number, body: string): string {
-  try {
-    const parsed = JSON.parse(body) as { error?: { message?: string } | string };
-    const message =
-      typeof parsed.error === "string" ? parsed.error : parsed.error?.message;
-    if (message) return message;
-  } catch {
-    // not JSON — fall through to the raw text below
-  }
-  const trimmed = body.trim().slice(0, 300);
-  return trimmed || `The provider replied with ${status}.`;
 }
 
 // The browser computes the day window (local midnights as UTC ISO strings)
@@ -98,6 +91,34 @@ function readDay(day: Partial<ChatDay> | undefined): ChatDay {
   };
 }
 
+// Today's data, preloaded into the first request: the same three tool reads
+// (focus, browsing, schedule) the model would otherwise ask for, run locally
+// against Supabase — which costs nothing — so the usual "today" questions get
+// their answer from round one instead of spending a second provider request
+// on a tool round (and a second full re-send of the conversation). Any
+// failure falls back silently: the tools still work.
+async function preloadedToday(day: ChatDay, supabase: SupabaseClient): Promise<string> {
+  try {
+    const [focus, browsing, schedule] = await Promise.all([
+      executeAiTool({ id: "preload_focus", name: "get_focus_stats", args: {} }, day, supabase),
+      executeAiTool({ id: "preload_browsing", name: "get_browsing_stats", args: {} }, day, supabase),
+      executeAiTool(
+        { id: "preload_schedule", name: "get_schedule", args: { date: day.date } },
+        day,
+        supabase,
+      ),
+    ]);
+    return (
+      `\n\nData already fetched for you for today (${day.date}) — when the question is ` +
+      `about today, answer straight from this instead of calling the tools (call tools ` +
+      `only for other dates, goals or details it doesn't cover):\n` +
+      JSON.stringify({ focus_stats: focus, browsing_stats: browsing, schedule })
+    );
+  } catch {
+    return "";
+  }
+}
+
 // Cookie-backed Supabase client for the tool queries. Momentum has no sign-in
 // step yet (the Stats page and the browser extension both read these tables
 // with the publishable key, and the schema has no `user_id` column to scope
@@ -110,7 +131,7 @@ async function createSession(): Promise<SupabaseClient> {
 }
 
 export async function POST(request: Request) {
-  const config = readConfig(request);
+  const config = readProviderConfig(request);
   if (typeof config === "string") return jsonError(config, 400);
 
   let body: { messages?: ChatMessage[]; ping?: boolean; day?: Partial<ChatDay> };
@@ -124,10 +145,41 @@ export async function POST(request: Request) {
     return jsonError("Expected a JSON body.", 400);
   }
 
-  // `ping` is the settings dialog's "Test connection": one tiny round-trip —
-  // no tools, no stream.
+  // `ping` is the settings dialog's "Test connection": it asks the provider
+  // for its model list instead of generating a reply — the same proof that
+  // the key and base URL work, but it spends no quota, and it lets us flag a
+  // model name that isn't in the list before every prompt fails on it.
   if (body.ping === true) {
-    const { url, init } = upstreamRequest(
+    const list = modelsListRequest(config);
+    let upstream: Response;
+    try {
+      upstream = await fetch(list.url, list.init);
+    } catch (error) {
+      return jsonError(
+        `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
+        502,
+      );
+    }
+    // Gateways without a models endpoint fall back to a real (tiny) ping.
+    if (upstream.status !== 404 && upstream.status !== 405) {
+      if (!upstream.ok) {
+        return jsonError(providerError(upstream.status, await upstream.text()), upstream.status);
+      }
+      let modelListed = true;
+      try {
+        modelListed = modelListedIn(await upstream.json(), config.model);
+      } catch {
+        // an unparseable list shouldn't fail an otherwise working key
+      }
+      return Response.json({
+        ok: true,
+        provider: config.provider,
+        model: config.model,
+        modelListed,
+      });
+    }
+
+    const ping = upstreamRequest(
       config,
       [{ role: "user", content: "Reply with the single word OK." }],
       [],
@@ -135,9 +187,8 @@ export async function POST(request: Request) {
       false,
       [],
     );
-    let upstream: Response;
     try {
-      upstream = await fetch(url, init);
+      upstream = await fetch(ping.url, ping.init);
     } catch (error) {
       return jsonError(
         `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
@@ -177,6 +228,14 @@ export async function POST(request: Request) {
         }
       };
       try {
+        // Stream a first quota event up front: the badge appears (and the
+        // response flushes) before any rate-limit waiting or preload work.
+        const quotaKey = `${config.provider}:${config.model}`;
+        const quotaLimits = parseQuotaLimits(request.headers.get("x-ai-quota"));
+        if (quotaLimits) emit({ quota: usage(quotaKey, quotaLimits) });
+        // Today's numbers ride along in the system prompt so most prompts are
+        // answered in a single request — see preloadedToday.
+        const system = SYSTEM_PROMPT + (await preloadedToday(day, supabase));
         const rounds: ToolRound[] = [];
         // Tracks how much answer text has already reached the browser, so a
         // turn that answers with nothing at all can be reported instead of
@@ -191,20 +250,62 @@ export async function POST(request: Request) {
             config,
             messages,
             rounds,
-            SYSTEM_PROMPT,
+            system,
             true,
             AI_TOOLS,
           );
-          let upstream: Response;
-          try {
-            upstream = await fetch(url, init);
-          } catch (error) {
-            throw new Error(
-              `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
-            );
+          // Free-tier budget (see app/lib/quota.ts): reserve a slot — waiting
+          // out the per-minute window, refusing once the day is spent before
+          // anything is sent. Transient failures get a short wait-and-retry,
+          // following Google's pinned guidance ("a low number of retries with
+          // a short timeout at first"): 429 rate limits get up to three tries
+          // — a rejected request never reached the quota, so its slot is
+          // refunded — while 5xx "high demand" overload gets exactly one
+          // retry. Google calls 503s "unrelated to your quota", but free-tier
+          // audit reports on the developer forum say they still tick the daily
+          // counter, so a 503 slot stays spent: one retry salvages a brief
+          // spike without letting a model-level outage bleed the day dry.
+          let upstream: Response | null = null;
+          let retryBody = "";
+          for (let attempt = 0; attempt < 3; attempt++) {
+            retryBody = "";
+            if (quotaLimits) {
+              const verdict = await reserve(quotaKey, quotaLimits);
+              emit({ quota: usage(quotaKey, quotaLimits) });
+              if (!verdict.ok) throw new Error(verdict.message);
+            }
+            let response: Response;
+            try {
+              response = await fetch(url, init);
+            } catch (error) {
+              throw new Error(
+                `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
+              );
+            }
+            const status = response.status;
+            const transient = status === 429 || status >= 500;
+            const maxAttempts = status === 429 ? 3 : 2;
+            if (!transient || attempt + 1 >= maxAttempts) {
+              upstream = response;
+              break;
+            }
+            retryBody = await response.text();
+            if (status === 429 && quotaLimits) refund(quotaKey);
+            const wait = retryDelayMs(response.headers, retryBody);
+            console.log(`[ai-debug] retry status=${status} attempt=${attempt + 1} wait=${wait}ms`);
+            await sleep(wait);
           }
+          if (!upstream) throw new Error("The provider did not reply.");
           if (!upstream.ok) {
-            throw new Error(providerError(upstream.status, await upstream.text()));
+            // A retried failure's body was already read into `retryBody`.
+            const detail = retryBody || (await upstream.text());
+            const message = providerError(upstream.status, detail);
+            throw new Error(
+              upstream.status >= 500
+                ? `${message} — retried without success; if it keeps happening, ` +
+                  `try a different model in the AI settings.`
+                : message,
+            );
           }
           if (!upstream.body) throw new Error("The provider returned an empty stream.");
 
@@ -271,7 +372,27 @@ export async function POST(request: Request) {
 
           const calls: AiToolCall[] = [];
           for (const call of result.calls) {
-            calls.push({ ...call, result: await executeAiTool(call, day, supabase) });
+            const toolResult = await executeAiTool(call, day, supabase);
+            // A staged schedule change never runs silently: forward it to the
+            // browser as an approval card. The tool result handed back to the
+            // model keeps only a note — the write itself waits for the user's
+            // click, and the write route never sends the token back through
+            // the model, so a prompt-injected "apply it" can't act alone.
+            const staged = toolResult as { proposal?: ScheduleProposal } | null;
+            const proposal = staged?.proposal;
+            if (proposal) emit({ proposal });
+            calls.push({
+              ...call,
+              result: proposal
+                ? {
+                    ok: true,
+                    message:
+                      "Staged for the user's approval — an approval card is on screen. " +
+                      "Tell them to review and click Approve (or Reject); do NOT call " +
+                      "any more tools, and do not repeat the details already on the card.",
+                  }
+                : toolResult,
+            });
           }
           rounds.push({ text: result.text, calls });
         }

@@ -1,7 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { Tables } from "@/supabase/types";
 import { createClient } from "@/supabase/client";
+import AiSettingsDialog from "@/app/ui/ai-settings";
+import QuotaBadge from "@/app/ui/quota-badge";
+import {
+  type AiRequestError,
+  generateSubgoals,
+  isAiConfigured,
+  type GeneratedSubgoal,
+  type QuotaUsage,
+  readAiSettings,
+  readQuotaUsage,
+  subscribeAiSettings,
+} from "@/app/lib/ai";
 type Goal = Tables<"goals">;
 type Subgoal = Tables<"subgoals">;
 
@@ -10,6 +22,10 @@ type Modal =
   | { kind: "edit-goal"; id: string }
   | { kind: "new-subgoal"; goalId: string }
   | { kind: "edit-subgoal"; id: string };
+
+// SSR has no localStorage — the settings snapshot resolves on the client
+// (same trick as the chat panel and focus timer).
+const getServerSnapshot = () => null;
 
 function startOfToday() {
   const now = new Date();
@@ -67,6 +83,48 @@ const [supabase] = useState(() => createClient());
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState("");
   const [targetDate, setTargetDate] = useState("");
+
+  // AI subgoal generation: the saved connection, which goal (if any) is being
+  // generated for, its per-goal error, and the drafts awaiting review.
+  const settings = useSyncExternalStore(
+    subscribeAiSettings,
+    readAiSettings,
+    getServerSnapshot,
+  );
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [generatingId, setGeneratingId] = useState<string | null>(null);
+  const [genError, setGenError] = useState<{ goalId: string; message: string } | null>(null);
+  const [drafts, setDrafts] = useState<{ goalId: string; items: GeneratedSubgoal[] } | null>(
+    null,
+  );
+  // Free-tier counter the routes stream back (null when the connection
+  // doesn't declare a quota): shared with the chat panel, so both spend and
+  // show the same per-model budget.
+  const [quota, setQuota] = useState<QuotaUsage | null>(null);
+
+  // A new connection can carry a different budget, so drop the counter when
+  // the settings are written — the callback runs from the store's
+  // subscription, never synchronously in an effect.
+  useEffect(() => subscribeAiSettings(() => setQuota(null)), []);
+
+  // Show the budget at all times: read the live counter whenever the
+  // connection changes (a generation overwrites it with a fresher value,
+  // and this fetch never spends anything).
+  useEffect(() => {
+    let cancelled = false;
+    async function loadQuota() {
+      if (!isAiConfigured(settings)) {
+        setQuota(null);
+        return;
+      }
+      const live = await readQuotaUsage(settings);
+      if (!cancelled) setQuota(live);
+    }
+    loadQuota();
+    return () => {
+      cancelled = true;
+    };
+  }, [settings]);
 
   useEffect(() => {
     async function fetchGoals() {
@@ -279,6 +337,71 @@ const [supabase] = useState(() => createClient());
     );
   }
 
+  // The "Generate" button: ask the AI for dated subgoal drafts for one goal.
+  // Without a configured connection, open the settings dialog instead (same
+  // behavior as the chat panel).
+  async function generateSubgoalsFor(goal: Goal) {
+    if (generatingId) return;
+    setGenError(null);
+    if (!isAiConfigured(settings)) {
+      setSettingsOpen(true);
+      return;
+    }
+    setGeneratingId(goal.id);
+    try {
+      const existing = subgoals
+        .filter((s) => s.goal_id === goal.id)
+        .map((s) => s.title);
+      const result = await generateSubgoals(
+        settings,
+        { title: goal.title, start_date: goal.start_date, target_date: goal.target_date },
+        existing,
+      );
+      setQuota(result.quota);
+      setDrafts({ goalId: goal.id, items: result.subgoals });
+    } catch (error) {
+      const failed = error as AiRequestError;
+      if (failed.quota) setQuota(failed.quota);
+      setGenError({ goalId: goal.id, message: (error as Error).message });
+    } finally {
+      setGeneratingId(null);
+    }
+  }
+
+  function removeDraft(index: number) {
+    setDrafts((prev) =>
+      prev ? { ...prev, items: prev.items.filter((_, i) => i !== index) } : prev,
+    );
+  }
+
+  // Save the reviewed drafts in one insert, exactly like the manual subgoal
+  // modal would one at a time.
+  async function addDrafts() {
+    if (!drafts || drafts.items.length === 0) return;
+    const { data, error } = await supabase
+      .from("subgoals")
+      .insert(
+        drafts.items.map((item) => ({
+          title: item.title,
+          start_date: item.start_date,
+          target_date: item.target_date,
+          goal_id: drafts.goalId,
+        })),
+      )
+      .select();
+    if (error) {
+      console.error(error);
+      setGenError({
+        goalId: drafts.goalId,
+        message: "Couldn't save the generated subgoals — try again.",
+      });
+      setDrafts(null);
+      return;
+    }
+    setSubgoals((prev) => [...prev, ...data]);
+    setDrafts(null);
+  }
+
   function goalGroup(goal: Goal) {
     const subs = subgoals.filter((s) => s.goal_id === goal.id).sort(byTarget);
     const days = daysUntil(goal.target_date);
@@ -337,6 +460,25 @@ const [supabase] = useState(() => createClient());
               {status}
             </span>
           </button>
+          {!goal.completed && (
+            <button
+              type="button"
+              onClick={() => generateSubgoalsFor(goal)}
+              disabled={generatingId !== null}
+              title="Generate subgoals with the AI"
+              className={`flex shrink-0 items-center gap-1.5 py-1 pl-2 text-[12px] transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 disabled:cursor-wait ${generatingId === goal.id ? "text-[#16759b]" : "text-[#8a8780] hover:text-[#16759b] disabled:text-[#b8b5ae]"}`}
+            >
+              <svg
+                viewBox="0 0 12 12"
+                className="h-3 w-3"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M6 0l1.2 3.3L10.5 4.5 7.2 5.7 6 9 4.8 5.7 1.5 4.5l3.3-1.2L6 0zM10.5 7.5l.6 1.65 1.65.6-1.65.6-.6 1.65-.6-1.65-1.65-.6 1.65-.6.6-1.65z" />
+              </svg>
+              {generatingId === goal.id ? "Generating…" : "Generate"}
+            </button>
+          )}
         </div>
         {!goal.completed && subs.length > 0 && (
           <div className="px-6 pb-3.5">
@@ -358,6 +500,9 @@ const [supabase] = useState(() => createClient());
             >
               + Add subgoal
             </button>
+            {genError?.goalId === goal.id && (
+              <p className="py-0.5 pl-3 text-[12px] text-[#D26390]">{genError.message}</p>
+            )}
           </div>
         )}
       </li>
@@ -444,6 +589,7 @@ const [supabase] = useState(() => createClient());
               <span className="h-3 w-px bg-[#b8b5ae]" />
             </>
           )}
+          <QuotaBadge usage={quota} />
           <button
             type="button"
             onClick={openNew}
@@ -563,6 +709,79 @@ const [supabase] = useState(() => createClient());
           </div>
         </div>
       )}
+      {drafts && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          onClick={() => setDrafts(null)}
+        >
+          <div
+            className="w-[420px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="mb-1 text-2xl font-medium">Suggested subgoals</h2>
+            <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
+              {goals.find((g) => g.id === drafts.goalId)
+                ? `Under ${goals.find((g) => g.id === drafts.goalId)!.title} — edit any of them afterwards.`
+                : "Edit any of them afterwards."}
+            </p>
+            {drafts.items.length === 0 ? (
+              <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
+                Nothing left to add — close this and generate again.
+              </p>
+            ) : (
+              <ul className="mb-4 max-h-[280px] space-y-1.5 overflow-auto pr-1">
+                {drafts.items.map((item, index) => (
+                  <li
+                    key={`${item.title}-${index}`}
+                    className="flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2"
+                  >
+                    <span className="min-w-0 flex-1 truncate text-[14px]">{item.title}</span>
+                    <span className="shrink-0 text-[12px] tabular-nums text-[#E4E0D8]/60">
+                      {fmtDate(item.start_date)} → {fmtDate(item.target_date)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeDraft(index)}
+                      aria-label={`Remove "${item.title}"`}
+                      className="shrink-0 rounded p-1 text-[#E4E0D8]/50 transition hover:bg-white/10 hover:text-[#E4E0D8]"
+                    >
+                      <svg
+                        viewBox="0 0 12 12"
+                        className="h-2.5 w-2.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" />
+                      </svg>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setDrafts(null)}
+                className="rounded-lg px-4 py-2 hover:bg-white/10"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={addDrafts}
+                disabled={drafts.items.length === 0}
+                className="rounded-lg bg-[#16759b] px-4 py-2 text-white hover:bg-[#1b83ad] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Add {drafts.items.length} subgoal{drafts.items.length === 1 ? "" : "s"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <AiSettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }

@@ -90,6 +90,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
       apiKey: draft.apiKey.trim(),
       baseUrl: draft.baseUrl.trim(),
       model: draft.model.trim(),
+      quota: draft.quota.trim(),
     });
     setStatus(IDLE);
     onClose();
@@ -109,6 +110,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
         apiKey: draft.apiKey.trim(),
         baseUrl: draft.baseUrl.trim(),
         model: draft.model.trim(),
+        quota: draft.quota.trim(),
       });
       setStatus({ kind: "ok", text: `Connected to ${draft.model.trim()}.` });
     } catch (error) {
@@ -196,6 +198,21 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
               value={draft.model}
               onChange={(event) => update({ model: event.target.value })}
               placeholder={PROVIDER_PRESETS[draft.provider].model}
+              spellCheck={false}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field
+            label="Free-tier quota"
+            htmlFor="ai-quota"
+            hint="Requests per day / per minute from your provider's rate-limit page (e.g. 20/5). Paces requests, shows the counter in the chat header and stops before a wasted call; leave empty to disable."
+          >
+            <input
+              id="ai-quota"
+              value={draft.quota}
+              onChange={(event) => update({ quota: event.target.value })}
+              placeholder={PROVIDER_PRESETS[draft.provider].quota || "none"}
               spellCheck={false}
               className={inputClass}
             />
