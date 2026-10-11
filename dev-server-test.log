@@ -643,3 +643,5 @@
  GET /api/ai/quota 200 in 45ms (next.js: 31ms, application-code: 14ms)
  GET /api/ai/quota 200 in 23ms (next.js: 7ms, application-code: 16ms)
 [browser] Image with src "/momentumLogo.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+✓ Compiled in 4.4s
+ GET /schedule 200 in 103ms (next.js: 33ms, application-code: 71ms)
