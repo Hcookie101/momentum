@@ -6,9 +6,15 @@ const MAX_SESSION_SECONDS = 180; // cap any single logged chunk at 3 minutes
 const TOKEN_KEY = "momentumToken"; // set in Settings → paste the token here
 
 // ---- HELPERS ----
+// Hostname for a URL, or null when the page shouldn't be tracked. Only
+// real web pages count: chrome://, chrome-extension://, devtools:// etc.
+// parse into junk hostnames ("extensions", the extension's own id) that
+// would otherwise be logged as fake sites and skew the popup and Stats.
 function hostOf(url) {
   try {
-    return new URL(url).hostname.replace(/^www\./, "") || null;
+    const parsed = new URL(url);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
+    return parsed.hostname.replace(/^www\./, "") || null;
   } catch {
     return null;
   }

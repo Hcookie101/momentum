@@ -8,5 +8,6 @@
     "default_icon": "momentumLogo.png"
   },
   "permissions": ["tabs", "storage", "alarms", "idle"],
+  "host_permissions": ["https://mkxzfanqdfjbrlotxsmk.supabase.co/*"],
   "background": { "service_worker": "background.js" }
 }

@@ -27,16 +27,26 @@ async function getToken() {
 }
 
 // ---- DATA ----
-async function fetchTodaySessions(token) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/read_today_browsing`, {
+async function postReadRpc(token, body) {
+  return fetch(`${SUPABASE_URL}/rest/v1/rpc/read_today_browsing`, {
     method: "POST",
     headers: {
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ p_token: token }),
+    body: JSON.stringify(body),
   });
+}
+
+// "Today" in the browser's own time zone — the RPC truncates at the
+// caller's local midnight, matching the Stats page. If the database hasn't
+// been migrated for p_tz yet, PostgREST answers 404 ("Could not find the
+// function"), so retry with the old single-argument signature.
+async function fetchTodaySessions(token) {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  let res = await postReadRpc(token, { p_token: token, p_tz: timeZone });
+  if (res.status === 404) res = await postReadRpc(token, { p_token: token });
   if (!res.ok) throw new Error(`Could not load sessions (${res.status})`);
   return res.json();
 }
@@ -45,6 +55,10 @@ function groupByDomain(rows) {
   const totals = new Map();
   for (const row of rows) {
     if (!row.domain) continue;
+    // Real sites always contain a dot. Older builds logged non-web pages
+    // (chrome://extensions → "extensions", chrome-extension ids, …); skip
+    // any such leftover rows so they don't skew the list or the total.
+    if (!row.domain.includes(".")) continue;
     const seconds = Number(row.duration_seconds) || 0;
     totals.set(row.domain, (totals.get(row.domain) || 0) + seconds);
   }

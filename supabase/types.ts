@@ -256,7 +256,7 @@ export type Database = {
         Returns: undefined
       }
       read_today_browsing: {
-        Args: { p_token: string }
+        Args: { p_token: string; p_tz?: string }
         Returns: {
           domain: string
           duration_seconds: number
