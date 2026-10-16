@@ -583,7 +583,7 @@ const [supabase] = useState(() => createClient());
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
         <div>
-          <h1 className="mt-0.5 text-[24px] font-medium leading-tight text-[#1D2525]">
+          <h1 className="mt-0.5 font-serif text-[24px] font-medium leading-tight text-[#1D2525]">
             Goals
           </h1>
         </div>
@@ -651,7 +651,7 @@ const [supabase] = useState(() => createClient());
             className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">
+            <h2 className="mb-1 font-serif text-2xl font-medium">
               {`${isEdit ? "Edit" : "New"} ${isSub ? "subgoal" : "goal"}`}
             </h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
@@ -735,7 +735,7 @@ const [supabase] = useState(() => createClient());
             className="w-[420px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">Suggested subgoals</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">Suggested subgoals</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               {goals.find((g) => g.id === drafts.goalId)
                 ? `Under ${goals.find((g) => g.id === drafts.goalId)!.title} — edit any of them afterwards.`

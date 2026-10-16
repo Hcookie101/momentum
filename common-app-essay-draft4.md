@@ -1,0 +1,17 @@
+# Their edit — Draft 4 (as pasted)
+
+"I'll finish this essay later." At 1:15 AM, the blinking cursor on my blank google doc seemed to agree. I said "later" at dinner, at nine, and at 11. Now, I find myself saying it again. It's not like the essay was hard; the problem was that pushing it off was easy and cost nothing.
+
+It always has been. I once procrastinated on a Statistics webassign worth a full test grade to the weekend, then lost track of it until it was too late. This was something I had been looking for a solution for. I tried basic timers, calendars, and countless to-do list apps. Nothing worked. Everything I tried could build me a perfect schedule, but none of them charge me for breaking it. Another problem was my goals lived on one app, my schedule lived on another while my real attention lived in a screentime report I read like a verdict.
+
+So I built my own app. The result was Momentum, a single dashboard where goals, obligations, and schedule finally lived together. However, version one failed in exactly the same way as everything before it. I made a perfect schedule, then ignored it. At eight in the morning, it reminded me about an assignment that was due the night before. I didn't listen. The flaw wasn't in the schedule, or even the reminders. The app simply didn't hold me accountable.
+
+So I rebuilt Momentum around evidence. I built a focus timer I had to start and stop, a browser extension that logged where my hours really went, and a stats page that graded each day in numbers instead of feelings. Starting a task was as simple as clicking a button. Looking at the stats page, I can't make excuses with the hard numbers. Slowly, the app stopped being a strict parent, but more like a mirror. It knew my best hours were before noon. It noticed my worst days started without breakfast. For the first time, I could see the patterns of my behavior instead of just blaming myself. When I drift off schedule, I can just ask the integrated AI agent that could read my goals, obligations, schedule, and stats, and based on my own numbers, it helps me interpret what to do next and what to change. I didn't need more willpower, I needed a system that made it harder to ignore my own intentions and easier to understand why I kept breaking them.
+
+The difference showed up quickly. The focus time per day measured by the app went up 30%. Task done per day went up 25%. But the difference I remember is more than just statistics. My eagle scout project had sat untouched in a browser tab for months. One night, I felt the old sentence assemble itself, I'll finish it later, and before it could harden into a promise, I opened Momentum and started a focus session. An hour later, my first draft was complete.
+
+What I ended up with was more than just increased productivity and discipline. I began to question the way I had understood my own failures. For years, I had treated procrastination as a flaw I needed to overcome through willpower alone. Building momentum taught me to look beyond the failure itself and examine why my solutions weren't working, and redesign them. Instead of repeatedly trying the same solutions and expecting different results, I can build something better.
+
+I still hear the "I'll finish later" play in my head sometimes. The difference is that now, I know how to respond. I open something that I built to help myself follow through. This essay was written inside a Momentum focus session.10:47 PM to 1:14 AM, task completed: one.
+
+The cursor still blinks at 1:15 AM. It just doesn't win anymore.

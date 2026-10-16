@@ -38,6 +38,10 @@ export default function FocusTimer() {
     endISO: string;
   } | null>(null);
   const [score, setScore] = useState<number | null>(null);
+  // Goal choices for the stop prompt, and the one picked for this session
+  // (null = "No goal"). Loaded lazily once the prompt opens.
+  const [goalOptions, setGoalOptions] = useState<{ id: string; title: string }[]>([]);
+  const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +51,23 @@ export default function FocusTimer() {
     const id = window.setInterval(() => setTick((tick) => tick + 1), 1000);
     return () => window.clearInterval(id);
   }, [startISO, stoppedSession]);
+
+  // Load the open goals once the stop prompt opens (not needed while running).
+  useEffect(() => {
+    if (!stoppedSession) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("goals")
+        .select("id, title")
+        .eq("completed", false)
+        .order("target_date", { ascending: true });
+      if (!cancelled) setGoalOptions(data ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [stoppedSession, supabase]);
 
   function start() {
     writeFocusStart(new Date().toISOString());
@@ -58,6 +79,7 @@ export default function FocusTimer() {
     // Keep the stored start so a reload during the prompt can't lose the session.
     setStoppedSession({ startISO, endISO: new Date().toISOString() });
     setScore(null);
+    setSelectedGoalId(null);
     setError(null);
   }
 
@@ -90,6 +112,7 @@ export default function FocusTimer() {
       start_time: stoppedSession.startISO,
       end_time: stoppedSession.endISO,
       focus_score: score,
+      goal_id: selectedGoalId,
       user_id: user.id,
     });
     setSaving(false);
@@ -115,7 +138,7 @@ export default function FocusTimer() {
             className="h-2 w-2 rounded-full bg-[#6DBACB]"
             aria-hidden="true"
           />
-          <span className="min-w-[52px] text-center text-[13px] font-semibold tabular-nums">
+          <span className="min-w-[52px] text-center font-mono text-[13px] font-semibold tabular-nums">
             {formatElapsed(elapsed)}
           </span>
           <button
@@ -145,7 +168,7 @@ export default function FocusTimer() {
           aria-label="Rate your focus"
         >
           <div className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl">
-            <h2 className="mb-1 text-2xl font-medium">Rate your focus</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">Rate your focus</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               {formatElapsed(
                 elapsedSeconds(
@@ -155,6 +178,30 @@ export default function FocusTimer() {
               )}{" "}
               session · How focused were you (0–10)?
             </p>
+
+            <label className="mb-4 block">
+              <span className="mb-1.5 block text-[13px] text-[#E4E0D8]/70">
+                Which goal was this for?
+              </span>
+              <select
+                value={selectedGoalId ?? ""}
+                onChange={(event) => setSelectedGoalId(event.target.value || null)}
+                className="w-full rounded-lg border border-[#777] bg-[#0C425A] px-3 py-2 text-[14px] text-[#E4E0D8] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBACB]"
+              >
+                <option value="" className="bg-[#0C425A] text-[#E4E0D8]">
+                  No goal
+                </option>
+                {goalOptions.map((goal) => (
+                  <option
+                    key={goal.id}
+                    value={goal.id}
+                    className="bg-[#0C425A] text-[#E4E0D8]"
+                  >
+                    {goal.title}
+                  </option>
+                ))}
+              </select>
+            </label>
 
             <div className="mb-4 grid grid-cols-6 gap-2">
               {Array.from({ length: 11 }, (_, i) => i).map((value) => (

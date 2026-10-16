@@ -76,6 +76,7 @@ export type Database = {
           created_at: string
           end_time: string | null
           focus_score: number | null
+          goal_id: string | null
           id: string
           start_time: string
           user_id: string
@@ -84,6 +85,7 @@ export type Database = {
           created_at?: string
           end_time?: string | null
           focus_score?: number | null
+          goal_id?: string | null
           id?: string
           start_time?: string
           user_id: string
@@ -92,11 +94,20 @@ export type Database = {
           created_at?: string
           end_time?: string | null
           focus_score?: number | null
+          goal_id?: string | null
           id?: string
           start_time?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "focus_sessions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       goals: {
         Row: {

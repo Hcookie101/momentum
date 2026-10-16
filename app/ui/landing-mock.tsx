@@ -101,7 +101,7 @@ export function TuesdayList() {
           key={row.time}
           className={`flex items-center gap-4 bg-[#EFECE5] px-5 py-3 ${i < rows.length - 1 ? "border-b border-[#b8b5ae]/60" : ""}`}
         >
-          <span className="w-20 shrink-0 text-[12px] tabular-nums text-[#8a8780]">
+          <span className="w-20 shrink-0 font-mono text-[12px] tabular-nums text-[#8a8780]">
             {row.time}
           </span>
           <span

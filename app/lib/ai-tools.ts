@@ -46,8 +46,9 @@ export const AI_TOOLS: AiToolDefinition[] = [
     name: "get_focus_stats",
     description:
       "Read the user's focus-timer sessions for a day: session count, total focused " +
-      "time, per-session start/end times and focus scores. Use for questions about " +
-      "how much or when the user focused.",
+      "time, time spent per goal, per-session start/end times and focus scores. Use " +
+      "for questions about how much or when the user focused, or how much time went " +
+      "into a specific goal.",
     parameters: {
       type: "object",
       properties: { date: DATE_PARAM },
@@ -143,11 +144,17 @@ async function focusStats(
   const { date, from, to } = resolveDay(args, day);
   const { data, error } = await supabase
     .from("focus_sessions")
-    .select("start_time, end_time, focus_score")
+    .select("start_time, end_time, focus_score, goal_id")
     .gte("start_time", from)
     .lt("start_time", to)
     .order("start_time", { ascending: true });
   if (error) return { error: `Could not read focus sessions: ${error.message}` };
+
+  // Titles for the per-goal breakdown (a session may reference a deleted goal).
+  const { data: goalRows } = await supabase.from("goals").select("id, title");
+  const goalTitles = new Map((goalRows ?? []).map((goal) => [goal.id, goal.title]));
+  const goalName = (goalId: string | null) =>
+    goalId ? (goalTitles.get(goalId) ?? "Deleted goal") : "No goal";
 
   const rows = data ?? [];
   const finished = rows.filter((row) => row.end_time);
@@ -161,6 +168,21 @@ async function focusStats(
     : null;
   const tzOffset = day.tzOffset ?? 0;
 
+  // Focus seconds attributed to each goal (finished sessions only).
+  const byGoal = new Map<string, number>();
+  for (const row of finished) {
+    const key = row.goal_id ?? "";
+    const secs = (Date.parse(row.end_time!) - Date.parse(row.start_time)) / 1000;
+    byGoal.set(key, (byGoal.get(key) ?? 0) + Math.max(0, secs));
+  }
+  const by_goal = [...byGoal.entries()]
+    .map(([goalId, secs]) => ({
+      goal: goalName(goalId || null),
+      seconds: Math.round(secs),
+      total: formatDuration(secs),
+    }))
+    .sort((a, b) => b.seconds - a.seconds);
+
   return {
     date,
     sessions: rows.length,
@@ -169,12 +191,14 @@ async function focusStats(
     total_seconds: Math.round(seconds),
     total: formatDuration(seconds),
     average_focus_score: avg === null ? null : Math.round(avg * 10) / 10,
+    by_goal,
     // Times are "HH:MM" in the user's local time; scores are 0–10.
     session_details: finished.slice(0, 12).map((row) => ({
       start: wallClock(row.start_time, tzOffset),
       end: wallClock(row.end_time!, tzOffset),
       minutes: Math.round((Date.parse(row.end_time!) - Date.parse(row.start_time)) / 60_000),
       focus_score: row.focus_score,
+      goal: row.goal_id ? goalName(row.goal_id) : null,
     })),
   };
 }

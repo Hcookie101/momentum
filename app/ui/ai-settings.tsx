@@ -140,7 +140,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
           save();
         }}
       >
-        <h2 className="mb-1 text-2xl font-medium">Connect an AI</h2>
+        <h2 className="mb-1 font-serif text-2xl font-medium">Connect an AI</h2>
         <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
           Paste an API key for the chat panel. It stays in this browser and is
           only sent to the provider you pick.

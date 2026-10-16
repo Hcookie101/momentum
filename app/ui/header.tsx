@@ -40,7 +40,7 @@ export default function Header() {
             className="object-cover"
           />
         </div>
-        <span className="text-[20px]">Momentum</span>
+        <span className="font-serif text-[20px] font-medium tracking-[-0.01em]">Momentum</span>
       </div>
       <nav className="ml-auto flex h-full items-center gap-10 px-8">
         {navItems.map((item) => {

@@ -32,6 +32,7 @@ import type { BarShapeProps, PieSectorShapeProps } from "recharts";
 type FocusSession = Tables<"focus_sessions">;
 type SiteTotal = { domain: string; seconds: number };
 type CategoryTotal = { name: string; color: string; seconds: number };
+type GoalTotal = { goalId: string | null; title: string; seconds: number };
 type WeekBucket = { day: string; label: string; seconds: number };
 
 export default function Stats() {
@@ -45,6 +46,7 @@ export default function Stats() {
     { domain: string; duration_seconds: number }[]
   >([]);
   const [completed, setCompleted] = useState(0);
+  const [goalTitles, setGoalTitles] = useState<{ id: string; title: string }[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,7 +58,7 @@ export default function Stats() {
       const weekFrom = dayRange(addDays(date, -6)).from;
 
       try {
-        const [focusRes, weekRes, siteRes, goalRes, subRes] =
+        const [focusRes, weekRes, siteRes, goalRes, subRes, goalListRes] =
           await Promise.all([
             supabase
               .from("focus_sessions")
@@ -85,6 +87,7 @@ export default function Stats() {
               .eq("completed", true)
               .gte("completed_at", from)
               .lt("completed_at", to),
+            supabase.from("goals").select("id, title"),
           ]);
         if (cancelled) return;
         const failure =
@@ -92,13 +95,15 @@ export default function Stats() {
           weekRes.error ??
           siteRes.error ??
           goalRes.error ??
-          subRes.error;
+          subRes.error ??
+          goalListRes.error;
         if (failure) throw failure;
 
         setFocus(focusRes.data ?? []);
         setWeekFocus(weekRes.data ?? []);
         setSiteRows(siteRes.data ?? []);
         setCompleted((goalRes.data?.length ?? 0) + (subRes.data?.length ?? 0));
+        setGoalTitles(goalListRes.data ?? []);
       } catch (err) {
         console.error("Failed to load stats:", err);
         if (!cancelled) {
@@ -123,6 +128,7 @@ export default function Stats() {
 
   const sites = groupByDomain(siteRows);
   const categories = groupCategories(sites);
+  const goalTotals = groupFocusByGoal(focus, goalTitles);
 
   const week = buildWeek(date, weekFocus);
 
@@ -137,13 +143,14 @@ export default function Stats() {
             {error}
           </p>
         )}
-        <div className="flex-1 min-h-0 bg-[#C9C6C0] overflow-y-auto grid gap-4 grid-cols-2 grid-rows-[220px_160px_160px_180px_180px] [grid-template-areas:'a_a'_'b_c'_'b_d'_'e_f'_'e_f'] p-4">
+        <div className="flex-1 min-h-0 bg-[#C9C6C0] overflow-y-auto grid gap-4 grid-cols-2 grid-rows-[220px_160px_160px_180px_180px_200px] [grid-template-areas:'a_a'_'b_c'_'b_d'_'e_f'_'e_f'_'g_g'] p-4">
           <TotalFocusCard seconds={totalFocus} loading={loading} />
           <SitesCard sites={sites.slice(0, 6)} loading={loading} />
           <ScoreCard average={avgScore} loading={loading} />
           <TasksCard count={completed} today={isToday} loading={loading} />
           <CategoriesCard categories={categories} loading={loading} />
           <WeekCard week={week} selectedDay={date} loading={loading} />
+          <GoalTimeCard totals={goalTotals} loading={loading} />
         </div>
       </div>
       <Chat />
@@ -188,6 +195,32 @@ function groupCategories(sites: SiteTotal[]): CategoryTotal[] {
   return [...totals.values()].sort((a, b) => b.seconds - a.seconds);
 }
 
+// Focus time per goal for the day. Sessions logged with no goal bucket as
+// "No goal" so the rows still add up to the day's total focus time.
+function groupFocusByGoal(
+  rows: FocusSession[],
+  goals: { id: string; title: string }[],
+): GoalTotal[] {
+  const titles = new Map(goals.map((goal) => [goal.id, goal.title]));
+  const totals = new Map<string, number>();
+  for (const row of rows) {
+    if (!row.end_time) continue;
+    const seconds = Math.max(
+      0,
+      (Date.parse(row.end_time) - Date.parse(row.start_time)) / 1000,
+    );
+    const key = row.goal_id ?? "";
+    totals.set(key, (totals.get(key) ?? 0) + seconds);
+  }
+  return [...totals.entries()]
+    .map(([goalId, seconds]) => ({
+      goalId: goalId || null,
+      title: goalId ? (titles.get(goalId) ?? "Deleted goal") : "No goal",
+      seconds,
+    }))
+    .sort((a, b) => b.seconds - a.seconds);
+}
+
 // Seven local-day buckets ending on the selected date (Mon…Sun labels).
 function buildWeek(date: string, rows: FocusSession[]): WeekBucket[] {
   const buckets: WeekBucket[] = [];
@@ -229,6 +262,7 @@ const AREA_CLASSES = {
   d: "[grid-area:d]",
   e: "[grid-area:e]",
   f: "[grid-area:f]",
+  g: "[grid-area:g]",
 } as const;
 
 // Shared recharts tooltip props (dark panel from the app palette), used by both
@@ -282,8 +316,10 @@ function TotalFocusCard({
 }) {
   return (
     <Card area="a">
-      <h1 className="pt-2 text-center text-4xl">Total time spent on task:</h1>
-      <h1 className="pt-2 text-center text-9xl tabular-nums">
+      <h1 className="pt-2 text-center font-serif text-4xl">
+        Total time spent on task:
+      </h1>
+      <h1 className="pt-2 text-center text-9xl font-extrabold tabular-nums tracking-[-0.04em]">
         {loading ? "—" : formatDuration(seconds)}
       </h1>
     </Card>
@@ -299,7 +335,7 @@ function SitesCard({
 }) {
   return (
     <Card area="b" className="flex flex-col">
-      <h1 className="p-4 text-center">Websites used:</h1>
+      <h1 className="p-4 text-center font-serif text-xl">Websites used:</h1>
       {loading ? (
         <Empty>Loading…</Empty>
       ) : sites.length === 0 ? (
@@ -329,6 +365,44 @@ function SitesCard({
 }
 
 
+function GoalTimeCard({
+  totals,
+  loading,
+}: {
+  totals: GoalTotal[];
+  loading: boolean;
+}) {
+  return (
+    <Card area="g" className="flex flex-col">
+      <h1 className="p-4 text-center font-serif text-xl">Time spent on each goal</h1>
+      {loading ? (
+        <Empty>Loading…</Empty>
+      ) : totals.length === 0 ? (
+        <Empty>No focus sessions recorded for this day.</Empty>
+      ) : (
+        <div className="flex-1 overflow-y-auto">
+          {totals.map((entry) => (
+            <div
+              key={entry.goalId ?? "none"}
+              className="grid w-full grid-cols-2 border-b border-[#b8b5ae]/50 last:border-0"
+            >
+              <p
+                className="truncate p-4 justify-self-start self-center"
+                title={entry.title}
+              >
+                {entry.title}
+              </p>
+              <p className="p-4 text-2xl tabular-nums justify-self-end self-center">
+                {formatDuration(entry.seconds)}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 function ScoreCard({
   average,
   loading,
@@ -338,8 +412,8 @@ function ScoreCard({
 }) {
   return (
     <Card area="c">
-      <h1 className="p-4 text-center text-xl">Average Focus Score</h1>
-      <h1 className="text-center text-6xl tabular-nums">
+      <h1 className="p-4 text-center font-serif text-xl">Average Focus Score</h1>
+      <h1 className="text-center text-6xl font-extrabold tabular-nums tracking-tight">
         {loading ? "—" : average === null ? "—" : `${average.toFixed(1)}/10.0`}
       </h1>
     </Card>
@@ -357,10 +431,10 @@ function TasksCard({
 }) {
   return (
     <Card area="d">
-      <h1 className="p-4 text-center text-xl">
+      <h1 className="p-4 text-center font-serif text-xl">
         Tasks Completed{today ? " Today" : ""}
       </h1>
-      <h1 className="text-center text-6xl tabular-nums">
+      <h1 className="text-center text-6xl font-extrabold tabular-nums tracking-tight">
         {loading ? "—" : `${count} Task${count === 1 ? "" : "s"}`}
       </h1>
     </Card>
@@ -376,7 +450,7 @@ function CategoriesCard({
 }) {
   return (
     <Card area="e" className="flex flex-col">
-      <h1 className="p-4 text-center text-xl">Time spent in each category</h1>
+      <h1 className="p-4 text-center font-serif text-xl">Time spent in each category</h1>
       {loading ? (
         <Empty>Loading…</Empty>
       ) : categories.length === 0 ? (
@@ -445,7 +519,7 @@ function WeekCard({
   const hasData = week.some((entry) => entry.seconds > 0);
   return (
     <Card area="f" className="flex flex-col">
-      <h1 className="p-4 text-center text-xl">
+      <h1 className="p-4 text-center font-serif text-xl">
         Time Spent on Task in past week
       </h1>
       {loading ? (

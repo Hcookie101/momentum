@@ -173,7 +173,7 @@ export default function Obligations() {
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
       <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
         <div>
-          <h1 className="mt-0.5 text-[24px] font-medium leading-tight text-[#1D2525]">
+          <h1 className="mt-0.5 font-serif text-[24px] font-medium leading-tight text-[#1D2525]">
             Obligations
           </h1>
           <p className="mt-0.5 text-[13px] text-[#6b6963]">
@@ -216,7 +216,7 @@ export default function Obligations() {
               <div
                 key={hour}
                 style={{ height: `${hourHeight}px` }}
-                className="border-b border-[#b8b5ae]/60 pr-3 pt-1 text-right text-[12px] tabular-nums text-[#7a7771]"
+                className="border-b border-[#b8b5ae]/60 pr-3 pt-1 text-right font-mono text-[12px] tabular-nums text-[#7a7771]"
               >
                 {fmt(hour)}
               </div>
@@ -285,7 +285,7 @@ export default function Obligations() {
             className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">
+            <h2 className="mb-1 font-serif text-2xl font-medium">
               {editing ? "Edit obligation" : "New obligation"}
             </h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">

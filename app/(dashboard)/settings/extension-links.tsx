@@ -98,7 +98,7 @@ export default function ExtensionLinks() {
 
   return (
     <section className="rounded-xl border border-[#b8b5ae] bg-[#EFECE5] p-5">
-      <h2 className="text-[17px] font-medium">Browser extension</h2>
+      <h2 className="font-serif text-[17px] font-medium">Browser extension</h2>
       <p className="mt-1 max-w-[70ch] text-[14px] leading-relaxed text-[#6b6963]">
         Link your Chrome extension so it logs browsing time to <em>your</em>{" "}
         account. Create a token below, then paste it into the extension. It

@@ -10,7 +10,7 @@ export default function Home() {
           <span className="relative h-8 w-8 overflow-hidden rounded-lg">
             <Image src="/momentumLogo.png" alt="Momentum logo" fill className="object-cover" />
           </span>
-          <span className="text-[19px]">Momentum</span>
+          <span className="font-serif text-[19px] font-medium tracking-[-0.01em]">Momentum</span>
           <nav className="ml-auto hidden items-center gap-7 text-[14px] text-[#6b6963] sm:flex">
             <a href="#how" className="transition-colors hover:text-[#1D2525]">How it works</a>
             <a href="#inside" className="transition-colors hover:text-[#1D2525]">What&apos;s inside</a>
@@ -33,7 +33,7 @@ export default function Home() {
             <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8780]">
               A weekly planner that respects the fixed parts
             </p>
-            <h1 className="mt-3 text-[40px] font-medium leading-[1.08] tracking-tight md:text-[48px]">
+            <h1 className="mt-3 font-serif text-[40px] font-medium leading-[1.08] tracking-tight md:text-[48px]">
               Plan the week around the life you already have.
             </h1>
             <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-[#6b6963]">
@@ -77,12 +77,12 @@ export default function Home() {
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8780]">
             How it works
           </p>
-          <h2 className="mt-2 text-[24px] font-medium leading-tight">
+          <h2 className="mt-2 font-serif text-[24px] font-medium leading-tight">
             Three things, in order.
           </h2>
           <ol className="mt-8 grid gap-8 md:grid-cols-3">
             <li className="border-t-2 border-[#1D2525] pt-4">
-              <p className="text-[12px] tabular-nums text-[#8a8780]">01</p>
+              <p className="font-mono text-[12px] tabular-nums text-[#8a8780]">01</p>
               <h3 className="mt-1 text-[17px] font-medium">Pin what won&apos;t move</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-[#6b6963]">
                 Classes, shifts, gym, dinner with your parents. Click a slot, name it,
@@ -90,7 +90,7 @@ export default function Home() {
               </p>
             </li>
             <li className="border-t-2 border-[#1D2525] pt-4">
-              <p className="text-[12px] tabular-nums text-[#8a8780]">02</p>
+              <p className="font-mono text-[12px] tabular-nums text-[#8a8780]">02</p>
               <h3 className="mt-1 text-[17px] font-medium">Name where you&apos;re headed</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-[#6b6963]">
                 A goal with a date on it, broken into subgoals. Draft them yourself, or let
@@ -98,7 +98,7 @@ export default function Home() {
               </p>
             </li>
             <li className="border-t-2 border-[#1D2525] pt-4">
-              <p className="text-[12px] tabular-nums text-[#8a8780]">03</p>
+              <p className="font-mono text-[12px] tabular-nums text-[#8a8780]">03</p>
               <h3 className="mt-1 text-[17px] font-medium">Fill the gaps with focus</h3>
               <p className="mt-2 text-[14px] leading-relaxed text-[#6b6963]">
                 Ask the planner to lay out your week around the walls. Review the draft,
@@ -124,7 +124,7 @@ export default function Home() {
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8780]">
             What&apos;s inside
           </p>
-          <h2 className="mt-2 text-[24px] font-medium leading-tight">
+          <h2 className="mt-2 font-serif text-[24px] font-medium leading-tight">
             Four tabs. Nothing else competing for your attention.
           </h2>
           <ul className="mt-8 divide-y divide-[#b8b5ae] border-y border-[#b8b5ae]">
@@ -163,7 +163,7 @@ export default function Home() {
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8780]">
             Questions
           </p>
-          <h2 className="mt-2 text-[24px] font-medium leading-tight">
+          <h2 className="mt-2 font-serif text-[24px] font-medium leading-tight">
             Asked already, answered honestly.
           </h2>
           <dl className="mt-8 space-y-7">
@@ -194,7 +194,7 @@ export default function Home() {
         </section>
 
         <section className="border-t border-[#b8b5ae] py-14 text-center">
-          <h2 className="mx-auto max-w-[22ch] text-[28px] font-medium leading-tight tracking-tight">
+          <h2 className="mx-auto max-w-[22ch] font-serif text-[28px] font-medium leading-tight tracking-tight">
             Tuesday is coming either way. Give it a plan.
           </h2>
           <div className="mt-6">

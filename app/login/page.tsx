@@ -11,11 +11,11 @@ export default function LoginPage() {
           <span className="relative h-8 w-8 overflow-hidden rounded-lg">
             <Image src="/momentumLogo.png" alt="Momentum logo" fill className="object-cover" />
           </span>
-          <span className="text-[19px]">Momentum</span>
+          <span className="font-serif text-[19px] font-medium tracking-[-0.01em]">Momentum</span>
         </Link>
 
         <div className="mx-auto flex w-full max-w-[360px] flex-1 flex-col justify-center py-12">
-          <h1 className="text-[28px] font-medium leading-tight tracking-tight">
+          <h1 className="font-serif text-[28px] font-medium leading-tight tracking-tight">
             Welcome back.
           </h1>
           <p className="mt-2 text-[14px] leading-relaxed text-[#6b6963]">

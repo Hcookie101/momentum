@@ -518,7 +518,7 @@ export default function Calendar() {
             className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">
+            <h2 className="mb-1 font-serif text-2xl font-medium">
               {editing ? "Edit Event" : "Add Event"}
             </h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
@@ -658,7 +658,7 @@ export default function Calendar() {
             className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">Generate schedule</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">Generate schedule</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               The AI plans around your obligations, existing events and open
               goals — tell it anything specific to work in.
@@ -704,7 +704,7 @@ export default function Calendar() {
             className="w-[440px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 text-2xl font-medium">Suggested schedule</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">Suggested schedule</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               The dashed blocks on the grid behind this are what you would get —
               click any event on the calendar afterwards to edit it.

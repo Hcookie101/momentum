@@ -1,12 +1,47 @@
 @import "tailwindcss";
 
+/* Font families, wired to the variables next/font sets on <html>
+   (see app/layout.tsx). These back the font-sans / font-serif /
+   font-mono utilities and the default body font. */
+@theme inline {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+}
+
 html {
   background-color: #e4e0d8;
+  /* Explicit so the default body font never depends on preflight internals. */
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-optical-sizing: auto;
 }
 
 body {
   background-color: #e4e0d8;
   color: #1d2525;
+}
+
+/* Emphasis sets in the serif italic instead of a synthesized slant of the
+   sans — the same voice as the headlines. */
+em {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-style: italic;
+}
+
+/* Headlines balance their line breaks instead of orphaning a word. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 }
 
 ::selection {
