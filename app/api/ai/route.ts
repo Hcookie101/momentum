@@ -129,6 +129,14 @@ async function createSession(): Promise<SupabaseClient> {
 }
 
 export async function POST(request: Request) {
+  // The middleware only gates page paths, so API routes check the session
+  // themselves — before parsing provider config or reaching upstream.
+  const supabase = await createSession();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return jsonError("You're signed out — log back in and try again.", 401);
+
   const config = readProviderConfig(request);
   if (typeof config === "string") return jsonError(config, 400);
 
@@ -209,7 +217,6 @@ export async function POST(request: Request) {
   if (messages.length === 0) return jsonError("There is nothing to send yet.", 400);
 
   const day = readDay(body.day);
-  const supabase = await createSession();
   const encoder = new TextEncoder();
   let stopped = false;
 

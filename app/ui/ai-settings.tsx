@@ -126,14 +126,14 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Connect an AI"
       onClick={onClose}
     >
       <form
-        className="w-[420px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+        className="max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
         onClick={(event) => event.stopPropagation()}
         onSubmit={(event) => {
           event.preventDefault();

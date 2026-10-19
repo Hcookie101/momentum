@@ -133,7 +133,7 @@ const [supabase] = useState(() => createClient());
       else setGoals(data);
     }
     fetchGoals();
-  }, []);
+  }, [supabase]);
   useEffect(() => {
     async function fetchSubgoals() {
       const { data, error } = await supabase.from("subgoals").select("*");
@@ -141,7 +141,7 @@ const [supabase] = useState(() => createClient());
       else setSubgoals(data);
     }
     fetchSubgoals();
-  }, []);
+  }, [supabase]);
 
   const modalOpen = modal !== null;
   const isEdit = modal?.kind.startsWith("edit-") ?? false;
@@ -430,7 +430,7 @@ const [supabase] = useState(() => createClient());
     return (
       <li key={goal.id} className="group border-b border-[#b8b5ae]/50">
         <div
-          className={`flex items-center gap-3.5 px-6 pt-3.5 ${goal.completed ? "pb-3.5" : "pb-2"}`}
+          className={`flex items-center gap-2 px-3 pt-3 sm:gap-3.5 sm:px-6 sm:pt-3.5 ${goal.completed ? "pb-3 sm:pb-3.5" : "pb-2"}`}
         >
           <button
             type="button"
@@ -461,10 +461,10 @@ const [supabase] = useState(() => createClient());
           <button
             type="button"
             onClick={() => openEdit(goal)}
-            className="flex min-w-0 flex-1 items-baseline gap-4 py-1 text-left"
+            className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-3 gap-y-0.5 py-1 text-left sm:flex-nowrap sm:gap-4"
           >
             <span
-              className={`min-w-0 flex-1 truncate text-[15px] ${goal.completed ? "text-[#6b6963] line-through" : "text-[#1D2525]"}`}
+              className={`min-w-0 flex-1 basis-full truncate text-[15px] sm:basis-auto ${goal.completed ? "text-[#6b6963] line-through" : "text-[#1D2525]"}`}
             >
               {goal.title}
             </span>
@@ -472,7 +472,7 @@ const [supabase] = useState(() => createClient());
               {fmtDate(goal.start_date)} → {fmtDate(goal.target_date)}
             </span>
             <span
-              className={`w-[96px] shrink-0 text-right text-[12px] tabular-nums ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}
+              className={`w-[96px] shrink-0 text-left text-[12px] tabular-nums sm:text-right ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}
             >
               {status}
             </span>
@@ -483,7 +483,7 @@ const [supabase] = useState(() => createClient());
               onClick={() => generateSubgoalsFor(goal)}
               disabled={generatingId !== null}
               title="Generate subgoals with the AI"
-              className={`flex shrink-0 items-center gap-1.5 py-1 pl-2 text-[12px] transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 disabled:cursor-wait ${generatingId === goal.id ? "text-[#16759b]" : "text-[#8a8780] hover:text-[#16759b] disabled:text-[#b8b5ae]"}`}
+              className={`flex shrink-0 items-center gap-1.5 py-1 pl-1 text-[12px] transition-colors sm:pl-2 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 disabled:cursor-wait ${generatingId === goal.id ? "text-[#16759b]" : "text-[#8a8780] hover:text-[#16759b] disabled:text-[#b8b5ae]"}`}
             >
               <svg
                 viewBox="0 0 12 12"
@@ -498,7 +498,7 @@ const [supabase] = useState(() => createClient());
           )}
         </div>
         {!goal.completed && subs.length > 0 && (
-          <div className="px-6 pb-3.5">
+          <div className="px-3 pb-3.5 sm:px-6">
             <div className="h-[3px] rounded-full bg-[#b8b5ae]/50">
               <div
                 className="h-full rounded-full bg-[#16759b]"
@@ -507,9 +507,9 @@ const [supabase] = useState(() => createClient());
             </div>
           </div>
         )}
-        {subs.length > 0 && <ul className="px-6 pb-1">{subs.map(subRow)}</ul>}
+        {subs.length > 0 && <ul className="px-3 pb-1 sm:px-6">{subs.map(subRow)}</ul>}
         {!goal.completed && (
-          <div className="pb-3 pl-[58px] pr-6 pt-1">
+          <div className="pb-3 pl-[42px] pr-3 pt-1 sm:pl-[58px] sm:pr-6">
             <button
               type="button"
               onClick={() => openNewSub(goal.id)}
@@ -532,7 +532,7 @@ const [supabase] = useState(() => createClient());
     const overdue = !sub.completed && days < 0;
 
     return (
-      <li key={sub.id} className="flex items-center gap-3 py-1.5 pl-[34px]">
+      <li key={sub.id} className="flex items-center gap-2 py-1.5 pl-[26px] sm:gap-3 sm:pl-[34px]">
         <button
           type="button"
           onClick={() => toggleSub(sub.id)}
@@ -562,10 +562,10 @@ const [supabase] = useState(() => createClient());
         <button
           type="button"
           onClick={() => openEditSub(sub)}
-          className="flex min-w-0 flex-1 items-baseline gap-4 text-left"
+          className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-3 gap-y-0.5 text-left sm:flex-nowrap sm:gap-4"
         >
           <span
-            className={`min-w-0 flex-1 truncate text-[14px] ${sub.completed ? "text-[#6b6963] line-through" : "text-[#1D2525]"}`}
+            className={`min-w-0 flex-1 basis-full truncate text-[14px] sm:basis-auto ${sub.completed ? "text-[#6b6963] line-through" : "text-[#1D2525]"}`}
           >
             {sub.title}
           </span>
@@ -581,13 +581,13 @@ const [supabase] = useState(() => createClient());
 
   return (
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-3 pb-3 pt-4 sm:px-6">
         <div>
           <h1 className="mt-0.5 font-serif text-[24px] font-medium leading-tight text-[#1D2525]">
             Goals
           </h1>
         </div>
-        <div className="flex items-center gap-4 pb-0.5 text-[13px] text-[#6b6963]">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pb-0.5 text-[13px] text-[#6b6963]">
           {goals.length > 0 && (
             <>
               <span>
@@ -619,13 +619,13 @@ const [supabase] = useState(() => createClient());
 
       <div className="min-h-0 flex-1 overflow-auto pb-10">
         {goals.length === 0 && (
-          <p className="px-6 py-10 text-center text-[13px] text-[#8a8780]">
+          <p className="px-3 py-10 text-center text-[13px] text-[#8a8780] sm:px-6">
             Nothing here yet. Add a goal to get started.
           </p>
         )}
         {active.length > 0 && (
           <>
-            <h2 className="px-6 pb-2 pt-6 text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780]">
+            <h2 className="px-3 pb-2 pt-6 text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780] sm:px-6">
               Active
             </h2>
             <ul className="border-t border-[#b8b5ae]">
@@ -635,7 +635,7 @@ const [supabase] = useState(() => createClient());
         )}
         {done.length > 0 && (
           <>
-            <h2 className="px-6 pb-2 pt-7 text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780]">
+            <h2 className="px-3 pb-2 pt-7 text-[11px] font-medium uppercase tracking-[0.14em] text-[#8a8780] sm:px-6">
               Done
             </h2>
             <ul className="border-t border-[#b8b5ae]">{done.map(goalGroup)}</ul>
@@ -644,11 +644,11 @@ const [supabase] = useState(() => createClient());
       </div>
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={resetForm}
         >
           <div
-            className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -673,7 +673,7 @@ const [supabase] = useState(() => createClient());
               }}
               className="mb-4 w-full rounded-lg border border-[#777] bg-transparent px-3 py-2 outline-none placeholder:text-[#888] focus:border-[#6DBACB]"
             />
-            <div className="mb-4 grid grid-cols-2 gap-3">
+            <div className="mb-4 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
               <div>
                 <label className="mb-1.5 block text-sm">Starts</label>
                 <input
@@ -693,7 +693,7 @@ const [supabase] = useState(() => createClient());
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 {isEdit && (
                   <button
@@ -728,11 +728,11 @@ const [supabase] = useState(() => createClient());
       )}
       {drafts && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={() => setDrafts(null)}
         >
           <div
-            className="w-[420px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">Suggested subgoals</h2>
@@ -750,9 +750,9 @@ const [supabase] = useState(() => createClient());
                 {drafts.items.map((item, index) => (
                   <li
                     key={`${item.title}-${index}`}
-                    className="flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2"
+                    className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-white/5 px-3 py-2"
                   >
-                    <span className="min-w-0 flex-1 truncate text-[14px]">{item.title}</span>
+                    <span className="min-w-0 flex-1 basis-full truncate text-[14px] min-[400px]:basis-auto">{item.title}</span>
                     <span className="shrink-0 text-[12px] tabular-nums text-[#E4E0D8]/60">
                       {fmtDate(item.start_date)} → {fmtDate(item.target_date)}
                     </span>
@@ -778,7 +778,7 @@ const [supabase] = useState(() => createClient());
                 ))}
               </ul>
             )}
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setDrafts(null)}

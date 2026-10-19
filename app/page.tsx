@@ -217,6 +217,7 @@ export default function Home() {
             Momentum
           </span>
           <span className="ml-auto tabular-nums">© {new Date().getFullYear()}</span>
+          <Link href="/privacy" className="transition-colors hover:text-[#1D2525]">Privacy</Link>
           <Link href="/login" className="transition-colors hover:text-[#1D2525]">Log in</Link>
           <Link href="/schedule" className="transition-colors hover:text-[#1D2525]">The app</Link>
         </div>

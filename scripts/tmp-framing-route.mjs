@@ -14,7 +14,7 @@ const EMPTY = process.env.EMPTY === "1";
 const sep = FRAMING === "crlf" ? "\r\n\r\n" : "\n\n";
 
 const seen = [];
-const answer = (body) =>
+const answer = () =>
   ["You focused", " for 1h45m", " today."].map(
     (text) => `data: ${JSON.stringify({ choices: [{ delta: { content: text } }] })}${sep}`,
   );

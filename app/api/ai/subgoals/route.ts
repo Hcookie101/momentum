@@ -9,6 +9,8 @@
 // pacing shared with /api/ai) and normalizes the JSON array the model replies
 // with.
 
+import { cookies } from "next/headers";
+import { createClient } from "@/supabase/server";
 import { readProviderConfig } from "@/app/lib/ai-providers";
 import { generateOnce, oneShotError, parseJsonArray } from "@/app/lib/ai-once";
 import { toLocalDateString } from "@/app/lib/stats";
@@ -46,6 +48,13 @@ function clampDate(value: string, min: string, max: string): string {
 
 
 export async function POST(request: Request) {
+  // The middleware only gates page paths, so API routes check the session
+  // themselves — before parsing provider config or reaching upstream.
+  const {
+    data: { user },
+  } = await createClient(await cookies()).auth.getUser();
+  if (!user) return jsonError("You're signed out — log back in and try again.", 401);
+
   const config = readProviderConfig(request);
   if (typeof config === "string") return jsonError(config, 400);
 

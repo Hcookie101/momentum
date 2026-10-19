@@ -88,6 +88,8 @@ export default function Calendar() {
   const [generating, setGenerating] = useState(false);
   const [genError, setGenError] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<GeneratedEvent[] | null>(null);
+  // Phones show one day column; the tabs below switch it. Defaults to today.
+  const [phoneDay, setPhoneDay] = useState(() => new Date().getDay());
   // Free-tier counter the route sends back (null when the connection doesn't
   // declare a quota): the same per-model bucket the chat panel shows.
   const [quota, setQuota] = useState<QuotaUsage | null>(null);
@@ -364,8 +366,8 @@ export default function Calendar() {
       {/* Sticky top: the toolbar plus day names stay visible while the
           auto-scroll (and any manual scrolling) moves the 24h grid. */}
       <div className="sticky top-0 z-30 bg-[#E4E0D8]">
-        <div className="flex items-center justify-end gap-3 border-b border-[#b8b5ae] px-4 py-2">
-          {genError && <p className="text-[12px] text-[#D26390]">{genError}</p>}
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2 border-b border-[#b8b5ae] px-3 py-2 sm:px-4">
+          {genError && <p className="mr-auto text-[12px] text-[#D26390]">{genError}</p>}
           <QuotaBadge usage={quota} />
           <button
             type="button"
@@ -384,7 +386,9 @@ export default function Calendar() {
             {generating ? "Generating…" : "Generate schedule"}
           </button>
         </div>
-        <div className="grid grid-cols-8 border-b border-[#b8b5ae] bg-[#E4E0D8]">
+        {/* Desktop day names. Phones get the tab switcher below instead —
+            7 columns can't fit 360px, so the grid shows one day. */}
+        <div className="hidden grid-cols-8 border-b border-[#b8b5ae] bg-[#E4E0D8] sm:grid">
           <div></div>
           {days.map((day) => (
             <div
@@ -397,14 +401,39 @@ export default function Calendar() {
             </div>
           ))}
         </div>
+        {/* Phone day switcher. */}
+        <div
+          role="tablist"
+          aria-label="Show day"
+          className="flex gap-1.5 overflow-x-auto border-b border-[#b8b5ae] bg-[#E4E0D8] px-3 py-2 sm:hidden"
+        >
+          {days.map((day, index) => (
+            <button
+              key={day}
+              type="button"
+              role="tab"
+              aria-selected={phoneDay === index}
+              onClick={() => setPhoneDay(index)}
+              className={`shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16759b] ${
+                phoneDay === index
+                  ? "bg-[#1D2525] text-[#E4E0D8]"
+                  : "border border-[#b8b5ae] text-[#6b6963]"
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-8">
+      {/* One column (plus gutter) on phones — only the selected day renders;
+          full 8-column week from sm up. */}
+      <div className="grid grid-cols-[52px_1fr] sm:grid-cols-8">
         <div>
           {hours.map((hour) => (
             <div
               key={hour}
               style={{ height: `${hourHeight}px` }}
-              className="border-t border-[#b8b5ae] pr-3 pt-1 text-right text-sm text-[#666]"
+              className="border-t border-[#b8b5ae] pr-2 pt-1 text-right text-[11px] text-[#666] sm:pr-3 sm:text-sm"
             >
               {hour === 0
                 ? "12 AM"
@@ -417,7 +446,10 @@ export default function Calendar() {
           ))}
         </div>
         {days.map((_, dayIndex) => (
-          <div key={dayIndex} className="relative border-l border-[#b8b5ae]">
+          <div
+            key={dayIndex}
+            className={`relative border-l border-[#b8b5ae] ${dayIndex === phoneDay ? "" : "hidden"} sm:block`}
+          >
             {hours.map((hour) => (
               <div
                 key={hour}
@@ -511,11 +543,11 @@ export default function Calendar() {
       </div>
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={resetForm}
         >
           <div
-            className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -619,7 +651,7 @@ export default function Calendar() {
             </div>
 
             {/* Buttons */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 {editing && (
                   <button
@@ -651,11 +683,11 @@ export default function Calendar() {
       )}
       {composeOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={() => setComposeOpen(false)}
         >
           <div
-            className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">Generate schedule</h2>
@@ -675,7 +707,7 @@ export default function Calendar() {
               }}
               className="mb-4 w-full resize-none rounded-lg border border-[#777] bg-transparent px-3 py-2 outline-none placeholder:text-[#888] focus:border-[#6DBACB]"
             />
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setComposeOpen(false)}
@@ -697,11 +729,11 @@ export default function Calendar() {
       )}
       {drafts && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={closeDrafts}
         >
           <div
-            className="w-[440px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">Suggested schedule</h2>
@@ -718,9 +750,9 @@ export default function Calendar() {
                 {drafts.map((item, index) => (
                   <li
                     key={`${item.day}-${item.start_hour}-${index}`}
-                    className="flex items-center gap-3 rounded-lg bg-white/5 px-3 py-2"
+                    className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-white/5 px-3 py-2"
                   >
-                    <span className="min-w-0 flex-1 truncate text-[14px]">
+                    <span className="min-w-0 flex-1 basis-full truncate text-[14px] min-[400px]:basis-auto">
                       {item.title}
                     </span>
                     <span className="shrink-0 text-[12px] tabular-nums text-[#E4E0D8]/60">
@@ -748,7 +780,7 @@ export default function Calendar() {
                 ))}
               </ul>
             )}
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={closeDrafts}

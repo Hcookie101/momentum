@@ -54,6 +54,8 @@ export default function Obligations() {
   const [color, setColor] = useState(SWATCHES[0]);
   const [patternDays, setPatternDays] = useState<number[]>([]);
   const [formHour, setFormHour] = useState(0);
+  // Phones show one day column; the tabs below switch it. Defaults to today.
+  const [phoneDay, setPhoneDay] = useState(() => new Date().getDay());
 
   useEffect(() => {
     async function fetchObligations() {
@@ -171,7 +173,7 @@ export default function Obligations() {
 
   return (
     <div className="flex h-[calc(100vh-40px)] flex-col bg-[#E4E0D8]">
-      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-6 pb-3 pt-4">
+      <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[#b8b5ae] px-3 pb-3 pt-4 sm:px-6">
         <div>
           <h1 className="mt-0.5 font-serif text-[24px] font-medium leading-tight text-[#1D2525]">
             Obligations
@@ -181,7 +183,7 @@ export default function Obligations() {
             one down.
           </p>
         </div>
-        <div className="flex items-center gap-4 pb-0.5 text-[13px] text-[#6b6963]">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pb-0.5 text-[13px] text-[#6b6963]">
           <span>
             <span className="font-semibold tabular-nums text-[#1D2525]">
               {obligations.length}
@@ -198,8 +200,32 @@ export default function Obligations() {
         </div>
       </div>
 
+      {/* Phone day switcher — the grid below shows one day on phones. */}
+      <div
+        role="tablist"
+        aria-label="Show day"
+        className="flex gap-1.5 overflow-x-auto border-b border-[#b8b5ae] bg-[#E4E0D8] px-3 py-2 sm:hidden"
+      >
+        {days.map((day, index) => (
+          <button
+            key={day}
+            type="button"
+            role="tab"
+            aria-selected={phoneDay === index}
+            onClick={() => setPhoneDay(index)}
+            className={`shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16759b] ${
+              phoneDay === index
+                ? "bg-[#1D2525] text-[#E4E0D8]"
+                : "border border-[#b8b5ae] text-[#6b6963]"
+            }`}
+          >
+            {day}
+          </button>
+        ))}
+      </div>
+
       <div className="min-h-0 flex-1 overflow-auto">
-        <div className="sticky top-0 z-10 grid grid-cols-8 bg-[#E4E0D8]">
+        <div className="sticky top-0 z-10 hidden grid-cols-8 bg-[#E4E0D8] sm:grid">
           <div className="border-b border-[#b8b5ae]" />
           {days.map((day) => (
             <div
@@ -210,13 +236,15 @@ export default function Obligations() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-8">
+        {/* One column (plus gutter) on phones — only the selected day
+            renders; full 8-column week from sm up. */}
+        <div className="grid grid-cols-[52px_1fr] sm:grid-cols-8">
           <div>
             {hours.map((hour) => (
               <div
                 key={hour}
                 style={{ height: `${hourHeight}px` }}
-                className="border-b border-[#b8b5ae]/60 pr-3 pt-1 text-right font-mono text-[12px] tabular-nums text-[#7a7771]"
+                className="border-b border-[#b8b5ae]/60 pr-2 pt-1 text-right font-mono text-[11px] tabular-nums text-[#7a7771] sm:pr-3 sm:text-[12px]"
               >
                 {fmt(hour)}
               </div>
@@ -224,7 +252,10 @@ export default function Obligations() {
           </div>
           {/*__GRID__*/}
           {days.map((_, dayIndex) => (
-            <div key={dayIndex} className="relative border-l border-[#b8b5ae]">
+            <div
+              key={dayIndex}
+              className={`relative border-l border-[#b8b5ae] ${dayIndex === phoneDay ? "" : "hidden"} sm:block`}
+            >
               {hours.map((hour) => (
                 <div
                   key={hour}
@@ -278,11 +309,11 @@ export default function Obligations() {
       {/*__MODAL__*/}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           onClick={resetForm}
         >
           <div
-            className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl"
+            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -341,7 +372,7 @@ export default function Obligations() {
               })}
             </div>
 
-            <div className="mb-4 grid grid-cols-[1fr_1.4fr] gap-3">
+            <div className="mb-4 grid grid-cols-1 gap-3 min-[400px]:grid-cols-[1fr_1.4fr]">
               <div>
                 <label className="mb-1.5 block text-sm">Starts</label>
                 <select
@@ -395,7 +426,7 @@ export default function Obligations() {
                 />
               ))}
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 {editing && (
                   <button

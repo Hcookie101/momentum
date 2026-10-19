@@ -227,7 +227,10 @@ export default function Chat() {
     }
   }
   return (
-    <div className="flex h-[calc(100vh-40px)] w-[310px] flex-col bg-[#1D2525]">
+    // Full width when stacked under the calendar on phones; fixed 310px
+    // sidebar on desktop. Height is bounded in both modes so the input
+    // never scrolls out of reach.
+    <div className="flex h-[70vh] max-h-[640px] w-full flex-col border-t border-white/10 bg-[#1D2525] lg:h-[calc(100vh-40px)] lg:max-h-none lg:w-[310px] lg:shrink-0 lg:border-l lg:border-t-0">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
         <h2 className="text-[15px] text-[#E4E0D8]">AI Chat</h2>
         {quota && (

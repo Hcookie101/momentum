@@ -135,7 +135,8 @@ export default function Stats() {
   const isToday = date === toLocalDateString(new Date());
 
   return (
-    <div className="flex h-[calc(100vh-40px)]">
+    <div className="flex min-h-[calc(100vh-40px)] flex-col lg:h-[calc(100vh-40px)] lg:flex-row">
+      {/* Same stacking as /schedule: chat docks below the content on phones. */}
       <div className="flex-1 flex flex-col min-w-0">
         <DatePicker value={date} onChange={setDate} />
         {error && (
@@ -143,14 +144,20 @@ export default function Stats() {
             {error}
           </p>
         )}
-        <div className="flex-1 min-h-0 bg-[#C9C6C0] overflow-y-auto grid gap-4 grid-cols-2 grid-rows-[220px_160px_160px_180px_180px_200px] [grid-template-areas:'a_a'_'b_c'_'b_d'_'e_f'_'e_f'_'g_g'] p-4">
-          <TotalFocusCard seconds={totalFocus} loading={loading} />
-          <SitesCard sites={sites.slice(0, 6)} loading={loading} />
-          <ScoreCard average={avgScore} loading={loading} />
-          <TasksCard count={completed} today={isToday} loading={loading} />
-          <CategoriesCard categories={categories} loading={loading} />
-          <WeekCard week={week} selectedDay={date} loading={loading} />
-          <GoalTimeCard totals={goalTotals} loading={loading} />
+        {/* Desktop: the 2-column mosaic with fixed rows. Phones: one column
+            of natural-height cards — grid-areas can't express 7 stacked
+            cards, so they (and the fixed rows) apply at lg only. Each card
+            keeps a min-height so charts never collapse to zero. */}
+        <div className="flex-1 min-h-0 bg-[#C9C6C0] overflow-y-auto p-3 sm:p-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-2 lg:grid-rows-[220px_160px_160px_180px_180px_200px] lg:[grid-template-areas:'a_a'_'b_c'_'b_d'_'e_f'_'e_f'_'g_g']">
+            <TotalFocusCard seconds={totalFocus} loading={loading} />
+            <SitesCard sites={sites.slice(0, 6)} loading={loading} />
+            <ScoreCard average={avgScore} loading={loading} />
+            <TasksCard count={completed} today={isToday} loading={loading} />
+            <CategoriesCard categories={categories} loading={loading} />
+            <WeekCard week={week} selectedDay={date} loading={loading} />
+            <GoalTimeCard totals={goalTotals} loading={loading} />
+          </div>
         </div>
       </div>
       <Chat />
@@ -254,15 +261,16 @@ function CategorySector(props: PieSectorShapeProps) {
 }
 
 // ---- stat cards ---------------------------------------------------------
-// Static literals so Tailwind's scanner sees every grid-area class.
+// Static literals so Tailwind's scanner sees every grid-area class. Areas
+// apply at lg only — below that the cards stack in document order.
 const AREA_CLASSES = {
-  a: "[grid-area:a]",
-  b: "[grid-area:b]",
-  c: "[grid-area:c]",
-  d: "[grid-area:d]",
-  e: "[grid-area:e]",
-  f: "[grid-area:f]",
-  g: "[grid-area:g]",
+  a: "lg:[grid-area:a]",
+  b: "lg:[grid-area:b]",
+  c: "lg:[grid-area:c]",
+  d: "lg:[grid-area:d]",
+  e: "lg:[grid-area:e]",
+  f: "lg:[grid-area:f]",
+  g: "lg:[grid-area:g]",
 } as const;
 
 // Shared recharts tooltip props (dark panel from the app palette), used by both
@@ -270,6 +278,8 @@ const AREA_CLASSES = {
 // recharts paints each payload row with the series colour, which is grey on the
 // pie and black on the bar once the colours come from `shape` — so `itemStyle`
 // keeps the values readable on the dark panel.
+// Static literals so Tailwind's scanner sees every grid-area class. Areas
+// apply at lg only — below that the cards stack in document order.
 const TOOLTIP_PROPS = {
   contentStyle: {
     backgroundColor: "#1D2525",
@@ -316,10 +326,10 @@ function TotalFocusCard({
 }) {
   return (
     <Card area="a">
-      <h1 className="pt-2 text-center font-serif text-4xl">
+      <h1 className="pt-2 text-center font-serif text-2xl sm:text-4xl">
         Total time spent on task:
       </h1>
-      <h1 className="pt-2 text-center text-9xl font-extrabold tabular-nums tracking-[-0.04em]">
+      <h1 className="break-words px-2 pt-2 text-center text-6xl font-extrabold tabular-nums tracking-[-0.04em] sm:text-9xl">
         {loading ? "—" : formatDuration(seconds)}
       </h1>
     </Card>
@@ -341,19 +351,21 @@ function SitesCard({
       ) : sites.length === 0 ? (
         <Empty>No browsing time recorded for this day.</Empty>
       ) : (
-        <div className="flex-1 overflow-y-auto">
+        // Rows cap their height on mobile instead of stretching the card —
+        // the list scrolls internally past ~4 rows on both layouts.
+        <div className="max-h-[240px] overflow-y-auto sm:max-h-none sm:flex-1">
           {sites.map((site) => (
             <div
               key={site.domain}
-              className="grid w-full grid-cols-2 border-b border-[#b8b5ae]/50 last:border-0"
+              className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-[#b8b5ae]/50 px-3 py-2.5 last:border-0 sm:p-4"
             >
               <p
-                className="truncate p-4 justify-self-start self-center"
+                className="min-w-0 truncate justify-self-start text-[14px] sm:text-base"
                 title={site.domain}
               >
                 {site.domain}
               </p>
-              <p className="p-4 text-2xl tabular-nums justify-self-end self-center">
+              <p className="shrink-0 justify-self-end text-xl tabular-nums sm:text-2xl">
                 {formatDuration(site.seconds)}
               </p>
             </div>
@@ -380,19 +392,19 @@ function GoalTimeCard({
       ) : totals.length === 0 ? (
         <Empty>No focus sessions recorded for this day.</Empty>
       ) : (
-        <div className="flex-1 overflow-y-auto">
+        <div className="max-h-[240px] overflow-y-auto sm:max-h-none sm:flex-1">
           {totals.map((entry) => (
             <div
               key={entry.goalId ?? "none"}
-              className="grid w-full grid-cols-2 border-b border-[#b8b5ae]/50 last:border-0"
+              className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-[#b8b5ae]/50 px-3 py-2.5 last:border-0 sm:p-4"
             >
               <p
-                className="truncate p-4 justify-self-start self-center"
+                className="min-w-0 truncate justify-self-start text-[14px] sm:text-base"
                 title={entry.title}
               >
                 {entry.title}
               </p>
-              <p className="p-4 text-2xl tabular-nums justify-self-end self-center">
+              <p className="shrink-0 justify-self-end text-xl tabular-nums sm:text-2xl">
                 {formatDuration(entry.seconds)}
               </p>
             </div>
@@ -456,8 +468,8 @@ function CategoriesCard({
       ) : categories.length === 0 ? (
         <Empty>No browsing time recorded for this day.</Empty>
       ) : (
-        <div className="flex min-h-0 flex-1 gap-2 px-3 pb-3">
-          <div className="min-w-0 flex-[3]">
+        <div className="flex min-h-[220px] flex-col gap-2 px-3 pb-3 sm:min-h-0 sm:flex-1 sm:flex-row">
+          <div className="h-[200px] w-full shrink-0 sm:h-auto sm:min-h-0 sm:min-w-0 sm:flex-[3]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -527,7 +539,7 @@ function WeekCard({
       ) : !hasData ? (
         <Empty>No focus sessions in the past week.</Empty>
       ) : (
-        <div className="min-h-0 flex-1 px-3 pb-3">
+        <div className="h-[220px] px-3 pb-3 sm:min-h-0 sm:flex-1">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={week} margin={{ top: 18, right: 4, left: 4, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke="#C9C6C0" />

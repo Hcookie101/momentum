@@ -26,6 +26,17 @@ async function getToken() {
   return (stored.momentumToken || "").trim();
 }
 
+// Extension tokens are two UUIDs hex-encoded (see create_extension_token in
+// supabase/migrations/20251012000001_extension_tokens.sql): exactly 64 hex
+// chars. Anything else is a paste mistake — reject it before saving.
+const TOKEN_RE = /^[0-9a-fA-F]{64}$/;
+
+function tokenProblem(value) {
+  if (!value) return "Paste your token to link this browser.";
+  if (!TOKEN_RE.test(value)) return "That doesn't look like a Momentum token — it should be 64 letters and numbers.";
+  return null;
+}
+
 // ---- DATA ----
 async function postReadRpc(token, body) {
   return fetch(`${SUPABASE_URL}/rest/v1/rpc/read_today_browsing`, {
@@ -91,14 +102,39 @@ function siteRow(site, index, maxSeconds) {
 
   const favicon = document.createElement("span");
   favicon.className = "favicon";
+  // The colored initial is in place first (styled by .favicon in hello.html)
+  // and the real site icon then replaces it — served by Chrome's own
+  // _favicon API from the local favicon cache, so no third party ever
+  // learns which sites are in this list.
+  const letter = document.createElement("span");
+  letter.textContent = site.domain[0].toUpperCase();
+  favicon.style.background = SWATCHES[index % SWATCHES.length];
+  favicon.setAttribute("aria-hidden", "true");
+  favicon.appendChild(letter);
+
+  // Chrome's built-in favicon API reads from the local favicon cache —
+  // zero network requests to any third party.
+  const iconUrl = new URL(chrome.runtime.getURL("/_favicon/"));
+  iconUrl.searchParams.set("pageUrl", `https://${site.domain}/`);
+  iconUrl.searchParams.set("size", "32");
   const img = document.createElement("img");
   img.alt = "";
-  img.src = `https://www.google.com/s2/favicons?sz=64&domain=${encodeURIComponent(
-    site.domain,
-  )}`;
+  img.hidden = true;
+  img.src = iconUrl.toString();
+  img.addEventListener("load", () => {
+    // Swap the placeholder only once the icon has actually painted.
+    const rendered = img.naturalWidth > 0 && img.naturalHeight > 0;
+    if (rendered) {
+      letter.remove();
+      img.hidden = false;
+      favicon.style.background = "";
+    } else {
+      img.remove();
+    }
+  });
   img.addEventListener("error", () => {
-    favicon.textContent = site.domain[0].toUpperCase();
-    favicon.style.background = SWATCHES[index % SWATCHES.length];
+    // Chrome has no cached favicon for this site — keep the letter initial.
+    img.remove();
   });
   favicon.appendChild(img);
 
@@ -195,7 +231,9 @@ function renderLinkPanel(errorMessage) {
 
   function submit() {
     const value = input.value.trim();
-    if (!value) {
+    const problem = tokenProblem(value);
+    if (problem) {
+      status.textContent = problem;
       input.focus();
       return;
     }
@@ -228,6 +266,14 @@ async function load() {
     renderLinkPanel();
     return;
   }
+  // A token edited by hand (or from an older format) can never validate —
+  // bounce it back to the link panel instead of failing every read.
+  const problem = tokenProblem(token);
+  if (problem) {
+    unlinkBtn.hidden = true;
+    renderLinkPanel("That saved token looks invalid — paste a fresh one from Momentum → Settings.");
+    return;
+  }
   unlinkBtn.hidden = false;
   listEl.replaceChildren(stateRow("Collecting browsing time…"));
   totalEl.textContent = "—";
@@ -236,6 +282,14 @@ async function load() {
     render(groupByDomain(rows));
   } catch (err) {
     console.error("Momentum popup:", err);
+    // Revoked or unknown tokens fail every read with the RPC's 4xx — forget
+    // the token and return to the link panel instead of an error loop.
+    if (err.message.includes("(4")) {
+      await chrome.storage.local.remove("momentumToken");
+      unlinkBtn.hidden = true;
+      renderLinkPanel("That token was revoked — create a fresh one in Momentum → Settings.");
+      return;
+    }
     listEl.replaceChildren(stateRow(err.message, true));
     totalEl.textContent = "—";
   }

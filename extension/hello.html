@@ -172,9 +172,13 @@
       }
 
       .favicon img {
-        height: 13px;
-        width: 13px;
+        width: 14px;
+        height: 14px;
         display: block;
+      }
+
+      .favicon img[hidden] {
+        display: none;
       }
 
       .domain {
@@ -379,6 +383,13 @@
       .hint.tracking .dot {
         display: block;
       }
+
+      .privacy {
+        margin: 10px 2px 0;
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
     </style>
   </head>
   <body>
@@ -415,6 +426,11 @@
       <p id="hint" class="hint">
         <span class="dot"></span>
         <span id="hintText">Times update automatically while you browse.</span>
+      </p>
+
+      <p class="privacy">
+        Only the domain + seconds per visit are saved — never full URLs or page
+        contents. Incognito windows are never tracked.
       </p>
     </main>
 

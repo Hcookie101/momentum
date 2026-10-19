@@ -1,13 +1,20 @@
 {
   "name": "Momentum Tracker",
   "description": "A simple extension to track your browser usage and help you stay focused.",
-  "version": "1.0",
+  "version": "1.2",
   "manifest_version": 3,
+  "incognito": "not_allowed",
   "action": {
     "default_popup": "hello.html",
     "default_icon": "momentumLogo.png"
   },
-  "permissions": ["tabs", "storage", "alarms", "idle"],
+  "icons": {
+    "16": "momentumLogo.png",
+    "32": "momentumLogo.png",
+    "48": "momentumLogo.png",
+    "128": "momentumLogo.png"
+  },
+  "permissions": ["tabs", "storage", "alarms", "idle", "favicon"],
   "host_permissions": ["https://mkxzfanqdfjbrlotxsmk.supabase.co/*"],
   "background": { "service_worker": "background.js" }
 }

@@ -216,6 +216,82 @@ export function modelListedIn(payload: unknown, model: string): boolean {
   return cleaned.some((id) => id === wanted || id.startsWith(wanted) || id.startsWith(`${wanted}:`));
 }
 
+// SSRF guard for the client-chosen provider base URL. Parse-based: it checks
+// the host WHATWG parsing canonicalizes (decimal/hex IPv4 spellings come out
+// as dotted quad), not what DNS happens to resolve to. https is required, with
+// plain http tolerated only for loopback mocks outside production; private,
+// link-local and internal addresses are refused outright.
+export function validateBaseUrl(raw: string): string | null {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return "The base URL must be a full URL, starting with https://.";
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    return "The base URL must start with https://.";
+  }
+  if (url.username || url.password) {
+    return "The base URL must not contain a username or password.";
+  }
+
+  const host = url.hostname
+    .replace(/^\[|\]$/g, "")
+    .replace(/\.$/, "")
+    .toLowerCase();
+  const isLoopback =
+    host === "localhost" ||
+    host.endsWith(".localhost") ||
+    host === "::1" ||
+    /^127(\.\d{1,3}){3}$/.test(host);
+
+  // Link-local always — the cloud metadata endpoint lives at 169.254.169.254.
+  if (/^169\.254(\.\d{1,3}){2}$/.test(host) || /^fe80:/i.test(host)) {
+    return "The base URL must not point at a link-local address.";
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    if (isLoopback) return "The base URL must not point at the server itself.";
+    if (isPrivateHost(host)) {
+      return "The base URL must not point at a private or internal address.";
+    }
+    if (url.protocol === "http:") return "The base URL must use https://.";
+    return null;
+  }
+
+  // Development: plain http only for loopback (the local mock providers).
+  if (url.protocol === "http:" && !isLoopback) {
+    return "The base URL must use https:// (http:// is only allowed for localhost).";
+  }
+  return null;
+}
+
+// Private IPv4 ranges, any other IPv6 literal, and hostnames that only ever
+// resolve inside a local network.
+function isPrivateHost(host: string): boolean {
+  const v4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
+  if (v4) {
+    const a = Number(v4[1]);
+    const b = Number(v4[2]);
+    if (a === 0 || a === 10) return true;
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT (some clouds)
+    if (a === 198 && (b === 18 || b === 19)) return true;
+    return false;
+  }
+  if (host.includes(":")) return true; // ULA / site-local / anything IPv6
+  if (
+    host.endsWith(".local") ||
+    host.endsWith(".internal") ||
+    host.endsWith(".lan") ||
+    host.endsWith(".home.arpa")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 // Shared header contract with the browser: the chat route, "Test connection"
 // and the one-shot helpers all read the same `x-ai-*` headers through this,
 // so the routes can't drift apart on what the client is allowed to send.
@@ -229,7 +305,8 @@ export function readProviderConfig(request: Request): ProviderConfig | string {
 
   if (!apiKey) return "Add your API key in the AI settings panel first.";
   if (!model) return "Pick a model in the AI settings panel first.";
-  if (!/^https?:\/\/.+/i.test(baseUrl)) return "The base URL must start with http:// or https://.";
+  const baseUrlProblem = validateBaseUrl(baseUrl);
+  if (baseUrlProblem) return baseUrlProblem;
 
   return { provider, apiKey, baseUrl: baseUrl.replace(/\/+$/, ""), model };
 }

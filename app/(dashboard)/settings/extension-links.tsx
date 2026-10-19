@@ -45,8 +45,29 @@ export default function ExtensionLinks() {
   }, [supabase]);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let active = true;
+
+    async function fetchTokens() {
+      const { data, error } = await supabase
+        .from("extension_tokens")
+        .select("id, label, created_at, last_used_at, revoked_at")
+        .order("created_at", { ascending: false });
+
+      if (!active) return;
+      if (error) {
+        setError("Couldn't load your linked browsers.");
+        console.error(error);
+      } else {
+        setTokens((data ?? []) as TokenRow[]);
+      }
+      setLoading(false);
+    }
+
+    void fetchTokens();
+    return () => {
+      active = false;
+    };
+  }, [supabase]);
 
   async function create() {
     setBusy(true);

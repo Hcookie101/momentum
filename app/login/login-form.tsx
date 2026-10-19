@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/supabase/client";
+import { safeNext } from "@/app/lib/safe-next";
 
 const inputClass =
   "w-full rounded-lg border border-[#b8b5ae] bg-[#EFECE5] px-3 py-2 text-[14px] text-[#1D2525] outline-none placeholder:text-[#8a8780] focus:border-[#16759b]";
@@ -10,7 +11,8 @@ const inputClass =
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/schedule";
+  // Same-origin paths only — an absolute ?next= can't redirect off-site.
+  const next = safeNext(searchParams.get("next"));
   const [mode, setMode] = useState<"in" | "up">("in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

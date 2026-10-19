@@ -162,12 +162,12 @@ export default function FocusTimer() {
 
       {sessionPrompt && stoppedSession && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-black/20 p-3 sm:items-center sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-label="Rate your focus"
         >
-          <div className="w-[400px] rounded-2xl bg-[#0C425A] p-6 text-[#E4E0D8] shadow-xl">
+          <div className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6">
             <h2 className="mb-1 font-serif text-2xl font-medium">Rate your focus</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               {formatElapsed(

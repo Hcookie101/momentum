@@ -60,6 +60,14 @@ function overlaps(a: Busy, b: { start_hour: number; duration: number }): boolean
 }
 
 export async function POST(request: Request) {
+  // The middleware only gates page paths, so API routes check the session
+  // themselves — before parsing provider config or reaching upstream.
+  const supabase = createClient(await cookies());
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return jsonError("You're signed out — log back in and try again.", 401);
+
   const config = readProviderConfig(request);
   if (typeof config === "string") return jsonError(config, 400);
 
@@ -75,8 +83,8 @@ export async function POST(request: Request) {
 
   // The busy blocks and goals come from the database, not the browser: the
   // calendar page doesn't have obligations loaded, and reading here keeps
-  // the request body empty and the prompt honest.
-  const supabase = createClient(await cookies());
+  // the request body empty and the prompt honest. (`supabase` is the
+  // cookie-backed client resolved above, once the session was verified.)
   const [oblRes, calRes, goalRes] = await Promise.all([
     supabase.from("obligations").select("title, days, start_hour, duration"),
     supabase.from("calendar_events").select("title, day, start_hour, duration"),
