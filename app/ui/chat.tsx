@@ -266,7 +266,10 @@ export default function Chat() {
         {messages.length === 0 && !error && (
           <div className="mt-6 text-center text-[13px] text-[#E4E0D8]/60">
             {configured ? (
-              <p>Ask anything — the reply shows up here.</p>
+              <div>
+              <p className="mb-5">Ask anything. The reply shows up here. </p>
+              <p>Try asking about your schedule or requesting changes.</p>
+              </div>
             ) : (
               <>
                 <p className="mb-3">No AI connected yet.</p>
@@ -297,10 +300,10 @@ export default function Chat() {
 
         {proposal && (
           <div className="mr-auto max-w-[92%] rounded-lg bg-[#0C425A] px-3 py-2.5 text-[13px] text-[#E4E0D8]">
-            <p className="mb-1 font-medium">Schedule changes — your approval needed</p>
+            <p className="mb-1 font-medium">Schedule changes. Your approval needed</p>
             <p className="mb-2 text-[12px] text-[#E4E0D8]/70">
               {proposal.summary} The dashed blocks on the calendar are what
-              this would do — untick anything to drop it.
+              this would do. Untick anything to drop it.
             </p>
             <ul className="mb-2.5 space-y-1">
               {proposal.edits.map((edit) => {

@@ -23,7 +23,8 @@ async function signIn(page: Page) {
   await page.goto("/login");
   await page.getByLabel("Email").fill(process.env.E2E_EMAIL!);
   await page.getByLabel("Password").fill(process.env.E2E_PASSWORD!);
-  await page.getByRole("button", { name: "Log in" }).click();
+  // Scope to the form: the mode-toggle tab is also named "Log in" (see 9.4).
+  await page.locator("form").getByRole("button", { name: "Log in" }).click();
   await page.waitForURL(/\/schedule/, { timeout: 15_000 });
 }
 
@@ -62,12 +63,15 @@ test.describe("2 · Authentication and onboarding", () => {
 
   test("2.2 · login shows empty, error, and pending states", async ({ page }) => {
     await page.goto("/login");
-    // Empty: submit disabled with blank fields.
-    await expect(page.getByRole("button", { name: "Log in" })).toBeDisabled();
+    // Empty: submit disabled with blank fields. Scope to the form — the
+    // mode-toggle tab is also named "Log in" but is never disabled.
+    await expect(
+      page.locator("form").getByRole("button", { name: "Log in" }),
+    ).toBeDisabled();
     // Error: bad creds surface an inline alert.
     await page.getByLabel("Email").fill(`nobody-${UNIQUE}@example.invalid`);
     await page.getByLabel("Password").fill("wrong-password-here");
-    await page.getByRole("button", { name: "Log in" }).click();
+    await page.locator("form").getByRole("button", { name: "Log in" }).click();
     await expect(page.getByRole("alert")).toBeVisible({ timeout: 15_000 });
   });
 
@@ -104,16 +108,17 @@ test.describe("3 · Goals workflow", () => {
 
     // Create a goal.
     await page.getByRole("button", { name: "+ Add goal" }).click();
-    await page.getByPlaceholder(/essay|goal|title/i).first().fill(GOAL_TITLE);
+    await page.getByPlaceholder(/essay|goal|title|marathon/i).first().fill(GOAL_TITLE);
     const dateInputs = page.locator('input[type="date"]');
     await dateInputs.nth(0).fill("2026-10-20");
     await dateInputs.nth(1).fill("2026-11-15");
-    await page.getByRole("button", { name: /Add goal/ }).click();
+    // Exact: "/Add goal/" would also match the "+ Add goal" trigger.
+    await page.getByRole("button", { name: "Add goal", exact: true }).click();
     await expect(page.getByText(GOAL_TITLE)).toBeVisible({ timeout: 10_000 });
 
     // Edit it.
     await page.getByText(GOAL_TITLE).click();
-    await page.getByPlaceholder(/essay|goal|title/i).first().fill(`${GOAL_TITLE} (edited)`);
+    await page.getByPlaceholder(/essay|goal|title|marathon/i).first().fill(`${GOAL_TITLE} (edited)`);
     await page.getByRole("button", { name: "Save" }).click();
     await expect(page.getByText(`${GOAL_TITLE} (edited)`)).toBeVisible();
 
@@ -149,7 +154,8 @@ test.describe("4 · Obligations workflow", () => {
     await page.getByTitle(/add obligation/).first().click();
     await expect(page.getByRole("heading", { name: "New obligation" })).toBeVisible();
     await page.getByPlaceholder(/e\.g\.|lecture|gym/i).fill(OBLIGATION_TITLE);
-    await page.getByRole("button", { name: "M", exact: true }).click();
+    // Day toggles carry aria-labels from the full day names ("Mon", not "M").
+    await page.getByRole("button", { name: "Mon", exact: true }).click();
     await page.getByRole("button", { name: "Pin it" }).click();
     await expect(page.getByText(OBLIGATION_TITLE)).toBeVisible({ timeout: 10_000 });
 
@@ -268,8 +274,14 @@ test.describe("8 · Browser extension and privacy", () => {
     await page.goto("/settings");
     await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
 
-    // Privacy disclosure line visible (8.4/8.5).
-    await expect(page.getByText(/never full URLs/i)).toBeVisible();
+    // Privacy disclosure line visible (8.4/8.5). Scoped to the Browsing data
+    // section — the settings page footer repeats similar wording.
+    await expect(
+      page
+        .locator("section")
+        .filter({ hasText: "Browsing data" })
+        .getByText(/never full URLs/i),
+    ).toBeVisible();
 
     // Create a token.
     await page.getByPlaceholder(/label|name/i).first().fill(`e2e-${UNIQUE}`);

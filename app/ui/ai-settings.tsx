@@ -143,7 +143,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
         <h2 className="mb-1 font-serif text-2xl font-medium">Connect an AI</h2>
         <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
           Paste an API key for the chat panel. It stays in this browser and is
-          only sent to the provider you pick.
+          only sent to the provider you pick. Get a free gemini api key at https://aistudio.google.com
         </p>
 
         <div className="flex flex-col gap-3">
@@ -206,7 +206,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
           <Field
             label="Free-tier quota"
             htmlFor="ai-quota"
-            hint="Requests per day / per minute from your provider's rate-limit page (e.g. 20/5). Paces requests, shows the counter in the chat header and stops before a wasted call; leave empty to disable."
+            hint="Requests per day / per minute from your provider's rate-limit page (e.g. 20/5). Paces requests, shows the counter in the chat header and stops before a wasted call. Leave empty to disable."
           >
             <input
               id="ai-quota"

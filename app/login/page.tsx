@@ -19,7 +19,7 @@ export default function LoginPage() {
             Welcome back.
           </h1>
           <p className="mt-2 text-[14px] leading-relaxed text-[#6b6963]">
-            Your week is where you left it — goals, obligations, and all.
+            Your week is where you left it. Goals, obligations, and all.
           </p>
           <div className="mt-7">
             <Suspense fallback={<p className="text-[14px] text-[#8a8780]">Loading…</p>}>

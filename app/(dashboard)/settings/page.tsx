@@ -16,7 +16,7 @@ export default function SettingsPage() {
         <DeleteBrowsingData />
         <p className="text-[13px] leading-relaxed text-[#8a8780]">
           The extension only ever saves the <em>domain</em> and <em>seconds</em>{" "}
-          per visit — never full URLs, page contents, or form data. Read the{" "}
+          per visit. Never full URLs, page contents, or form data. Read the{" "}
           <a href="/privacy" className="underline underline-offset-2 hover:text-[#1D2525]">
             privacy policy
           </a>

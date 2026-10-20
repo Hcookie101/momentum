@@ -123,7 +123,7 @@ export default function ExtensionLinks() {
       <p className="mt-1 max-w-[70ch] text-[14px] leading-relaxed text-[#6b6963]">
         Link your Chrome extension so it logs browsing time to <em>your</em>{" "}
         account. Create a token below, then paste it into the extension. It
-        only has permission to write your browsing data — nothing else.
+        only has permission to write your browsing data. Nothing else.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -153,7 +153,7 @@ export default function ExtensionLinks() {
       {newToken && (
         <div className="mt-4 rounded-lg border border-[#16759b] bg-[#16759b]/10 p-4">
           <p className="text-[13px] font-medium text-[#1D2525]">
-            Copy this now — it&apos;s shown only once.
+            Copy this now. It&apos;s shown only once.
           </p>
           <div className="mt-2 flex items-center gap-2">
             <code className="min-w-0 flex-1 truncate rounded-md border border-[#b8b5ae] bg-[#E4E0D8] px-3 py-2 font-mono text-[13px]">

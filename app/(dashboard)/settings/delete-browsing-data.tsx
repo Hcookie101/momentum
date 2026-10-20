@@ -24,7 +24,7 @@ export default function DeleteBrowsingData() {
     if (!user) {
       setStatus({
         kind: "error",
-        text: "You're signed out — log back in and try again.",
+        text: "You're signed out. Log back in and try again.",
       });
       return;
     }
@@ -36,7 +36,7 @@ export default function DeleteBrowsingData() {
       console.error(error);
       setStatus({
         kind: "error",
-        text: "Couldn't delete your browsing data — try again.",
+        text: "Couldn't delete your browsing data. Try again.",
       });
       return;
     }
@@ -54,7 +54,7 @@ export default function DeleteBrowsingData() {
       <h2 className="font-serif text-[17px] font-medium">Browsing data</h2>
       <p className="mt-1 max-w-[70ch] text-[14px] leading-relaxed text-[#6b6963]">
         The extension only ever saves the <em>domain</em> and <em>seconds</em>{" "}
-        per visit — never full URLs or page contents. Deleting here permanently
+        per visit. Never full URLs or page contents. Deleting here permanently
         removes every browsing row on your account. Linked browsers keep logging
         until you revoke their token above.
       </p>

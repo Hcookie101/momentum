@@ -73,8 +73,8 @@ export default function SendFeedback() {
     <section className="rounded-xl border border-[#b8b5ae] bg-[#EFECE5] p-5">
       <h2 className="font-serif text-[17px] font-medium">Send feedback</h2>
       <p className="mt-1 max-w-[70ch] text-[14px] leading-relaxed text-[#6b6963]">
-        Ideas, problems, or anything that felt off — a sentence or two is plenty.
-        We read every note.
+        Ideas, problems, or anything you want changed. A sentence or two is plenty.
+        We read every note. 
       </p>
 
       <form onSubmit={submit} className="mt-4 space-y-3">

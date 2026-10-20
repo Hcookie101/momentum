@@ -31,7 +31,7 @@ export default function Home() {
         <section className="grid gap-10 pb-16 pt-14 md:grid-cols-[1.05fr_0.95fr] md:items-center md:pt-20">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8780]">
-              A weekly planner that respects the fixed parts
+              A planner built around you
             </p>
             <h1 className="mt-3 font-serif text-[40px] font-medium leading-[1.08] tracking-tight md:text-[48px]">
               Plan the week around the life you already have.

@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           Privacy
         </p>
         <h1 className="mt-2 font-serif text-[32px] font-medium leading-tight tracking-tight">
-          What Momentum collects — and what it never touches.
+          What Momentum collects and what it never touches.
         </h1>
         <p className="mt-3 max-w-[72ch] text-[15px] leading-relaxed text-[#6b6963]">
           Momentum&apos;s browser extension exists for one job: showing you where
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
             <strong>two facts per time slice: the site&apos;s domain</strong>{" "}
             (e.g. <code>example.com</code>) <strong>and how many seconds</strong>{" "}
             it was the active tab. Those two facts are sent to your own Momentum
-            account (your Supabase project) and shown back to you in the popup
+            account and shown back to you in the popup
             and on the Stats page.
           </p>
         </Section>
@@ -68,13 +68,11 @@ export default function PrivacyPage() {
           <ul className="list-disc space-y-1.5 pl-5">
             <li>Full URLs, page paths, query strings, or hashes.</li>
             <li>Page contents, form inputs, passwords, or keystrokes.</li>
-            <li>Anything from private / incognito windows — tracking is disabled there.</li>
+            <li>Anything from private / incognito windows. Tracking is disabled there.</li>
           </ul>
           <p>
             The extension has no content scripts: it cannot read what is inside
-            the pages you visit. Site icons in the popup come from Chrome&apos;s
-            own on-device favicon cache — no browsing data is sent to any third
-            party for icons.
+            the pages you visit. No browsing data is sent to any third party.
           </p>
         </Section>
 
@@ -103,8 +101,7 @@ export default function PrivacyPage() {
 
         <Section title="Contact">
           <p>
-            Questions about this policy: reply to any Momentum onboarding email,
-            or open an issue on the project repository.
+            Questions about this policy: contact us at {" "}<strong> contact.momentum.ai@gmail.com </strong>
           </p>
           <p>
             Feedback you send from Settings is stored with your Momentum
