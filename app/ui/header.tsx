@@ -47,8 +47,10 @@ export default function Header() {
             Momentum
           </span>
         </div>
-        {/* Desktop nav — hidden on phones, replaced by the hamburger panel. */}
-        <nav className="ml-auto hidden h-full items-center gap-10 px-8 md:flex">
+        {/* Desktop nav — hidden on phones and tablets, replaced by the
+            hamburger panel. The nav needs ~1024px to fit its five links
+            beside the timer and the log-out button without overflowing. */}
+        <nav className="ml-auto hidden h-full items-center gap-10 px-8 lg:flex">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
 
@@ -65,7 +67,7 @@ export default function Header() {
             );
           })}
         </nav>
-        <div className="ml-auto flex h-full min-w-0 items-center gap-1.5 pr-2 sm:gap-3 sm:pr-4 md:ml-0">
+        <div className="ml-auto flex h-full min-w-0 items-center gap-1.5 pr-2 sm:gap-3 sm:pr-4 lg:ml-0">
           <FocusTimer />
           <button
             type="button"
@@ -83,7 +85,7 @@ export default function Header() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#c9c6c0] transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBACB] md:hidden"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#c9c6c0] transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6DBACB] lg:hidden"
           >
             <svg
               viewBox="0 0 16 16"
@@ -106,7 +108,7 @@ export default function Header() {
       {menuOpen && (
         <nav
           aria-label="Primary"
-          className="absolute inset-x-0 top-10 z-40 border-t border-white/10 bg-[#1D2525] px-3 py-2 shadow-xl md:hidden"
+          className="absolute inset-x-0 top-10 z-40 border-t border-white/10 bg-[#1D2525] px-3 py-2 shadow-xl lg:hidden"
         >
           {navItems.map((item) => {
             const isActive = pathname === item.href;

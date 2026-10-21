@@ -122,9 +122,12 @@ test.describe("3 · Goals workflow", () => {
     await page.getByRole("button", { name: "Save" }).click();
     await expect(page.getByText(`${GOAL_TITLE} (edited)`)).toBeVisible();
 
-    // Mark complete → moves to the Done section.
+    // Mark complete → moves to the Done section. The toggle's accessible
+    // name carries the title as-is (which the edit step just changed).
     await page
-      .getByRole("button", { name: new RegExp(`Mark "${GOAL_TITLE}"`) })
+      .getByRole("button", {
+        name: new RegExp(`Mark "${GOAL_TITLE} \\(edited\\)" as done`),
+      })
       .first()
       .click();
     await expect(page.getByText("Done", { exact: true })).toBeVisible();
@@ -157,29 +160,40 @@ test.describe("4 · Obligations workflow", () => {
     // Day toggles carry aria-labels from the full day names ("Mon", not "M").
     await page.getByRole("button", { name: "Mon", exact: true }).click();
     await page.getByRole("button", { name: "Pin it" }).click();
-    await expect(page.getByText(OBLIGATION_TITLE)).toBeVisible({ timeout: 10_000 });
+    // The pinned calendar block is also a button carrying the title. The
+    // obligation lands on the slot's day plus every toggled day, so more
+    // than one block can match.
+    await expect(
+      page
+        .getByRole("button", { name: new RegExp(`${OBLIGATION_TITLE} \\d`) })
+        .first(),
+    ).toBeVisible({ timeout: 10_000 });
 
-    // Reload → recurrence persists.
+    // Reload → recurrence persists. A pinned obligation renders one block
+    // per selected day, so target the block button (unique accessible name)
+    // rather than the bare text, which appears in every block.
+    const block = () =>
+      page.getByRole("button", { name: new RegExp(`${OBLIGATION_TITLE} \\d`) });
     await page.reload();
-    await expect(page.getByText(OBLIGATION_TITLE)).toBeVisible({ timeout: 10_000 });
+    await expect(block().first()).toBeVisible({ timeout: 10_000 });
 
     // Edit → rename persists after reload.
-    await page.getByText(OBLIGATION_TITLE).click();
+    await block().first().click();
     await expect(page.getByRole("heading", { name: "Edit obligation" })).toBeVisible();
     await page.getByPlaceholder(/e\.g\.|lecture|gym/i).fill(`${OBLIGATION_TITLE} (edited)`);
     await page.getByRole("button", { name: "Save" }).click();
-    await expect(page.getByText(`${OBLIGATION_TITLE} (edited)`)).toBeVisible();
+    const editedBlock = () =>
+      page.getByRole("button", {
+        name: new RegExp(`${OBLIGATION_TITLE} \\(edited\\) \\d`),
+      });
+    await expect(editedBlock().first()).toBeVisible();
     await page.reload();
-    await expect(page.getByText(`${OBLIGATION_TITLE} (edited)`)).toBeVisible({
-      timeout: 10_000,
-    });
+    await expect(editedBlock().first()).toBeVisible({ timeout: 10_000 });
 
     // Delete → gone, grid intact.
-    await page.getByText(`${OBLIGATION_TITLE} (edited)`).click();
+    await editedBlock().first().click();
     await page.getByRole("button", { name: "Delete" }).click();
-    await expect(page.getByText(`${OBLIGATION_TITLE} (edited)`)).toBeHidden({
-      timeout: 10_000,
-    });
+    await expect(editedBlock().first()).toBeHidden({ timeout: 10_000 });
 
     expect(errors, `console errors: ${errors.join(" | ")}`).toHaveLength(0);
   });
