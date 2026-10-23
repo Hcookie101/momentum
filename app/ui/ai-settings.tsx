@@ -142,8 +142,18 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
       >
         <h2 className="mb-1 font-serif text-2xl font-medium">Connect an AI</h2>
         <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
-          Paste an API key for the chat panel. It stays in this browser and is
-          only sent to the provider you pick. Get a free gemini api key at https://aistudio.google.com
+          Add an API key for the chat and schedule tools. It stays in this
+          browser; when you use an AI feature, the app forwards your request to
+          the provider you choose. Gemini keys are available at{" "}
+          <a
+            href="https://aistudio.google.com"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2 hover:text-white"
+          >
+            Google AI Studio
+          </a>
+          .
         </p>
 
         <div className="flex flex-col gap-3">

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { Tables } from "@/supabase/types";
 import { createClient } from "@/supabase/client";
+import Onboarding from "@/app/ui/onboarding";
 import AiSettingsDialog from "@/app/ui/ai-settings";
 import QuotaBadge from "@/app/ui/quota-badge";
 import {
@@ -151,7 +152,9 @@ export default function Calendar() {
   useEffect(() => {
     let cancelled = false;
     async function fetchEvents() {
-      const { data, error } = await supabase.from("calendar_events").select("*");
+      const { data, error } = await supabase
+        .from("calendar_events")
+        .select("*");
       if (cancelled) return;
       if (error) console.error(error);
       else setEvents(data);
@@ -171,7 +174,9 @@ export default function Calendar() {
   // indexing the events use) — computed from the ticking clock above.
   const nowDay = now ? now.getDay() : -1;
   const nowTop =
-    now !== null ? (now.getHours() + now.getMinutes() / 60 - hours[0]) * hourHeight : 0;
+    now !== null
+      ? (now.getHours() + now.getMinutes() / 60 - hours[0]) * hourHeight
+      : 0;
   const editing = events.find((e) => e.id === editingId) ?? null;
   const modalOpen = selectedSlot !== null || editing !== null;
   const maxDuration = 24 - formHour;
@@ -252,7 +257,7 @@ export default function Calendar() {
       return;
     }
     setEvents((currentEvents) =>
-      currentEvents.map((e) => (e.id === editing.id ? data[0] : e))
+      currentEvents.map((e) => (e.id === editing.id ? data[0] : e)),
     );
     resetForm();
   }
@@ -268,7 +273,7 @@ export default function Calendar() {
       return;
     }
     setEvents((currentEvents) =>
-      currentEvents.filter((e) => e.id !== editing.id)
+      currentEvents.filter((e) => e.id !== editing.id),
     );
     resetForm();
   }
@@ -310,7 +315,9 @@ export default function Calendar() {
   // behind it (they hide when it closes — see the comment above), and what
   // the chat's approval card is about to accept.
   function previewDrafts(items: CalendarPreviewDraft[] | null) {
-    setCalendarPreview(items && items.length ? { drafts: items, hiddenIds: [] } : null);
+    setCalendarPreview(
+      items && items.length ? { drafts: items, hiddenIds: [] } : null,
+    );
   }
 
   function closeDrafts() {
@@ -363,11 +370,19 @@ export default function Calendar() {
 
   return (
     <div className="h-full overflow-auto bg-[#E4E0D8]">
+      <Onboarding />
       {/* Sticky top: the toolbar plus day names stay visible while the
           auto-scroll (and any manual scrolling) moves the 24h grid. */}
       <div className="sticky top-0 z-30 bg-[#E4E0D8]">
         <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-2 border-b border-[#b8b5ae] px-3 py-2 sm:px-4">
-          {genError && <p className="mr-auto text-[12px] text-[#D26390]">{genError}</p>}
+          {events.length === 0 && (
+            <p className="mr-auto self-start py-2 text-[12px] leading-relaxed text-[#8a8780]">
+              Nothing scheduled yet. Add an event or generate a draft.
+            </p>
+          )}
+          {genError && (
+            <p className="mr-auto text-[12px] text-[#D26390]">{genError}</p>
+          )}
           <QuotaBadge usage={quota} />
           <button
             type="button"
@@ -386,6 +401,7 @@ export default function Calendar() {
             {generating ? "Generating…" : "Generate schedule"}
           </button>
         </div>
+
         {/* Desktop day names. Phones get the tab switcher below instead —
             7 columns can't fit 360px, so the grid shows one day. */}
         <div className="hidden grid-cols-8 border-b border-[#b8b5ae] bg-[#E4E0D8] sm:grid">
@@ -394,7 +410,9 @@ export default function Calendar() {
             <div
               key={day}
               className={`border-l border-[#b8b5ae] py-3 text-center text-lg ${
-                nowDay >= 0 && days[nowDay] === day ? "font-semibold text-[#16759b]" : ""
+                nowDay >= 0 && days[nowDay] === day
+                  ? "font-semibold text-[#16759b]"
+                  : ""
               }`}
             >
               {day}
@@ -620,7 +638,7 @@ export default function Calendar() {
                 >
                   {Array.from(
                     { length: Math.floor(maxDuration * 2) },
-                    (_, i) => (i + 1) / 2
+                    (_, i) => (i + 1) / 2,
                   ).map((h) => (
                     <option key={h} value={h}>
                       {durationLabel(h)}
@@ -690,7 +708,9 @@ export default function Calendar() {
             className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 font-serif text-2xl font-medium">Generate schedule</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">
+              Generate schedule
+            </h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               The AI plans around your obligations, existing events and open
               goals — tell it anything specific to work in.
@@ -702,7 +722,8 @@ export default function Calendar() {
               rows={3}
               autoFocus
               onKeyDown={(e) => {
-                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) runGeneration(note);
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey))
+                  runGeneration(note);
                 if (e.key === "Escape") setComposeOpen(false);
               }}
               className="mb-4 w-full resize-none rounded-lg border border-[#777] bg-transparent px-3 py-2 outline-none placeholder:text-[#888] focus:border-[#6DBACB]"
@@ -736,7 +757,9 @@ export default function Calendar() {
             className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="mb-1 font-serif text-2xl font-medium">Suggested schedule</h2>
+            <h2 className="mb-1 font-serif text-2xl font-medium">
+              Suggested schedule
+            </h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               The dashed blocks on the grid behind this are what you would get —
               click any event on the calendar afterwards to edit it.
@@ -756,7 +779,8 @@ export default function Calendar() {
                       {item.title}
                     </span>
                     <span className="shrink-0 text-[12px] tabular-nums text-[#E4E0D8]/60">
-                      {days[item.day]} {rangeLabel(item.start_hour, item.duration)}
+                      {days[item.day]}{" "}
+                      {rangeLabel(item.start_hour, item.duration)}
                     </span>
                     <button
                       type="button"
@@ -800,7 +824,10 @@ export default function Calendar() {
           </div>
         </div>
       )}
-      <AiSettingsDialog open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <AiSettingsDialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </div>
   );
 }

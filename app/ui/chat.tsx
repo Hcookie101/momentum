@@ -272,7 +272,10 @@ export default function Chat() {
               </div>
             ) : (
               <>
-                <p className="mb-3">No AI connected yet.</p>
+                <p className="mb-2 font-medium text-[#E4E0D8]">No AI connected yet.</p>
+                <p className="mx-auto mb-3 max-w-[30ch] leading-relaxed">
+                  Connect a provider to ask about your plans or make schedule changes. Your key stays in this browser.
+                </p>
                 <button
                   type="button"
                   onClick={() => setSettingsOpen(true)}

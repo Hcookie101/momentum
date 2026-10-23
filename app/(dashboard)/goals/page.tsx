@@ -619,9 +619,14 @@ const [supabase] = useState(() => createClient());
 
       <div className="min-h-0 flex-1 overflow-auto pb-10">
         {goals.length === 0 && (
-          <p className="px-3 py-10 text-center text-[13px] text-[#8a8780] sm:px-6">
-            Nothing here yet. Add a goal to get started.
-          </p>
+          <div className="px-3 py-10 text-center sm:px-6">
+            <h2 className="font-serif text-[17px] font-medium text-[#1D2525]">
+              Start with something you want to make room for.
+            </h2>
+            <p className="mx-auto mt-2 max-w-[48ch] text-[14px] leading-relaxed text-[#6b6963]">
+              Give it a name and a date. Momentum can use both to shape a schedule that fits your week.
+            </p>
+          </div>
         )}
         {active.length > 0 && (
           <>

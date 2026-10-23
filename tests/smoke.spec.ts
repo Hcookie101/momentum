@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "../supabase/types";
 
 // Smoke suite mapping one-to-one onto docs/release-checklist.md.
 // Test IDs mirror the checklist item numbers so a failure points straight at
@@ -18,6 +20,18 @@ const UNIQUE = `${Date.now()}`;
 const GOAL_TITLE = `E2E smoke goal ${UNIQUE}`;
 const OBLIGATION_TITLE = `E2E smoke obligation ${UNIQUE}`;
 const HAS_CREDS = Boolean(process.env.E2E_EMAIL && process.env.E2E_PASSWORD);
+const HAS_ONBOARDING_CREDS = Boolean(
+  HAS_CREDS &&
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+);
+
+type OnboardingClient = SupabaseClient<Database>;
+type OnboardingFixtures = {
+  goals: string[];
+  obligations: string[];
+  events: string[];
+};
 
 async function signIn(page: Page) {
   await page.goto("/login");
@@ -26,6 +40,116 @@ async function signIn(page: Page) {
   // Scope to the form: the mode-toggle tab is also named "Log in" (see 9.4).
   await page.locator("form").getByRole("button", { name: "Log in" }).click();
   await page.waitForURL(/\/schedule/, { timeout: 15_000 });
+}
+
+async function createOnboardingClient() {
+  const client = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
+  const { data, error } = await client.auth.signInWithPassword({
+    email: process.env.E2E_EMAIL!,
+    password: process.env.E2E_PASSWORD!,
+  });
+  if (error || !data.user) throw error ?? new Error("E2E login returned no user.");
+  return { client, userId: data.user.id };
+}
+
+async function resetOnboarding(client: OnboardingClient, userId: string) {
+  const { error } = await client.from("onboarding").delete().eq("user_id", userId);
+  if (error) throw error;
+}
+
+async function addOnboardingFixture(
+  client: OnboardingClient,
+  userId: string,
+  table: "goals" | "obligations" | "calendar_events",
+): Promise<string> {
+  const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  if (table === "goals") {
+    const { data, error } = await client
+      .from("goals")
+      .insert({
+        title: `E2E onboarding goal ${suffix}`,
+        start_date: "2026-01-01",
+        target_date: "2026-12-31",
+        user_id: userId,
+      })
+      .select("id")
+      .single();
+    if (error) throw error;
+    return data.id;
+  }
+  if (table === "obligations") {
+    const { data, error } = await client
+      .from("obligations")
+      .insert({
+        title: `E2E onboarding obligation ${suffix}`,
+        days: [1],
+        start_hour: 7,
+        duration: 0.5,
+        color: "#7CA9BD",
+        user_id: userId,
+      })
+      .select("id")
+      .single();
+    if (error) throw error;
+    return data.id;
+  }
+  const { data, error } = await client
+    .from("calendar_events")
+    .insert({
+      title: `E2E onboarding event ${suffix}`,
+      day: 2,
+      start_hour: 9,
+      duration: 1,
+      color: "#7CA9BD",
+      user_id: userId,
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id;
+}
+
+async function ensureOnboardingFixtures(
+  client: OnboardingClient,
+  userId: string,
+): Promise<OnboardingFixtures> {
+  const fixtures: OnboardingFixtures = { goals: [], obligations: [], events: [] };
+  for (const table of ["goals", "obligations", "calendar_events"] as const) {
+    const { count, error } = await client
+      .from(table)
+      .select("id", { count: "exact", head: true });
+    if (error) throw error;
+    if ((count ?? 0) > 0) continue;
+    const id = await addOnboardingFixture(client, userId, table);
+    fixtures[table === "calendar_events" ? "events" : table].push(id);
+  }
+  return fixtures;
+}
+
+async function cleanupOnboarding(
+  client: OnboardingClient,
+  userId: string,
+  fixtures: OnboardingFixtures = { goals: [], obligations: [], events: [] },
+) {
+  await resetOnboarding(client, userId);
+  const [goals, obligations, events] = await Promise.all([
+    fixtures.goals.length
+      ? client.from("goals").delete().in("id", fixtures.goals)
+      : Promise.resolve({ error: null }),
+    fixtures.obligations.length
+      ? client.from("obligations").delete().in("id", fixtures.obligations)
+      : Promise.resolve({ error: null }),
+    fixtures.events.length
+      ? client.from("calendar_events").delete().in("id", fixtures.events)
+      : Promise.resolve({ error: null }),
+  ]);
+  if (goals.error || obligations.error || events.error) {
+    throw goals.error ?? obligations.error ?? events.error;
+  }
 }
 
 test.describe("1 · Build & quality gates", () => {
@@ -340,6 +464,153 @@ test.describe("8 · Browser extension and privacy", () => {
     await expect(submit).toBeEnabled();
     await submit.click();
     await expect(page.getByRole("status")).toContainText("Thanks");
+  });
+
+  test("8.7 · first visit shows the getting-started steps", async ({ page }) => {
+    test.skip(!HAS_ONBOARDING_CREDS, "Set E2E credentials and Supabase public env vars");
+    const { client, userId } = await createOnboardingClient();
+    await resetOnboarding(client, userId);
+
+    try {
+      await signIn(page);
+      await expect(
+        page.getByRole("heading", { name: "A few things to get started" }),
+      ).toBeVisible();
+      const onboardingHeading = page.getByRole("heading", {
+        name: "A few things to get started",
+      });
+      expect(
+        await onboardingHeading.evaluate((heading) =>
+          Boolean(heading.closest("div.h-full.overflow-auto")),
+        ),
+      ).toBe(true);
+      for (const label of ["Add a goal", "Add an obligation", "Connect an AI", "Generate a schedule"]) {
+        await expect(page.getByRole("link", { name: new RegExp(label) }).or(
+          page.getByRole("button", { name: new RegExp(label) }),
+        )).toBeVisible();
+      }
+    } finally {
+      await cleanupOnboarding(client, userId);
+    }
+  });
+
+  test("8.8 · dismissal persists after reload", async ({ page }) => {
+    test.skip(!HAS_ONBOARDING_CREDS, "Set E2E credentials and Supabase public env vars");
+    const { client, userId } = await createOnboardingClient();
+    await resetOnboarding(client, userId);
+
+    try {
+      await signIn(page);
+      const heading = page.getByRole("heading", { name: "A few things to get started" });
+      await expect(heading).toBeVisible();
+      await page.getByRole("button", { name: "Dismiss", exact: true }).click();
+      await expect(heading).toBeHidden();
+      await page.reload();
+      await expect(heading).toBeHidden();
+    } finally {
+      await cleanupOnboarding(client, userId);
+    }
+  });
+
+  test("8.9 · an incomplete data step updates when its row is added", async ({ page }) => {
+    test.skip(!HAS_ONBOARDING_CREDS, "Set E2E credentials and Supabase public env vars");
+    const { client, userId } = await createOnboardingClient();
+    const [goals, obligations, events] = await Promise.all([
+      client.from("goals").select("id", { count: "exact", head: true }),
+      client.from("obligations").select("id", { count: "exact", head: true }),
+      client.from("calendar_events").select("id", { count: "exact", head: true }),
+    ]);
+    if (goals.error || obligations.error || events.error) {
+      throw goals.error ?? obligations.error ?? events.error;
+    }
+    const missingTable =
+      goals.count === 0
+        ? "goals"
+        : obligations.count === 0
+          ? "obligations"
+          : events.count === 0
+            ? "calendar_events"
+            : null;
+    test.skip(
+      !missingTable,
+      "The E2E account already has all three data-backed steps; the AI live update is covered in 8.10.",
+    );
+    await resetOnboarding(client, userId);
+    const fixtures: OnboardingFixtures = { goals: [], obligations: [], events: [] };
+
+    try {
+      await signIn(page);
+      const step = missingTable === "goals"
+        ? { label: "Add a goal", locator: page.getByRole("link", { name: "Add a goal, incomplete" }) }
+        : missingTable === "obligations"
+          ? { label: "Add an obligation", locator: page.getByRole("link", { name: "Add an obligation, incomplete" }) }
+          : { label: "Generate a schedule", locator: page.getByRole("link", { name: "Generate a schedule, incomplete" }) };
+      await expect(step.locator).toBeVisible();
+      const id = await addOnboardingFixture(client, userId, missingTable!);
+      fixtures[missingTable === "goals" ? "goals" : missingTable === "obligations" ? "obligations" : "events"].push(id);
+      await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+      await expect(
+        page.getByRole("link", { name: new RegExp(`${step.label}, complete`) }),
+      ).toBeVisible();
+    } finally {
+      await cleanupOnboarding(client, userId, fixtures);
+    }
+  });
+
+  test("8.10 · completing all steps shows a one-time success state", async ({ page }) => {
+    test.skip(!HAS_ONBOARDING_CREDS, "Set E2E credentials and Supabase public env vars");
+    const { client, userId } = await createOnboardingClient();
+    await resetOnboarding(client, userId);
+    const fixtures = await ensureOnboardingFixtures(client, userId);
+
+    try {
+      await signIn(page);
+      await page.getByRole("button", { name: "Connect an AI, incomplete" }).click();
+      const dialog = page.getByRole("dialog", { name: "Connect an AI" });
+      await dialog.getByLabel("API key").fill("e2e-not-a-real-provider-key");
+      await dialog.getByRole("button", { name: "Save" }).click();
+
+      const success = page.getByRole("heading", { name: "You've got a plan" });
+      await expect(success).toBeVisible({ timeout: 10_000 });
+      await page.getByRole("button", { name: "Got it" }).click();
+      await expect(success).toBeHidden();
+      await page.reload();
+      await expect(success).toBeHidden();
+
+      const { data, error } = await client
+        .from("onboarding")
+        .select("completed_at")
+        .eq("user_id", userId)
+        .single();
+      if (error) throw error;
+      expect(data.completed_at).not.toBeNull();
+    } finally {
+      await cleanupOnboarding(client, userId, fixtures);
+    }
+  });
+
+  test("8.11 · a failed onboarding load shows a retry and recovers", async ({ page }) => {
+    test.skip(!HAS_ONBOARDING_CREDS, "Set E2E credentials and Supabase public env vars");
+    const { client, userId } = await createOnboardingClient();
+    await resetOnboarding(client, userId);
+    let rejectGoalsRequest = true;
+    await page.route("**/rest/v1/goals**", (route) =>
+      rejectGoalsRequest ? route.abort() : route.continue(),
+    );
+
+    try {
+      await signIn(page);
+      await expect(
+        page.getByText("Couldn't load your getting-started steps."),
+      ).toBeVisible();
+      rejectGoalsRequest = false;
+      await page.getByRole("button", { name: "Try again" }).click();
+      await expect(
+        page.getByRole("heading", { name: "A few things to get started" }),
+      ).toBeVisible();
+    } finally {
+      await cleanupOnboarding(client, userId);
+    }
   });
 });
 

@@ -15,6 +15,9 @@ Use this before any private beta or public launch. It focuses on the critical us
 - [ ] Sign-out clears session state correctly
 - [ ] Redirects from protected routes work as expected
 - [ ] Loading, empty, and error states render clearly
+- [ ] Getting-started steps reflect live goal, obligation, AI, and schedule data
+- [ ] Dismissing onboarding persists across reloads and devices
+- [ ] Completing every step shows the one-time success state, then stays hidden
 
 ### 3. Goals workflow
 - [ ] Create a goal with a title, start date, and target date
@@ -90,7 +93,8 @@ Use this before any private beta or public launch. It focuses on the critical us
 Automated smoke coverage now exists: `npm run test:e2e` runs
 `tests/smoke.spec.ts` (Playwright) against a production build on `:3100`.
 It covers build gates, auth redirects, a11y, responsive overflow, deployment
-safety and the extension manifest. The authenticated workflows (goals,
+safety, the extension manifest, and onboarding display, dismissal, live
+progress, and completion. The authenticated workflows (goals,
 obligations, schedule, focus timer, token flows) run only when
 `E2E_EMAIL` / `E2E_PASSWORD` are set — export them first, then run the suite.
 A brief manual QA pass on production-like data is still required for public
