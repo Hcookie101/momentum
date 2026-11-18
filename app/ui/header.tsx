@@ -3,15 +3,36 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/supabase/client";
 import FocusTimer from "@/app/ui/focus-timer";
+import posthog from "posthog-js";
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const supabase = createClient();
+
+    async function identifyAuthenticatedUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!active || !user) return;
+
+      posthog.identify(user.id, user.email ? { email: user.email } : {});
+    }
+
+    void identifyAuthenticatedUser();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const navItems = [
     { name: "Goals", href: "/goals" },
@@ -25,7 +46,14 @@ export default function Header() {
     if (signingOut) return;
     setSigningOut(true);
     const supabase = createClient();
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      setSigningOut(false);
+      return;
+    }
+
+    posthog.capture("user_signed_out");
+    posthog.reset();
     router.push("/login");
     router.refresh();
   }

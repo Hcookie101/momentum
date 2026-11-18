@@ -159,6 +159,7 @@ export async function POST(request: Request) {
     config,
     [{ role: "user", content: prompt }],
     SYSTEM_PROMPT,
+    user.id,
   );
   if (!sent.ok) return oneShotError(sent);
 

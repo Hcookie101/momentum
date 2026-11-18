@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { Tables } from "@/supabase/types";
 import { createClient } from "@/supabase/client";
+import posthog from "posthog-js";
 import Onboarding from "@/app/ui/onboarding";
 import AiSettingsDialog from "@/app/ui/ai-settings";
 import QuotaBadge from "@/app/ui/quota-badge";
@@ -235,6 +236,7 @@ export default function Calendar() {
       return;
     }
     setEvents((currentEvents) => [...currentEvents, ...data]);
+    posthog.capture("calendar_event_created", { duration_hours: safeDuration });
     resetForm();
   }
 
@@ -365,6 +367,7 @@ export default function Calendar() {
       return;
     }
     setEvents((currentEvents) => [...currentEvents, ...data]);
+    posthog.capture("generated_schedule_accepted", { event_count: data.length });
     closeDrafts();
   }
 

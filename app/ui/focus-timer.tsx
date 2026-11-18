@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createClient } from "@/supabase/client";
+import posthog from "posthog-js";
 import {
   clearFocusStart,
   elapsedSeconds,
@@ -121,6 +122,14 @@ export default function FocusTimer() {
       setError("Couldn't save the session. Try again.");
       return;
     }
+    posthog.capture("focus_session_saved", {
+      duration_seconds: elapsedSeconds(
+        stoppedSession.startISO,
+        Date.parse(stoppedSession.endISO),
+      ),
+      focus_score: score,
+      has_goal: selectedGoalId !== null,
+    });
     clearFocusStart();
     setStoppedSession(null);
     setScore(null);
