@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Tables } from "@/supabase/types";
 import { createClient } from "@/supabase/client";
+import posthog from "posthog-js";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const hours = Array.from({ length: 24 }, (_, i) => i);
@@ -129,6 +130,10 @@ export default function Obligations() {
       return;
     }
     setObligations((prev) => [...prev, ...data]);
+    posthog.capture("obligation_created", {
+      days_per_week: patternDays.length,
+      duration_hours: safeDuration,
+    });
     resetForm();
   }
 

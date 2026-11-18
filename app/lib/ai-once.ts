@@ -6,6 +6,7 @@
 // drift apart.
 
 import type { ChatMessage } from "@/app/lib/ai";
+import { captureAiGeneration, createAiTraceId } from "@/app/lib/posthog-ai";
 import {
   extractTextResponse,
   providerError,
@@ -44,8 +45,28 @@ export async function generateOnce(
   config: ProviderConfig,
   messages: ChatMessage[],
   system: string,
+  distinctId: string,
 ): Promise<OneShotResult> {
   const { url, init } = upstreamRequest(config, messages, [], system, false, []);
+  const generation = {
+    distinctId,
+    traceId: createAiTraceId(),
+    sessionId: null,
+    provider: config.provider,
+    model: config.model,
+    baseUrl: config.baseUrl,
+    requestUrl: url,
+    input: [{ role: "system", content: system }, ...messages],
+  };
+  const startedAt = Date.now();
+  const captureFailure = async (error: string, status?: number) => {
+    await captureAiGeneration(generation, {
+      latency: (Date.now() - startedAt) / 1000,
+      status,
+      stream: false,
+      error,
+    });
+  };
 
   // Same free-tier pacing as the chat route (see app/lib/quota.ts): reserve a
   // slot before each send, refund it when a 429 proves the request never ran,
@@ -71,10 +92,12 @@ export async function generateOnce(
     try {
       response = await fetch(url, init);
     } catch (error) {
+      const message = `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`;
+      await captureFailure(message);
       return {
         ok: false,
         status: 502,
-        message: `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
+        message,
         quota: currentQuota(),
       };
     }
@@ -90,14 +113,18 @@ export async function generateOnce(
     await sleep(retryDelayMs(response.headers, retryBody));
   }
   if (!upstream) {
-    return { ok: false, status: 502, message: "The provider did not reply.", quota: currentQuota() };
+    const message = "The provider did not reply.";
+    await captureFailure(message);
+    return { ok: false, status: 502, message, quota: currentQuota() };
   }
   if (!upstream.ok) {
     const detail = retryBody || (await upstream.text());
+    const message = providerError(upstream.status, detail);
+    await captureFailure(message, upstream.status);
     return {
       ok: false,
       status: upstream.status,
-      message: providerError(upstream.status, detail),
+      message,
       quota: currentQuota(),
     };
   }
@@ -106,22 +133,32 @@ export async function generateOnce(
   try {
     payload = await upstream.json();
   } catch {
+    const message = "The provider returned an unreadable reply.";
+    await captureFailure(message, upstream.status);
     return {
       ok: false,
       status: 502,
-      message: "The provider returned an unreadable reply.",
+      message,
       quota: currentQuota(),
     };
   }
   const text = extractTextResponse(config.provider, payload);
   if (!text) {
+    const message = "The model returned an empty reply — try again.";
+    await captureFailure(message, upstream.status);
     return {
       ok: false,
       status: 502,
-      message: "The model returned an empty reply — try again.",
+      message,
       quota: currentQuota(),
     };
   }
+  await captureAiGeneration(generation, {
+    output: [{ role: "assistant", content: text }],
+    latency: (Date.now() - startedAt) / 1000,
+    status: upstream.status,
+    stream: false,
+  });
   return { ok: true, text, quota: currentQuota() };
 }
 

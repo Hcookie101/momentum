@@ -32,6 +32,7 @@ import {
   sleep,
   usage,
 } from "@/app/lib/quota";
+import { captureAiGeneration, captureAiToolSpan, createAiTraceId, createChatSessionId } from "@/app/lib/posthog-ai";
 import { dayRange, toLocalDateString } from "@/app/lib/stats";
 
 export const SYSTEM_PROMPT =
@@ -193,18 +194,47 @@ export async function POST(request: Request) {
       false,
       [],
     );
+    const pingGeneration = {
+      distinctId: user.id,
+      traceId: createAiTraceId(),
+      sessionId: null,
+      provider: config.provider,
+      model: config.model,
+      baseUrl: config.baseUrl,
+      requestUrl: ping.url,
+      input: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: "Reply with the single word OK." },
+      ],
+    };
+    const pingStartedAt = Date.now();
     try {
       upstream = await fetch(ping.url, ping.init);
     } catch (error) {
-      return jsonError(
-        `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
-        502,
-      );
+      const message = `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`;
+      await captureAiGeneration(pingGeneration, {
+        latency: (Date.now() - pingStartedAt) / 1000,
+        stream: false,
+        error: message,
+      });
+      return jsonError(message, 502);
     }
     if (!upstream.ok) {
-      return jsonError(providerError(upstream.status, await upstream.text()), upstream.status);
+      const message = providerError(upstream.status, await upstream.text());
+      await captureAiGeneration(pingGeneration, {
+        latency: (Date.now() - pingStartedAt) / 1000,
+        status: upstream.status,
+        stream: false,
+        error: message,
+      });
+      return jsonError(message, upstream.status);
     }
     await upstream.body?.cancel();
+    await captureAiGeneration(pingGeneration, {
+      latency: (Date.now() - pingStartedAt) / 1000,
+      status: upstream.status,
+      stream: false,
+    });
     return Response.json({ ok: true, provider: config.provider, model: config.model });
   }
 
@@ -216,6 +246,8 @@ export async function POST(request: Request) {
   );
   if (messages.length === 0) return jsonError("There is nothing to send yet.", 400);
 
+  const traceId = createAiTraceId();
+  const sessionId = createChatSessionId(user.id, messages);
   const day = readDay(body.day);
   const encoder = new TextEncoder();
   let stopped = false;
@@ -259,6 +291,18 @@ export async function POST(request: Request) {
             true,
             AI_TOOLS,
           );
+          const generation = {
+            distinctId: user.id,
+            traceId,
+            sessionId,
+            provider: config.provider,
+            model: config.model,
+            baseUrl: config.baseUrl,
+            requestUrl: url,
+            input: [{ role: "system", content: system }, ...messages],
+            tools: AI_TOOLS,
+          };
+          const generationStartedAt = Date.now();
           // Free-tier budget (see app/lib/quota.ts): reserve a slot — waiting
           // out the per-minute window, refusing once the day is spent before
           // anything is sent. Transient failures get a short wait-and-retry,
@@ -283,9 +327,13 @@ export async function POST(request: Request) {
             try {
               response = await fetch(url, init);
             } catch (error) {
-              throw new Error(
-                `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`,
-              );
+              const message = `Couldn't reach ${config.baseUrl} — check the base URL. (${(error as Error).message})`;
+              await captureAiGeneration(generation, {
+                latency: (Date.now() - generationStartedAt) / 1000,
+                stream: true,
+                error: message,
+              });
+              throw new Error(message);
             }
             const status = response.status;
             const transient = status === 429 || status >= 500;
@@ -300,11 +348,25 @@ export async function POST(request: Request) {
             console.log(`[ai-debug] retry status=${status} attempt=${attempt + 1} wait=${wait}ms`);
             await sleep(wait);
           }
-          if (!upstream) throw new Error("The provider did not reply.");
+          if (!upstream) {
+            const message = "The provider did not reply.";
+            await captureAiGeneration(generation, {
+              latency: (Date.now() - generationStartedAt) / 1000,
+              stream: true,
+              error: message,
+            });
+            throw new Error(message);
+          }
           if (!upstream.ok) {
             // A retried failure's body was already read into `retryBody`.
             const detail = retryBody || (await upstream.text());
             const message = providerError(upstream.status, detail);
+            await captureAiGeneration(generation, {
+              latency: (Date.now() - generationStartedAt) / 1000,
+              status: upstream.status,
+              stream: true,
+              error: message,
+            });
             throw new Error(
               upstream.status >= 500
                 ? `${message} — retried without success; if it keeps happening, ` +
@@ -312,7 +374,16 @@ export async function POST(request: Request) {
                 : message,
             );
           }
-          if (!upstream.body) throw new Error("The provider returned an empty stream.");
+          if (!upstream.body) {
+            const message = "The provider returned an empty stream.";
+            await captureAiGeneration(generation, {
+              latency: (Date.now() - generationStartedAt) / 1000,
+              status: upstream.status,
+              stream: true,
+              error: message,
+            });
+            throw new Error(message);
+          }
 
           const parser = createStreamParser(config.provider);
           const reader = upstream.body.getReader();
@@ -358,6 +429,15 @@ export async function POST(request: Request) {
           debug.raw = "";
           debug.lines = 0;
           debug.forwarded = 0;
+          await captureAiGeneration(generation, {
+            output: [
+              { role: "assistant", content: result.text, tool_calls: result.calls },
+            ],
+            latency: (Date.now() - generationStartedAt) / 1000,
+            status: upstream.status,
+            stream: true,
+            ...(result.error ? { error: result.error } : {}),
+          });
           if (result.error) throw new Error(result.error);
           if (result.calls.length === 0) {
             // A turn with neither text nor tool calls would leave the chat
@@ -377,7 +457,31 @@ export async function POST(request: Request) {
 
           const calls: AiToolCall[] = [];
           for (const call of result.calls) {
-            const toolResult = await executeAiTool(call, day, supabase);
+            const toolStartedAt = Date.now();
+            let toolResult: unknown;
+            try {
+              toolResult = await executeAiTool(call, day, supabase);
+              await captureAiToolSpan(
+                { distinctId: user.id, traceId, sessionId },
+                {
+                  name: call.name,
+                  input: call.args,
+                  output: toolResult,
+                  latency: (Date.now() - toolStartedAt) / 1000,
+                },
+              );
+            } catch (error) {
+              await captureAiToolSpan(
+                { distinctId: user.id, traceId, sessionId },
+                {
+                  name: call.name,
+                  input: call.args,
+                  latency: (Date.now() - toolStartedAt) / 1000,
+                  error: (error as Error).message,
+                },
+              );
+              throw error;
+            }
             // A staged schedule change never runs silently: forward it to the
             // browser as an approval card. The tool result handed back to the
             // model keeps only a note — the write itself waits for the user's
