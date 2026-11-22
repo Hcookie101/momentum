@@ -234,14 +234,12 @@ async function browsingStats(
     date,
     total_seconds: total,
     total: formatDuration(total),
-    sites: sites.slice(0, limit).map(([domain, seconds]) => ({
-      domain,
-      seconds,
-      duration: formatCompact(seconds),
-      category: categoryFor(domain).name,
-    })),
+    // Domains are deliberately omitted from provider context. This result is
+    // aggregated category data only, even though the database read is owner-
+    // scoped and RLS-protected.
     time_by_category: [...byCategory.entries()]
       .sort((a, b) => b[1] - a[1])
+      .slice(0, Math.min(limit, 20))
       .map(([category, seconds]) => ({ category, seconds, duration: formatCompact(seconds) })),
   };
 }
@@ -469,4 +467,3 @@ export async function executeAiTool(
     return { error: `The tool failed: ${(error as Error).message}` };
   }
 }
-

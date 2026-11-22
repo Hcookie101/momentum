@@ -15,6 +15,7 @@ export type AiSettings = {
   apiKey: string;
   baseUrl: string;
   model: string;
+  shareBrowsing: boolean;
   // Free-tier budget as "requests-per-day/requests-per-minute" (e.g. "20/5"),
   // or "" to track nothing — see app/lib/quota.ts.
   quota: string;
@@ -97,6 +98,7 @@ function parseAiSettings(raw: string): AiSettings | null {
       apiKey: String(parsed.apiKey ?? ""),
       baseUrl: String(parsed.baseUrl ?? PROVIDER_PRESETS[provider].baseUrl),
       model: String(parsed.model ?? PROVIDER_PRESETS[provider].model),
+      shareBrowsing: parsed.shareBrowsing === true,
       // Settings saved before the quota field existed fall back to the
       // provider's default budget.
       quota:
@@ -149,6 +151,7 @@ function aiHeaders(settings: AiSettings): HeadersInit {
     // The free-tier budget for this connection ("20/5" or empty): the route
     // paces requests against it and streams the counter back for the badge.
     "x-ai-quota": settings.quota ?? "",
+    "x-ai-share-browsing": settings.shareBrowsing ? "true" : "false",
   };
 }
 
@@ -499,4 +502,3 @@ export async function readQuotaUsage(settings: AiSettings): Promise<QuotaUsage |
     return null;
   }
 }
-

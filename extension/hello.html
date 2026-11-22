@@ -352,6 +352,24 @@
         color: var(--ink);
       }
 
+      .pause {
+        padding: 2px 6px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 11px;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+      }
+
+      .pause:hover {
+        background: var(--paper);
+        color: var(--ink);
+      }
+
       .total span:last-child {
         font-size: 15px;
         font-variant-numeric: tabular-nums;
@@ -408,6 +426,7 @@
       <div class="section-head">
         <p class="eyebrow">Browsing time</p>
         <div class="section-actions">
+          <button id="pause" class="pause" type="button" aria-pressed="false">Pause</button>
           <button id="unlink" class="unlink" type="button" hidden>Unlink</button>
           <span class="chip">Today</span>
         </div>
@@ -437,4 +456,3 @@
     <script src="popup.js"></script>
   </body>
 </html>
-

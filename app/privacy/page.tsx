@@ -84,6 +84,9 @@ export default function PrivacyPage() {
             your browser through Momentum&apos;s server to whichever provider
             you configured, carrying the goals, schedule, or stats needed to
             answer. No AI request is made unless you ask for one.
+            Browsing context is opt-in and off by default. If enabled, AI
+            requests receive aggregated category totals and browsing time, not
+            individual domains, page URLs, or page contents.
           </p>
         </Section>
 
@@ -92,7 +95,8 @@ export default function PrivacyPage() {
             Browsing data lives in your own account&apos;s{" "}
             <code>browsing_sessions</code> table. Revoking an extension token in
             Settings stops future logging from that browser; historical rows
-            stay until you remove them with the{" "}
+            are automatically retained for 30 days and then deleted. You can
+            remove them sooner with the{" "}
             <strong>&ldquo;Delete my browsing data&rdquo;</strong> button in
             Settings, which permanently deletes every browsing row on your
             account.

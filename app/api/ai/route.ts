@@ -97,17 +97,27 @@ function readDay(day: Partial<ChatDay> | undefined): ChatDay {
 // their answer from round one instead of spending a second provider request
 // on a tool round (and a second full re-send of the conversation). Any
 // failure falls back silently: the tools still work.
-async function preloadedToday(day: ChatDay, supabase: SupabaseClient): Promise<string> {
+async function preloadedToday(
+  day: ChatDay,
+  supabase: SupabaseClient,
+  shareBrowsing: boolean,
+): Promise<string> {
   try {
-    const [focus, browsing, schedule] = await Promise.all([
+    const [focus, schedule] = await Promise.all([
       executeAiTool({ id: "preload_focus", name: "get_focus_stats", args: {} }, day, supabase),
-      executeAiTool({ id: "preload_browsing", name: "get_browsing_stats", args: {} }, day, supabase),
       executeAiTool(
         { id: "preload_schedule", name: "get_schedule", args: { date: day.date } },
         day,
         supabase,
       ),
     ]);
+    const browsing = shareBrowsing
+      ? await executeAiTool(
+          { id: "preload_browsing", name: "get_browsing_stats", args: {} },
+          day,
+          supabase,
+        )
+      : { shared: false, note: "Browsing context was not shared by the user." };
     return (
       `\n\nData already fetched for you for today (${day.date}) — when the question is ` +
       `about today, answer straight from this instead of calling the tools (call tools ` +
@@ -139,6 +149,7 @@ export async function POST(request: Request) {
 
   const config = readProviderConfig(request);
   if (typeof config === "string") return jsonError(config, 400);
+  const shareBrowsing = request.headers.get("x-ai-share-browsing") === "true";
 
   let body: { messages?: ChatMessage[]; ping?: boolean; day?: Partial<ChatDay> };
   try {
@@ -240,7 +251,7 @@ export async function POST(request: Request) {
         if (quotaLimits) emit({ quota: usage(quotaKey, quotaLimits) });
         // Today's numbers ride along in the system prompt so most prompts are
         // answered in a single request — see preloadedToday.
-        const system = SYSTEM_PROMPT + (await preloadedToday(day, supabase));
+        const system = SYSTEM_PROMPT + (await preloadedToday(day, supabase, shareBrowsing));
         const rounds: ToolRound[] = [];
         // Tracks how much answer text has already reached the browser, so a
         // turn that answers with nothing at all can be reported instead of
@@ -377,7 +388,13 @@ export async function POST(request: Request) {
 
           const calls: AiToolCall[] = [];
           for (const call of result.calls) {
-            const toolResult = await executeAiTool(call, day, supabase);
+            const toolResult =
+              call.name === "get_browsing_stats" && !shareBrowsing
+                ? {
+                    error:
+                      "Browsing context is not shared. Ask the user to enable Share aggregated browsing with AI in AI settings.",
+                  }
+                : await executeAiTool(call, day, supabase);
             // A staged schedule change never runs silently: forward it to the
             // browser as an approval card. The tool result handed back to the
             // model keeps only a note — the write itself waits for the user's

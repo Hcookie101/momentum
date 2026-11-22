@@ -4,6 +4,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_O9ZA9bldnMVJ58fmjs2hRA_W73-mOb9";
 const ALARM = "tick";
 const MAX_SESSION_SECONDS = 180; // cap any single logged chunk at 3 minutes
 const TOKEN_KEY = "momentumToken"; // set in Settings → paste the token here
+const PAUSE_KEY = "momentumTrackingPaused";
 
 // ---- HELPERS ----
 // Hostname for a URL, or null when the page shouldn't be tracked. Only
@@ -27,8 +28,14 @@ async function getToken() {
   return (stored[TOKEN_KEY] || "").trim();
 }
 
+async function isTrackingPaused() {
+  const stored = await chrome.storage.local.get(PAUSE_KEY);
+  return stored[PAUSE_KEY] === true;
+}
+
 async function logSession(domain, durationSeconds) {
   if (!domain || durationSeconds < 3) return;
+  if (await isTrackingPaused()) return;
   const token = await getToken();
   if (!token) return; // not linked yet — nothing to write to
   try {

@@ -16,7 +16,7 @@ type Status = { kind: "idle" | "pending" | "ok" | "error"; text: string };
 const IDLE: Status = { kind: "idle", text: "" };
 
 function defaultsFor(provider: AiProvider, apiKey = ""): AiSettings {
-  return { provider, apiKey, ...PROVIDER_PRESETS[provider] };
+  return { provider, apiKey, shareBrowsing: false, ...PROVIDER_PRESETS[provider] };
 }
 
 // Small labelled input used for every field so the dialog stays uniform.
@@ -91,6 +91,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
       baseUrl: draft.baseUrl.trim(),
       model: draft.model.trim(),
       quota: draft.quota.trim(),
+      shareBrowsing: draft.shareBrowsing,
     });
     setStatus(IDLE);
     onClose();
@@ -111,6 +112,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
         baseUrl: draft.baseUrl.trim(),
         model: draft.model.trim(),
         quota: draft.quota.trim(),
+        shareBrowsing: draft.shareBrowsing,
       });
       setStatus({ kind: "ok", text: `Connected to ${draft.model.trim()}.` });
     } catch (error) {
@@ -133,7 +135,7 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <form
-        className="max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+        className="max-h-[90vh] w-full max-w-105 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
         onClick={(event) => event.stopPropagation()}
         onSubmit={(event) => {
           event.preventDefault();
@@ -157,6 +159,20 @@ function AiSettingsForm({ onClose }: { onClose: () => void }) {
         </p>
 
         <div className="flex flex-col gap-3">
+          <label className="flex items-start gap-3 rounded-lg border border-[#777] px-3 py-3">
+            <input
+              type="checkbox"
+              checked={draft.shareBrowsing}
+              onChange={(event) => update({ shareBrowsing: event.target.checked })}
+              className="mt-0.5 h-4 w-4 accent-[#6DBACB]"
+            />
+            <span>
+              <span className="block text-[13px] font-medium">Share aggregated browsing with AI</span>
+              <span className="mt-1 block text-[11px] text-[#E4E0D8]/60">
+                When enabled, AI requests may receive today&apos;s category totals and total browsing time. Individual domains are not sent.
+              </span>
+            </span>
+          </label>
           <Field label="Provider" htmlFor="ai-provider">
             <select
               id="ai-provider"

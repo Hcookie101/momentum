@@ -9,6 +9,8 @@ const totalEl = document.getElementById("total");
 const hintEl = document.getElementById("hint");
 const hintTextEl = document.getElementById("hintText");
 const unlinkBtn = document.getElementById("unlink");
+const pauseBtn = document.getElementById("pause");
+const PAUSE_KEY = "momentumTrackingPaused";
 
 // ---- FORMATTING (matches the "00h06m" style used on the Stats page) ----
 function formatDuration(totalSeconds) {
@@ -266,6 +268,27 @@ async function load() {
     renderLinkPanel();
     return;
   }
+
+  async function renderPauseButton() {
+    if (!pauseBtn) return;
+    const stored = await chrome.storage.local.get(PAUSE_KEY);
+    const paused = stored[PAUSE_KEY] === true;
+    pauseBtn.textContent = paused ? "Resume" : "Pause";
+    pauseBtn.setAttribute("aria-pressed", paused ? "true" : "false");
+    if (paused) {
+      hintEl.classList.remove("tracking");
+      hintTextEl.textContent = "Tracking is paused.";
+    }
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", async () => {
+      const stored = await chrome.storage.local.get(PAUSE_KEY);
+      const paused = stored[PAUSE_KEY] === true;
+      await chrome.storage.local.set({ [PAUSE_KEY]: !paused });
+      await renderPauseButton();
+    });
+  }
   // A token edited by hand (or from an older format) can never validate —
   // bounce it back to the link panel instead of failing every read.
   const problem = tokenProblem(token);
@@ -327,11 +350,14 @@ async function renderLiveStatus() {
 
 load();
 renderLiveStatus();
+renderPauseButton();
 
 if (typeof chrome !== "undefined" && chrome.storage?.onChanged) {
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === "session" && changes.current) renderLiveStatus();
+    if (area === "local" && changes[PAUSE_KEY]) {
+      renderPauseButton();
+      renderLiveStatus();
+    }
   });
 }
-
-

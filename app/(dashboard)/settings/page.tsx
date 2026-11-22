@@ -1,6 +1,7 @@
 import ExtensionLinks from "./extension-links";
 import DeleteBrowsingData from "./delete-browsing-data";
 import SendFeedback from "./send-feedback";
+import DeleteAccount from "./delete-account";
 
 export const metadata = {
   title: "Settings · Momentum",
@@ -14,6 +15,7 @@ export default function SettingsPage() {
         <ExtensionLinks />
         <SendFeedback />
         <DeleteBrowsingData />
+        <DeleteAccount />
         <p className="text-[13px] leading-relaxed text-[#8a8780]">
           The extension only ever saves the <em>domain</em> and <em>seconds</em>{" "}
           per visit. Never full URLs, page contents, or form data. Read the{" "}

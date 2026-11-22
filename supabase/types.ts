@@ -322,6 +322,14 @@ export type Database = {
           visited_at: string
         }[]
       }
+      purge_browsing_sessions: {
+        Args: { p_retention_days?: number }
+        Returns: number
+      }
+      delete_my_account: {
+        Args: Record<string, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
