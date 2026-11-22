@@ -2,6 +2,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { Tables } from "@/supabase/types";
 import { createClient } from "@/supabase/client";
+import posthog from "posthog-js";
 import AiSettingsDialog from "@/app/ui/ai-settings";
 import QuotaBadge from "@/app/ui/quota-badge";
 import {
@@ -217,6 +218,7 @@ const [supabase] = useState(() => createClient());
         return;
       }
       setGoals((prev) => [...prev, ...data]);
+      posthog.capture("goal_created");
     } else if (modal.kind === "edit-goal") {
       const { data, error } = await supabase
         .from("goals")
@@ -250,6 +252,7 @@ const [supabase] = useState(() => createClient());
         return;
       }
       setSubgoals((prev) => [...prev, ...data]);
+      posthog.capture("subgoal_created");
     } else {
       const { data, error } = await supabase
         .from("subgoals")
@@ -320,6 +323,7 @@ const [supabase] = useState(() => createClient());
         g.id === id ? { ...g, completed, completed_at: completedAt } : g,
       ),
     );
+    posthog.capture("goal_completion_changed", { completed });
   }
 
   async function toggleSub(id: string) {
@@ -344,6 +348,7 @@ const [supabase] = useState(() => createClient());
         s.id === id ? { ...s, completed, completed_at: completedAt } : s,
       ),
     );
+    posthog.capture("subgoal_completion_changed", { completed });
   }
 
   // The "Generate" button: ask the AI for dated subgoal drafts for one goal.
@@ -416,6 +421,7 @@ const [supabase] = useState(() => createClient());
       return;
     }
     setSubgoals((prev) => [...prev, ...data]);
+    posthog.capture("generated_subgoals_accepted", { subgoal_count: data.length });
     setDrafts(null);
   }
 
