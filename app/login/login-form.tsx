@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { safeNext } from "@/app/lib/safe-next";
+import posthog from "posthog-js";
 
 const inputClass =
   "w-full rounded-lg border border-[#b8b5ae] bg-[#EFECE5] px-3 py-2 text-[14px] text-[#1D2525] outline-none placeholder:text-[#8a8780] focus:border-[#16759b]";
@@ -28,15 +29,21 @@ export default function LoginForm() {
     const supabase = createClient();
     try {
       if (mode === "in") {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
         });
         if (error) throw error;
+
+        if (data.user) {
+          posthog.identify(data.user.id, { email: data.user.email });
+          posthog.capture("user_signed_in");
+        }
+
         router.push(next);
         router.refresh();
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
           options: {
@@ -44,6 +51,12 @@ export default function LoginForm() {
           },
         });
         if (error) throw error;
+
+        if (data.user) {
+          posthog.identify(data.user.id, { email: data.user.email });
+          posthog.capture("user_registered");
+        }
+
         setNotice(
           "Account created — check your inbox for the confirmation link, then come back here to log in.",
         );

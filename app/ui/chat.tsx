@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import AiSettingsDialog from "@/app/ui/ai-settings";
+import posthog from "posthog-js";
 import {
   applyScheduleEdits,
   type ChatMessage,
@@ -148,6 +149,9 @@ export default function Chat() {
       const result = await applyScheduleEdits(proposal.token, proposal.kept);
       setCalendarPreview(null);
       setProposal({ ...proposal, state: "done" });
+      posthog.capture("schedule_proposal_approved", {
+        edit_count: proposal.kept.length,
+      });
       notifyCalendarChanged();
       setMessages((current) => [
         ...current,
