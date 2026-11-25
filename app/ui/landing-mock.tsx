@@ -38,7 +38,7 @@ export function WeekMock() {
       </div>
       <div className="grid grid-cols-7 gap-1">
         {columns.map((blocks, i) => (
-          <div key={i} className="min-h-[86px] space-y-1">
+          <div key={i} className="min-h-21.5 space-y-1">
             {blocks.map((block, j) => (
               <div
                 key={j}
@@ -63,7 +63,7 @@ export function GoalRow() {
       aria-hidden="true"
       className="pointer-events-none flex select-none items-center gap-2.5 border-b border-[#b8b5ae]/60 px-4 py-2.5"
     >
-      <span className="flex h-4 w-4 items-center justify-center rounded-[4px] border border-[#8a8780]">
+      <span className="flex h-4 w-4 items-center justify-center rounded-sm border border-[#8a8780]">
         <svg
           viewBox="0 0 12 12"
           className="h-2.5 w-2.5"

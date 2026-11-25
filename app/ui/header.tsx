@@ -39,6 +39,7 @@ export default function Header() {
     { name: "Obligations", href: "/obligations" },
     { name: "Schedule", href: "/schedule" },
     { name: "Stats", href: "/stats" },
+    { name: "Journal", href: "/journal" },
     { name: "Settings", href: "/settings" },
   ];
 

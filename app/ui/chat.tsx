@@ -234,7 +234,7 @@ export default function Chat() {
     // Full width when stacked under the calendar on phones; fixed 310px
     // sidebar on desktop. Height is bounded in both modes so the input
     // never scrolls out of reach.
-    <div className="flex h-[70vh] max-h-[640px] w-full flex-col border-t border-white/10 bg-[#1D2525] lg:h-[calc(100vh-40px)] lg:max-h-none lg:w-[310px] lg:shrink-0 lg:border-l lg:border-t-0">
+    <div className="flex h-[70vh] max-h-160 w-full flex-col border-t border-white/10 bg-[#1D2525] lg:h-[calc(100vh-40px)] lg:max-h-none lg:w-77.5 lg:shrink-0 lg:border-l lg:border-t-0">
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
         <h2 className="text-[15px] text-[#E4E0D8]">AI Chat</h2>
         {quota && (
@@ -295,7 +295,7 @@ export default function Chat() {
         {messages.map((entry, index) => (
           <p
             key={index}
-            className={`max-w-[85%] whitespace-pre-wrap break-words rounded-lg px-3 py-2 text-[13px] ${
+            className={`max-w-[85%] whitespace-pre-wrap wrap-break-word rounded-lg px-3 py-2 text-[13px] ${
               entry.role === "user"
                 ? "ml-auto bg-[#16759b] text-white"
                 : "mr-auto bg-white/5 text-[#E4E0D8]"
@@ -375,7 +375,7 @@ export default function Chat() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={onKeyDown}
-            className="resize-none w-full px-4 pt-3.5 pb-11 h-[98px] rounded-lg bg-[#1D2525] text-white border-1 border-[#E4E0D8] placeholder:text-[#E4E0D8] placeholder:font-light"
+            className="resize-none w-full px-4 pt-3.5 pb-11 h-24.5 rounded-lg bg-[#1D2525] text-white border border-[#E4E0D8] placeholder:text-[#E4E0D8] placeholder:font-light"
             placeholder={
               configured ? "Ask anything..." : "Add an API key to chat..."
             }

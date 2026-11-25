@@ -267,7 +267,7 @@ export default function Obligations() {
                   style={{ height: `${hourHeight}px` }}
                   onClick={() => openForSlot(dayIndex, hour)}
                   title={`${days[dayIndex]} ${fmt(hour)} - add obligation`}
-                  className="cursor-pointer border-b border-[#b8b5ae]/60 transition-colors hover:bg-black/[0.04]"
+                  className="cursor-pointer border-b border-[#b8b5ae]/60 transition-colors hover:bg-black/4"
                 />
               ))}
               {obligations
@@ -318,7 +318,7 @@ export default function Obligations() {
           onClick={resetForm}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-100 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">

@@ -34,11 +34,11 @@ export default function SendFeedback() {
     // Guard against double-submit while the insert is in flight.
     if (busy) return;
     if (!trimmed) {
-      setError("Write a few words first — the message can't be empty.");
+      setError("Write a few words first. The message can't be empty.");
       return;
     }
     if (trimmed.length > MAX_LENGTH) {
-      setError(`Keep it under ${MAX_LENGTH} characters — yours is ${trimmed.length}.`);
+      setError(`Keep it under ${MAX_LENGTH} characters. Yours is ${trimmed.length}.`);
       return;
     }
     setBusy(true);
@@ -49,7 +49,7 @@ export default function SendFeedback() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) {
-        setError("You're signed out — log back in and try again.");
+        setError("You're signed out. Log back in and try again.");
         return;
       }
       const { error: insertError } = await supabase.from("feedback").insert({
@@ -63,7 +63,7 @@ export default function SendFeedback() {
       setDone(true);
     } catch (err) {
       console.error(err);
-      setError("Couldn't send your feedback — try again.");
+      setError("Couldn't send your feedback. Try again.");
     } finally {
       setBusy(false);
     }
@@ -128,7 +128,7 @@ export default function SendFeedback() {
 
       {done && (
         <p role="status" className="mt-3 rounded-lg bg-[#16759b]/10 px-3 py-2 text-[13px] text-[#16759b]">
-          Thanks — your feedback was sent.
+          Thanks. Your feedback was sent.
         </p>
       )}
       {error && (

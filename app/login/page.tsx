@@ -6,7 +6,7 @@ import LoginForm from "./login-form";
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen bg-[#E4E0D8] text-[#1D2525]">
-      <div className="flex w-full flex-col px-6 py-6 sm:px-10 lg:max-w-[520px] lg:flex-none lg:border-r lg:border-[#b8b5ae]">
+      <div className="flex w-full flex-col px-6 py-6 sm:px-10 lg:max-w-130 lg:flex-none lg:border-r lg:border-[#b8b5ae]">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="relative h-8 w-8 overflow-hidden rounded-lg">
             <Image src="/momentumLogo.png" alt="Momentum logo" fill className="object-cover" />
@@ -14,7 +14,7 @@ export default function LoginPage() {
           <span className="font-serif text-[19px] font-medium tracking-[-0.01em]">Momentum</span>
         </Link>
 
-        <div className="mx-auto flex w-full max-w-[360px] flex-1 flex-col justify-center py-12">
+        <div className="mx-auto flex w-full max-w-90 flex-1 flex-col justify-center py-12">
           <h1 className="font-serif text-[28px] font-medium leading-tight tracking-tight">
             Welcome back.
           </h1>

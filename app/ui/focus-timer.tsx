@@ -147,7 +147,7 @@ export default function FocusTimer() {
             className="h-2 w-2 rounded-full bg-[#6DBACB]"
             aria-hidden="true"
           />
-          <span className="min-w-[52px] text-center font-mono text-[13px] font-semibold tabular-nums">
+          <span className="min-w-13 text-center font-mono text-[13px] font-semibold tabular-nums">
             {formatElapsed(elapsed)}
           </span>
           <button
@@ -176,7 +176,7 @@ export default function FocusTimer() {
           aria-modal="true"
           aria-label="Rate your focus"
         >
-          <div className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6">
+          <div className="max-h-[90vh] w-full max-w-100 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6">
             <h2 className="mb-1 font-serif text-2xl font-medium">Rate your focus</h2>
             <p className="mb-4 text-[13px] text-[#E4E0D8]/70">
               {formatElapsed(

@@ -329,7 +329,7 @@ function TotalFocusCard({
       <h1 className="pt-2 text-center font-serif text-2xl sm:text-4xl">
         Total time spent on task:
       </h1>
-      <h1 className="break-words px-2 pt-2 text-center text-6xl font-extrabold tabular-nums tracking-[-0.04em] sm:text-9xl">
+      <h1 className="wrap-break-word px-2 pt-2 text-center text-6xl font-extrabold tabular-nums tracking-[-0.04em] sm:text-9xl">
         {loading ? "—" : formatDuration(seconds)}
       </h1>
     </Card>
@@ -353,7 +353,7 @@ function SitesCard({
       ) : (
         // Rows cap their height on mobile instead of stretching the card —
         // the list scrolls internally past ~4 rows on both layouts.
-        <div className="max-h-[240px] overflow-y-auto sm:max-h-none sm:flex-1">
+        <div className="max-h-60 overflow-y-auto sm:max-h-none sm:flex-1">
           {sites.map((site) => (
             <div
               key={site.domain}
@@ -392,7 +392,7 @@ function GoalTimeCard({
       ) : totals.length === 0 ? (
         <Empty>No focus sessions recorded for this day.</Empty>
       ) : (
-        <div className="max-h-[240px] overflow-y-auto sm:max-h-none sm:flex-1">
+        <div className="max-h-60 overflow-y-auto sm:max-h-none sm:flex-1">
           {totals.map((entry) => (
             <div
               key={entry.goalId ?? "none"}
@@ -468,8 +468,8 @@ function CategoriesCard({
       ) : categories.length === 0 ? (
         <Empty>No browsing time recorded for this day.</Empty>
       ) : (
-        <div className="flex min-h-[220px] flex-col gap-2 px-3 pb-3 sm:min-h-0 sm:flex-1 sm:flex-row">
-          <div className="h-[200px] w-full shrink-0 sm:h-auto sm:min-h-0 sm:min-w-0 sm:flex-[3]">
+        <div className="flex min-h-55 flex-col gap-2 px-3 pb-3 sm:min-h-0 sm:flex-1 sm:flex-row">
+          <div className="h-50 w-full shrink-0 sm:h-auto sm:min-h-0 sm:min-w-0 sm:flex-3">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -539,7 +539,7 @@ function WeekCard({
       ) : !hasData ? (
         <Empty>No focus sessions in the past week.</Empty>
       ) : (
-        <div className="h-[220px] px-3 pb-3 sm:min-h-0 sm:flex-1">
+        <div className="h-55 px-3 pb-3 sm:min-h-0 sm:flex-1">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={week} margin={{ top: 18, right: 4, left: 4, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke="#C9C6C0" />
@@ -592,4 +592,3 @@ function WeekCard({
     </Card>
   );
 }
-

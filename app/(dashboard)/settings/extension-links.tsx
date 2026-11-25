@@ -132,7 +132,7 @@ export default function ExtensionLinks() {
           onChange={(e) => setLabel(e.target.value)}
           placeholder="Name this browser (e.g. work laptop)"
           maxLength={40}
-          className="w-full max-w-[280px] rounded-lg border border-[#b8b5ae] bg-[#E4E0D8] px-3 py-2 text-[14px] outline-none placeholder:text-[#8a8780] focus:border-[#16759b]"
+          className="w-full max-w-70 rounded-lg border border-[#b8b5ae] bg-[#E4E0D8] px-3 py-2 text-[14px] outline-none placeholder:text-[#8a8780] focus:border-[#16759b]"
         />
         <button
           type="button"
@@ -218,4 +218,3 @@ export default function ExtensionLinks() {
     </section>
   );
 }
-

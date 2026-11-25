@@ -396,7 +396,7 @@ const [supabase] = useState(() => createClient());
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      console.error("Not signed in — cannot save.");
+      console.error("Not signed in. Cannot save.");
       return;
     }
     const { data, error } = await supabase
@@ -415,7 +415,7 @@ const [supabase] = useState(() => createClient());
       console.error(error);
       setGenError({
         goalId: drafts.goalId,
-        message: "Couldn't save the generated subgoals — try again.",
+        message: "Couldn't save the generated subgoals. Try again.",
       });
       setDrafts(null);
       return;
@@ -478,7 +478,7 @@ const [supabase] = useState(() => createClient());
               {fmtDate(goal.start_date)} → {fmtDate(goal.target_date)}
             </span>
             <span
-              className={`w-[96px] shrink-0 text-left text-[12px] tabular-nums sm:text-right ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}
+              className={`w-24 shrink-0 text-left text-[12px] tabular-nums sm:text-right ${overdue ? "text-[#D26390]" : goal.completed ? "text-[#8a8780]" : days >= 0 && days <= 7 ? "text-[#1D2525]" : "text-[#6b6963]"}`}
             >
               {status}
             </span>
@@ -505,7 +505,7 @@ const [supabase] = useState(() => createClient());
         </div>
         {!goal.completed && subs.length > 0 && (
           <div className="px-3 pb-3.5 sm:px-6">
-            <div className="h-[3px] rounded-full bg-[#b8b5ae]/50">
+            <div className="h-0.75 rounded-full bg-[#b8b5ae]/50">
               <div
                 className="h-full rounded-full bg-[#16759b]"
                 style={{ width: `${pct}%` }}
@@ -515,7 +515,7 @@ const [supabase] = useState(() => createClient());
         )}
         {subs.length > 0 && <ul className="px-3 pb-1 sm:px-6">{subs.map(subRow)}</ul>}
         {!goal.completed && (
-          <div className="pb-3 pl-[42px] pr-3 pt-1 sm:pl-[58px] sm:pr-6">
+          <div className="pb-3 pl-10.5 pr-3 pt-1 sm:pl-14.5 sm:pr-6">
             <button
               type="button"
               onClick={() => openNewSub(goal.id)}
@@ -538,13 +538,13 @@ const [supabase] = useState(() => createClient());
     const overdue = !sub.completed && days < 0;
 
     return (
-      <li key={sub.id} className="flex items-center gap-2 py-1.5 pl-[26px] sm:gap-3 sm:pl-[34px]">
+      <li key={sub.id} className="flex items-center gap-2 py-1.5 pl-6.5 sm:gap-3 sm:pl-8.5">
         <button
           type="button"
           onClick={() => toggleSub(sub.id)}
           aria-pressed={sub.completed}
           aria-label={`Mark "${sub.title}" as ${sub.completed ? "active" : "done"}`}
-          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border transition-colors ${
+          className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border transition-colors ${
             sub.completed
               ? "border-[#16759b] bg-[#16759b]"
               : "border-[#8a8780] hover:border-[#16759b]"
@@ -659,7 +659,7 @@ const [supabase] = useState(() => createClient());
           onClick={resetForm}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-100 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -691,7 +691,7 @@ const [supabase] = useState(() => createClient());
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full rounded-lg border border-[#777] bg-[#1D2525] px-3 py-2 outline-none [color-scheme:dark]"
+                  className="w-full rounded-lg border border-[#777] bg-[#1D2525] px-3 py-2 outline-none scheme-dark"
                 />
               </div>
               <div>
@@ -700,7 +700,7 @@ const [supabase] = useState(() => createClient());
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full rounded-lg border border-[#777] bg-[#1D2525] px-3 py-2 outline-none [color-scheme:dark]"
+                  className="w-full rounded-lg border border-[#777] bg-[#1D2525] px-3 py-2 outline-none scheme-dark"
                 />
               </div>
             </div>
@@ -743,7 +743,7 @@ const [supabase] = useState(() => createClient());
           onClick={() => setDrafts(null)}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[420px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-105 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">Suggested subgoals</h2>
@@ -757,7 +757,7 @@ const [supabase] = useState(() => createClient());
                 Nothing left to add — close this and generate again.
               </p>
             ) : (
-              <ul className="mb-4 max-h-[280px] space-y-1.5 overflow-auto pr-1">
+              <ul className="mb-4 max-h-70 space-y-1.5 overflow-auto pr-1">
                 {drafts.items.map((item, index) => (
                   <li
                     key={`${item.title}-${index}`}

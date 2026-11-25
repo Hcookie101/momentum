@@ -476,7 +476,7 @@ export default function Calendar() {
                 key={hour}
                 style={{ height: `${hourHeight}px` }}
                 title={`${days[dayIndex]} ${fmt(hour)} - add event`}
-                className="cursor-pointer border-b border-[#b8b5ae] transition-colors hover:bg-black/[0.04]"
+                className="cursor-pointer border-b border-[#b8b5ae] transition-colors hover:bg-black/4"
                 onClick={() => openForSlot(dayIndex, hour)}
               />
             ))}
@@ -555,7 +555,7 @@ export default function Calendar() {
                 aria-hidden="true"
               >
                 <div className="relative h-0.5 -translate-y-px bg-[#D26390]">
-                  <span className="absolute -left-1 -top-[3px] block h-2 w-2 rounded-full bg-[#D26390]" />
+                  <span className="absolute -left-1 -top-0.75 block h-2 w-2 rounded-full bg-[#D26390]" />
                 </div>
               </div>
             )}
@@ -568,7 +568,7 @@ export default function Calendar() {
           onClick={resetForm}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-100 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -708,7 +708,7 @@ export default function Calendar() {
           onClick={() => setComposeOpen(false)}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[400px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-100 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -757,7 +757,7 @@ export default function Calendar() {
           onClick={closeDrafts}
         >
           <div
-            className="max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
+            className="max-h-[90vh] w-full max-w-110 overflow-y-auto rounded-2xl bg-[#0C425A] p-5 text-[#E4E0D8] shadow-xl sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="mb-1 font-serif text-2xl font-medium">
@@ -772,7 +772,7 @@ export default function Calendar() {
                 Nothing left to add — close this and generate again.
               </p>
             ) : (
-              <ul className="mb-4 max-h-[300px] space-y-1.5 overflow-auto pr-1">
+              <ul className="mb-4 max-h-75 space-y-1.5 overflow-auto pr-1">
                 {drafts.map((item, index) => (
                   <li
                     key={`${item.day}-${item.start_hour}-${index}`}
